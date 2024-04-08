@@ -16,7 +16,6 @@
     "@hookform/resolvers": "^3.3.4",
     "@mui/icons-material": "^5.15.15",
     "@mui/material": "^5.15.15",
-    "@prisma/client": "^5.12.1",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@react-hook/window-size": "^3.1.1",
@@ -28,17 +27,14 @@
     "@types/react-dom": "18.2.18",
     "autoprefixer": "10.4.17",
     "axios": "^1.6.8",
-    "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
-    "d3": "^7.9.0",
     "d3-shape": "^3.2.0",
     "eslint": "8.56.0",
     "eslint-config-next": "14.1.0",
     "framer-motion": "^11.0.24",
     "lucide-react": "^0.365.0",
     "next": "14.1.0",
-    "next-auth": "^4.24.7",
     "postcss": "8.4.34",
     "prisma": "^5.11.0",
     "radix-ui": "^1.0.1",
@@ -53,8 +49,4 @@
     "typescript": "5.3.3",
     "zod": "^3.22.4"
   },
-  "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
-    "@types/d3": "^7.4.3"
-  }
 }
