@@ -11,12 +11,12 @@ import {
   LayoutDashboard,
   Settings,
   ChevronRight,
-  FolderOpen,
-  Layers3,
   LineChart,
   BellRing,
   Home,
-  ShoppingCart 
+  ShoppingCart,
+  DollarSign,
+  Package
 } from "lucide-react";
 import { Button } from "./ui/button";
 
@@ -60,13 +60,13 @@ export default function Sidenavbar({}: Props) {
           },
           {
             title: "Products",
-            href: "/viewProject",
-            icon: FolderOpen ,
+            href: "/products",
+            icon: Package ,
             variant: "ghost",
           },
           {
             title: "Warehouse",
-            href: "/viewCategory",
+            href: "/#",
             icon: Home,
             variant: "ghost",
           },
@@ -91,7 +91,7 @@ export default function Sidenavbar({}: Props) {
           {
             title: "Sales",
             href: "/#",
-            icon: ShoppingCart,
+            icon: DollarSign,
             variant: "ghost",
           },
           {

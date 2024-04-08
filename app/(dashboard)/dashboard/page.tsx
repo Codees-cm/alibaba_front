@@ -3,7 +3,7 @@ import Card, { CardContent, CardProps } from "@/components/Card";
 import Navigation from "@/components/Navigation";
 import PageTitle from "@/components/PageTitle";
 import SalesCard, { SalesProps } from "@/components/SalesCard";
-import { Activity, CreditCard, ArrowRightLeft, Users, Folders } from "lucide-react";
+import { Activity, CreditCard, ArrowRightLeft, Users, Folder, DollarSign } from "lucide-react";
 
 import Image from "next/image";
 
@@ -12,13 +12,13 @@ const cardData: CardProps[] = [
   {
     label: "Total Sales",
     amount: "+500",
-    discription: "+20.1% from last month",
-    icon: Folders ,
+    discription:"",
+    icon: DollarSign,
   },
   {
     label: "Total Employees",
     amount: "+200",
-    discription: "+188.1% from last month",
+    discription:"",
     icon: Users,
   },
   {
@@ -30,7 +30,7 @@ const cardData: CardProps[] = [
   {
     label: "Total Products",
     amount: "+573",
-    discription: "+281 from last month",
+    discription: "+281 sold from last month",
     icon: Activity,
   },
 ];
