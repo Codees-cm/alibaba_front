@@ -1,15 +1,35 @@
-import { Metadata } from "next";
+"use client"
 import "./../globals.css"
-// import { cn } from "./../lib/utils";
 import { cn } from "@/lib/utils";
 import Sidenavbar from "@/components/Sidebar";
-// import TanstackProvider from "./providers/TanstackProvider";
+import { useRouter } from "next/navigation";
+import { useMe } from "@/hooks/use-retiveme";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+const router = useRouter()
+  const { me , isLoading, error } =  useMe(); 
+
+if (me === undefined) {
+  router.push('/auth/login')
+}
+
+if (isLoading){
+  return(
+  <>
+  ...Loading
+  </>
+  )
+}
+
+
+  console.log(" this is the user credential:",error)
+
+
+
   return (
     <html>
       <body
@@ -21,16 +41,12 @@ export default function RootLayout({
           }
         )}
       >
-        {/* <TanstackProvider> */}
-        {/* Slide bar*/}
-        {/*<p className="border" >Slidebar</p>*/}
         <Sidenavbar />
         {/*main page */}
         <div className="p-8 w-full">{children}</div>
         <main className="h-screen flex flex-col justify-center items-center">
          
         </main>
-        {/* </TanstackProvider> */}
       </body>
     </html>
   );

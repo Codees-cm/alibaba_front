@@ -1,11 +1,27 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
-const baseURL = process.env.NODE_ENV === 'development' 
-  ? process.env.REACT_APP_BASE_URL_DEVELOPMENT 
-  : process.env.REACT_APP_BASE_URL_LOCAL;
-
-const axiosInstance = axios.create({
-  baseURL,
+// Create an instance of axios
+const instance = axios.create({
+  baseURL: 'http://localhost:8000/api', // Replace with your backend base URL
 });
 
-export default axiosInstance;
+// Add a request interceptor
+instance.interceptors.request.use(
+  (config) => {
+    const accessToken = Cookies.get('access'); // Retrieve access token from cookies
+    console.log(accessToken)
+
+    if (accessToken) {
+      // If access token exists, add it to the request headers
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => {
+    // Do something with request error
+    return Promise.reject(error);
+  }
+);
+
+export default instance;
