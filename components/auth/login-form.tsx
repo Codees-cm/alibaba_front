@@ -39,7 +39,7 @@ const LoginForm = () => {
       console.log(data);
       // Simulate API call delay
       try {
-        await login(email,password);
+        await login(data);
         // if (isSuccess) 
       } catch (error) {
         console.error("Error occurred during form submission:", error);

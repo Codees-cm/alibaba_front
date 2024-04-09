@@ -18,10 +18,11 @@ const LoginForm = () => {
   const form = useForm({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      name: "",
+      first_name: "",
+      last_name: "",
       email: "",
       password: "",
-      confirm_password: ""
+      re_password: ""
     },
   });
 
@@ -60,10 +61,21 @@ const LoginForm = () => {
         <div className="space-y-6">
           <FormField
             control={form.control}
-            name="name"
+            name="first_name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Name:</FormLabel>
+                <FormLabel>First Name:</FormLabel>
+                <Input {...field} type="text" placeholder="Your name" />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="last_name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Last Name:</FormLabel>
                 <Input {...field} type="text" placeholder="Your name" />
                 <FormMessage />
               </FormItem>
@@ -97,7 +109,7 @@ const LoginForm = () => {
           <FormField
             // control={control}
             control={form.control}
-            name="confirm_password"
+            name="re_password"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Confirm Password:</FormLabel>
