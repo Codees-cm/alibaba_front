@@ -72,7 +72,7 @@ export default function Sidenavbar({}: Props) {
           },
           {
             title: "Transactions",
-            href: "/#",
+            href: "/viewTransaction",
             icon: ArrowRightLeft,
             variant: "ghost",
           },
