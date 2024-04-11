@@ -14,10 +14,10 @@ const router = useRouter()
   const { me , isLoading, error } =  useMe(); 
 
   useEffect(()=>{
-    if (me === undefined) {
-      router.push('/auth/login')
+    if(me){
+      if (me?.status != 200) router.push('/auth/login')
     }
-  },[me, router])
+  },[me,router])
 
 
 if (isLoading){
