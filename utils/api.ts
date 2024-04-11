@@ -3,7 +3,8 @@ import Cookies from 'js-cookie';
 
 // Create an instance of axios
 const instance = axios.create({
-  baseURL: process.env.BASE_URL,
+  // baseURL: "https://fnmalic.pythonanywhere.com/api",
+  baseURL: "localhost:8000/api",
 
 });
 

@@ -46,10 +46,10 @@ if (isLoading){
       >
         <Sidenavbar />
         {/*main page */}
-        <div className="p-8 w-full">{children}</div>
-        <main className="h-screen flex flex-col justify-center items-center">
-         
-        </main>
+        {/* <div className="p-8 w-full"> */}
+          {children}
+          {/* </div> */}
+       
       </body>
     </html>
   );

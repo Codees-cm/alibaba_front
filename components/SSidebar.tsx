@@ -21,7 +21,7 @@ import {
 import { Button } from "./ui/button";
 
 import { useWindowWidth } from "@react-hook/window-size";
-export default function Sidenavbar({}: Props) {
+export default function SSidenavbar({}: Props) {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const onlyWidth = useWindowWidth();
@@ -31,7 +31,7 @@ export default function Sidenavbar({}: Props) {
     setIsCollapsed(!isCollapsed);
   }
   return (
-    <div className="relative min-w-[80px] border-r px-3 pb-10 pt-24">
+    <div className="relative min-w-[60px] border-r px-3 pb-10 pt-24">
      {!mobilewidth && (
       <div className="absolute right-[-20px] top-7">
         <Button
@@ -39,7 +39,6 @@ export default function Sidenavbar({}: Props) {
           variant="secondary"
           className=" rounded-full p-2"
         >
-          <ChevronRight />
         </Button>
       </div>
      )} 
@@ -47,57 +46,33 @@ export default function Sidenavbar({}: Props) {
         isCollapsed={mobilewidth ? true : isCollapsed}
         links={[
           {
-            title: "Dashboard",
-            href: "/dashboard",
+            title: "warehouse",
+            href: "/warehouse",
             icon: LayoutDashboard,
             variant: "default",
           },
           {
-            title: "Employee",
-            href: "/users",
+            title: "products",
+            href: "/warehouse/products",
             icon: UsersRound,
             variant: "ghost",
           },
-          // {
-          //   title: "Products",
-          //   href: "/products",
-          //   icon: Package ,
-          //   variant: "ghost",
-          // },
           {
-            title: "Warehouse",
-            href: "/warehouse",
-            icon: Home,
+            title: "suppliers",
+            href: "/warehouse/suppliers",
+            icon: UsersRound,
             variant: "ghost",
           },
           {
-            title: "Transactions",
-            href: "/viewTransaction",
-            icon: ArrowRightLeft,
+            title: "category",
+            href: "/warehouse/category",
+            icon: UsersRound,
             variant: "ghost",
           },
           {
-            title: "Analysis",
-            href: "/#",
-            icon: LineChart,
-            variant: "ghost",
-          },
-          {
-            title: "Sales",
-            href: "/#",
-            icon: DollarSign,
-            variant: "ghost",
-          },
-          {
-            title: "Notifications",
-            href: "/#",
-            icon: BellRing,
-            variant: "ghost",
-          },
-          {
-            title: "Settings",
-            href: "/settings",
-            icon: Settings, 
+            title: "Orders",
+            href: "/warehouse/Orders",
+            icon: ShoppingCart,
             variant: "ghost",
           },
         ]}
