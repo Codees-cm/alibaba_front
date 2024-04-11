@@ -7,21 +7,21 @@ const instance = axios.create({
 });
 
 // Add a request interceptor
-instance.interceptors.request.use(
-  (config) => {
-    const accessToken = Cookies.get('access'); // Retrieve access token from cookies
-    console.log(accessToken)
+// instance.interceptors.request.use(
+//   (config) => {
+//     const accessToken = Cookies.get('access'); // Retrieve access token from cookies
+//     console.log(accessToken)
 
-    if (accessToken) {
-      // If access token exists, add it to the request headers
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-    return config;
-  },
-  (error) => {
-    // Do something with request error
-    return Promise.reject(error);
-  }
-);
+//     if (accessToken) {
+//       // If access token exists, add it to the request headers
+//       config.headers.Authorization = `Bearer ${accessToken}`;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     // Do something with request error
+//     return Promise.reject(error);
+//   }
+// );
 
 export default instance;
