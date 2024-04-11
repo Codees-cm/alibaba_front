@@ -126,7 +126,7 @@ export default function Product() {
                 <Button size="sm" className="h-7 gap-1">
                   <PlusCircle className="h-3.5 w-3.5" />
                   <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
-                    <Link href="/addProduct" className="text-sm px-2 py-1 bg-black-500 hover:bg-black-700 text-white font-semibold rounded"> Add Product </Link>
+                    <Link href="/warehouse/products/add" className="text-sm px-2 py-1 bg-black-500 hover:bg-black-700 text-white font-semibold rounded"> Add Product </Link>
                   </span>
                 </Button>
                 

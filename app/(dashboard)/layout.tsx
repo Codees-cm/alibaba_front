@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import Sidenavbar from "@/components/Sidebar";
 import { useRouter } from "next/navigation";
 import { useMe } from "@/hooks/use-retiveme";
-
+import { useEffect } from "react";
 export default function RootLayout({
   children,
 }: {
@@ -13,9 +13,12 @@ export default function RootLayout({
 const router = useRouter()
   const { me , isLoading, error } =  useMe(); 
 
-if (me === undefined) {
-  router.push('/auth/login')
-}
+  useEffect(()=>{
+    if(me){
+      if (me?.status != 200) router.push('/auth/login')
+    }
+  },[me,router])
+
 
 if (isLoading){
   return(
@@ -43,10 +46,10 @@ if (isLoading){
       >
         <Sidenavbar />
         {/*main page */}
-        <div className="p-8 w-full">{children}</div>
-        <main className="h-screen flex flex-col justify-center items-center">
-         
-        </main>
+        {/* <div className="p-8 w-full"> */}
+          {children}
+          {/* </div> */}
+       
       </body>
     </html>
   );

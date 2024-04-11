@@ -1,4 +1,4 @@
-
+"use client"
 import Card, { CardContent, CardProps } from "@/components/Card";
 import Navigation from "@/components/Navigation";
 import PageTitle from "@/components/PageTitle";
@@ -60,7 +60,8 @@ const UserSalesData: SalesProps [] = [
 
 export default function Home() {
   return (
-    <div className="flex flex-col gap-8 w-full">
+    <div className="p-8 w-full">
+ <div className="flex flex-col gap-8 w-full">
      <section className="grid grid-cols-2 gap-8 sm:grid-cols-2 xl:grid-cols-2">
   <div className="col-span-1"><PageTitle title="Dashboard" /></div>
   
@@ -115,6 +116,8 @@ saleAmount={d.saleAmount}
       </section>
     </div>
 
+    </div>
+   
 
   );
 }
