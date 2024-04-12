@@ -59,7 +59,7 @@ export default function SSidenavbar({}: Props) {
           },
           {
             title: "suppliers",
-            href: "/warehouse/suppliers",
+            href: "/warehouse/supplier",
             icon: UsersRound,
             variant: "ghost",
           },
