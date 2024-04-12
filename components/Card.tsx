@@ -1,4 +1,4 @@
-import WarehouseDetail from '@/app/(dashboard)/viewWarehouse/page';
+
 import { cn } from '@/lib/utils';
 import { LucideIcon } from 'lucide-react'
 import { HtmlContext } from 'next/dist/server/future/route-modules/app-page/vendored/contexts/entrypoints';
@@ -10,9 +10,7 @@ export type CardProps = {
     amount:string;
     discription: string;
 };
-function show()  {
-    <WarehouseDetail/>
-}
+
 export default function Card(Props: CardProps) {
  return <CardContent >
     <section className="flex justify-between gap-2">
@@ -29,7 +27,7 @@ export default function Card(Props: CardProps) {
 }
 
 
-export function CardContent(props:React.HTMLAttributes<HTMLDivElement> , onClick="show()"){
+export function CardContent(props:React.HTMLAttributes<HTMLDivElement> ){
     return (
     <div
     {...props}
