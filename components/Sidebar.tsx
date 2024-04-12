@@ -84,7 +84,7 @@ export default function Sidenavbar({}: Props) {
           },
           {
             title: "Sales",
-            href: "/#",
+            href: "sales",
             icon: DollarSign,
             variant: "ghost",
           },

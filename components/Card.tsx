@@ -1,3 +1,4 @@
+
 import { cn } from '@/lib/utils';
 import { LucideIcon } from 'lucide-react'
 import { HtmlContext } from 'next/dist/server/future/route-modules/app-page/vendored/contexts/entrypoints';
@@ -11,7 +12,7 @@ export type CardProps = {
 };
 
 export default function Card(Props: CardProps) {
- return <CardContent>
+ return <CardContent >
     <section className="flex justify-between gap-2">
         {/*label*/}
         <p className="text-sm">{Props.label}</p>
@@ -26,7 +27,7 @@ export default function Card(Props: CardProps) {
 }
 
 
-export function CardContent(props:React.HTMLAttributes<HTMLDivElement>){
+export function CardContent(props:React.HTMLAttributes<HTMLDivElement> ){
     return (
     <div
     {...props}
