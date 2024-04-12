@@ -3246,6 +3246,11 @@ fastq@^1.6.0:
   dependencies:
     reusify "^1.0.4"
 
+fetch-headers@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.npmjs.org/fetch-headers/-/fetch-headers-3.0.1.tgz"
+  integrity sha512-Kq+NyED/wLgT29St7aW47gAWg8EmmE5QmhwQ5RmPRULYLqpglA7Kc/ZnbqXu2vhH6mw1koikew2g94WiHLPmpA==
+
 file-entry-cache@^6.0.1:
   version "6.0.1"
   resolved "https://registry.npmjs.org/file-entry-cache/-/file-entry-cache-6.0.1.tgz"

@@ -33,6 +33,7 @@
     "d3-shape": "^3.2.0",
     "eslint": "8.56.0",
     "eslint-config-next": "14.1.0",
+    "fetch-headers": "^3.0.1",
     "framer-motion": "^11.0.24",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.365.0",

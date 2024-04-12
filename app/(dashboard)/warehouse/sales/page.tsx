@@ -1,6 +1,6 @@
-'use client'
+"use client"
 import * as React from "react";
-import { useState } from "react"; // Import useState hook for managing state
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ColumnDef } from "@tanstack/react-table"
 import {
   Select,
   SelectContent,
@@ -22,48 +23,57 @@ import {
 } from "@/components/ui/select";
 import { DataTable } from "@/components/DataTable";
 
-export default function Supllier() {
+// Define an interface for the sales data
+export type SaleInfo = {
+  name: string;
+  quantity: string;
+  status: string;
+}
+
+export default function Supplier() {
   const [isOrder, setIsOrder] = useState(false); // State to manage whether it's an order or not
-  const [salesData, setSalesData] = useState([]); // State to manage sales data
+  const [salesData, setSalesData] = useState<SaleInfo[]>([]); // State to manage sales data
 
   // Function to handle form submission
-  const handleSubmit = (event) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.target);
-    const name = formData.get("name");
-    const quantity = formData.get("quantity");
+    const formData = new FormData(event.currentTarget);
+    const name = formData.get("name") as string;
+    const quantity = formData.get("quantity") as string;
     const status = isOrder ? "Order" : "Not an Order";
-    const saleInfo = { name, quantity, status };
+    const saleInfo: SaleInfo = { name, quantity, status };
     setSalesData([...salesData, saleInfo]);
-    event.target.reset();
+    event.currentTarget.reset();
   };
 
-  const columns = [
+  const columns: ColumnDef<SaleInfo>[]  = [
     // Columns for DataTable
-    { Header: "Name", accessor: "name" },
-    { Header: "Quantity", accessor: "quantity" },
-    { Header: "Status", accessor: "status" },
+    { header: "Name", accessorKey: "name" },
+    { header: "Quantity", accessorKey: "quantity" },
+    { header: "Status", accessorKey: "status" },
     {
-      Header: "Action",
-      Cell: ({ row }) => (
-        <div>
-          <Button variant="outline" onClick={() => handleEdit(row)}>Edit</Button>
-          <Button onClick={() => handleDelete(row)}>Delete</Button>
-        </div>
-      ),
+      header: "Action",
+      cell: ({ row }) => {
+      
+        // <div>
+        //     const SaleInfo = row.original
+        //   <Button variant="outline" onClick={() => handleEdit(row)}>Edit</Button>
+        //   <Button onClick={() => handleDelete(row)}>Delete</Button>
+        // </div>
+      },
     },
   ];
 
   // Function to handle editing sale information
-  const handleEdit = (row) => {
+  const handleEdit = (row: SaleInfo) => {
     // Implement edit functionality
-    console.log("Editing sale information:", row.original);
+    console.log("Editing sale information:", row);
   };
 
   // Function to handle deleting sale information
-  const handleDelete = (row) => {
+  const handleDelete = (row: SaleInfo) => {
     // Implement delete functionality
-    console.log("Deleting sale information:", row.original);
+    console.log("Deleting sale information:", row);
   };
 
   return (
