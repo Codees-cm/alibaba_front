@@ -1,3 +1,4 @@
+import axios from 'axios';
 import axiosInstance from '../api';
 
 export const registerUser = async (user) => {
@@ -24,7 +25,7 @@ export const activate = async (datas:{uid:string,token:string}) => {
 
 export const retrieveUser = async () => {
   // console.log(datas)
-  const response = await axiosInstance.get('/users/me/').then((data)=>{
+  const response = await axios.get('http://127.0.0.1:8000/api/users/me/').then((data)=>{
     // console.log(data)
     return data;
   });
@@ -34,7 +35,7 @@ export const retrieveUser = async () => {
 
 
 export const createJWT = async (user_info) => {
-  const response = await  axiosInstance.post("/jwt/create/", {
+  const response = await  axios.post("http://127.0.0.1:8000/api/jwt/create/", {
     email : user_info.email,
     password : user_info.password,
     redirect: false,

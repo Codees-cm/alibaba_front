@@ -1,7 +1,6 @@
 
 import React from "react";
 import { useQuery , useMutation , useQueryClient } from "@tanstack/react-query";
-// import { viewSale } from "@/utils/api/sale";
 import { fetchSales,createSales , viewSales ,deleteSales } from "@/utils/apis/sale";
 
 export const useSales = () => {

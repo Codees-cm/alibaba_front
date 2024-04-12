@@ -14,6 +14,7 @@ const router = useRouter()
   const { me , isLoading, error } =  useMe(); 
 
   useEffect(()=>{
+    console.log(me)
     if(me){
       if (me?.status != 200) router.push('/auth/login')
     }
