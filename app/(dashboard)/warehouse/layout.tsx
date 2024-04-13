@@ -1,4 +1,4 @@
-
+"use client"
 import SSidenavbar from "@/components/SSidebar";
 export default function RootLayout({
   children,
@@ -9,14 +9,17 @@ export default function RootLayout({
 
   return (
     <>
+      {/* <div className="p-8 w-full"> */}
       <SSidenavbar />
         {/*main page */}
         {/* <div className=" p-4 w-auto">
           </div> */}
-        <main className="h-screen flex flex-col justify-center items-center">
+        {/* <main className=" w-full"> */}
         {children}
          
-        </main>
+        {/* </main> */}
+      {/* </div> */}
+      
     </>
       
     

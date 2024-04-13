@@ -9,7 +9,7 @@ export const useSuppliers = () => {
     const [errorMessage, setErrorMessage] = React.useState("");
     const queryClient = useQueryClient();
 
-    const {data:supplier , isLoading :allLoading ,error:allFetchError , refetch} = useQuery({
+    const {data:suppliers , isLoading :allLoading ,error:allFetchError , refetch} = useQuery({
         queryKey : ['suppliers'],
         queryFn: fetchSuppliers,
         staleTime: 300000,
@@ -20,6 +20,8 @@ export const useSuppliers = () => {
         queryKey : ['viewSupplier'],
         queryFn: viewSuppliers,
         staleTime: 300000,
+      enabled: false, // Disable the query by default, enable it only when needed
+
     })
 
     const {mutate:addSupplierMutation, isPending:isAddingSupplier} = useMutation({
@@ -77,7 +79,7 @@ export const useSuppliers = () => {
     }
 
     return {
-        supplier,
+        suppliers,
         allLoading,
         allFetchError,
 

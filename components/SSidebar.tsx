@@ -31,8 +31,8 @@ export default function SSidenavbar({}: Props) {
     setIsCollapsed(!isCollapsed);
   }
   return (
-    <div className="relative min-w-[60px] border-r px-3 pb-10 pt-24">
-     {!mobilewidth && (
+    <div className="relative w-max border-r px-3 pb-10 pt-24">
+     {/* {!mobilewidth && (
       <div className="absolute right-[-20px] top-7">
         <Button
           onClick={toggleSidebar}
@@ -41,7 +41,7 @@ export default function SSidenavbar({}: Props) {
         >
         </Button>
       </div>
-     )} 
+     )}  */}
       <Nav
         isCollapsed={mobilewidth ? true : isCollapsed}
         links={[

@@ -13,12 +13,12 @@ export default function RootLayout({
 const router = useRouter()
   const { me , isLoading, error } =  useMe(); 
 
-  useEffect(()=>{
-    console.log(me)
-    if(me){
-      if (me?.status != 200) router.push('/auth/login')
-    }
-  },[me,router])
+  // useEffect(()=>{
+  //   console.log(me)
+  //   if(me){
+  //     if (me?.status != 200) router.push('/auth/login')
+  //   }
+  // },[me,router])
 
 
 if (isLoading){
@@ -29,29 +29,27 @@ if (isLoading){
   )
 }
 
+if(me?.data){
+  if (me?.status != 200) router.push('/auth/login')
+}
 
   console.log(" this is the user credential:",error)
 
 
 
   return (
-    <html>
-      <body
-      
-        className={cn(
-          "min-h-screen w-full bg-white text-black flex ",
-          {
-            "debug-screens": process.env.NODE_ENV === "development",
-          }
-        )}
-      >
-        <Sidenavbar />
-        {/*main page */}
-        {/* <div className="p-8 w-full"> */}
-          {children}
-          {/* </div> */}
+
+    <div style={{ margin:0 , lineHeight:"inherit",paddingBottom:"299px",display:"-webkit-inline-box"}}>
+          <Sidenavbar />
+            {/*main page */}
+            {/* <div className="p-8 w-full"> */}
+              {children}
+              {/* </div> */}
+      </div>
+
+  
+     
        
-      </body>
-    </html>
+   
   );
 }

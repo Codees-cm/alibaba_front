@@ -1,7 +1,7 @@
 'use client'
 import * as React from "react";
 import { useState } from "react";
-import QRCode from "qrcode.react"; // Import QRCode library
+// import QRCode from "qrcode.react"; // Import QRCode library
 
 import { Button } from "@/components/ui/button";
 import {
@@ -61,18 +61,18 @@ export default function Supplier() {
   ];
 
   // Function to generate QR code if it's an order
-  const generateQRCode = () => {
-    if (showQRCode && salesData.length > 0) {
-      const saleInfo = salesData[salesData.length - 1]; // Get the latest sale info
-      const qrData = `Name: ${saleInfo.name}, Quantity: ${saleInfo.quantity}`;
-      return (
-        <div className="mt-4">
-          <QRCode value={qrData} />
-        </div>
-      );
-    }
-    return null;
-  };
+  // const generateQRCode = () => {
+  //   if (showQRCode && salesData.length > 0) {
+  //     const saleInfo = salesData[salesData.length - 1]; // Get the latest sale info
+  //     const qrData = `Name: ${saleInfo.name}, Quantity: ${saleInfo.quantity}`;
+  //     return (
+  //       <div className="mt-4">
+  //         <QRCode value={qrData} />
+  //       </div>
+  //     );
+  //   }
+  //   return null;
+  // };
 
   return (
     <div className="p-8 w-full">
@@ -122,10 +122,10 @@ export default function Supplier() {
             </CardFooter>
           </Card>
         </div>
-        <div className="w-[50%]">
+        {/* <div className="w-[50%]">
           <DataTable columns={columns} data={salesData} />
           {generateQRCode()}
-        </div>
+        </div> */}
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
-import axiosInstance from '../api';
+import instance from '../api';
 
 
 export const fetchWarehouse = async () => {
-    const response = await axiosInstance.get('/warehouses')
+    const response = await instance.get('/warehouses/')
                                       .then((res)=>{
                                         return res
                                       })
@@ -10,7 +10,7 @@ export const fetchWarehouse = async () => {
 }
 
 export const createWarehouse = async (data) => {
-    const response = await axiosInstance.post('/warehouses',data)
+    const response = await instance.post('/warehouses/',data)
     .then((res)=>{
       return res
     })
@@ -18,7 +18,7 @@ export const createWarehouse = async (data) => {
 }
 
 export const editWarehouse = async (data) => {
-    const response = await axiosInstance.put('/warehouses',data)
+    const response = await instance.put('/warehouses/',data)
     .then((res)=>{
       return res
     })
@@ -27,7 +27,7 @@ export const editWarehouse = async (data) => {
 
 
 export const viewWarehouse = async (id) => {
-    const response = await axiosInstance.get(`/warehouses/${id}`)
+    const response = await instance.get(`/warehouses/${id}`)
     .then((res)=>{
       return res
     })
@@ -35,7 +35,7 @@ export const viewWarehouse = async (id) => {
 }
 
 export const deleteWarehouse = async (id) => {
-    const response = await axiosInstance.delete(`/warehouses/${id}`)
+    const response = await instance.delete(`/warehouses/${id}`)
     .then((res)=>{
       return res
     })

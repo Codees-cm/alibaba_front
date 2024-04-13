@@ -9,7 +9,7 @@ export const useProducts = () => {
     const [errorMessage, setErrorMessage] = React.useState("");
     const queryClient = useQueryClient();
 
-    const {data:product , isLoading :allLoading ,error:allFetchError , refetch} = useQuery({
+    const {data:products , isLoading :allLoading ,error:allFetchError , refetch} = useQuery({
         queryKey : ['products'],
         queryFn: fetchProducts,
         staleTime: 300000,
@@ -20,6 +20,7 @@ export const useProducts = () => {
         queryKey : ['viewProduct'],
         queryFn: viewProducts,
         staleTime: 300000,
+      enabled: false, // Disable the query by default, enable it only when needed
     })
 
     const {mutate:addProductMutation, isPending:isAddingProduct} = useMutation({
@@ -77,7 +78,7 @@ export const useProducts = () => {
     }
 
     return {
-        product,
+        products,
         allLoading,
         allFetchError,
 
