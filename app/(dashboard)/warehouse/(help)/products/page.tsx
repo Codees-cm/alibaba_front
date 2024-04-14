@@ -34,8 +34,10 @@ import AddProduct from "@/components/AddProduct";
 
 export default function Dashboard() {
   // Sample supplier data
-  const { products, allLoading, allFetchError } = useProducts()
+  const { products, allLoading, allFetchError ,deletingProduct } = useProducts()
 
+
+  console.log(products?.data)
   if (allLoading) {
     return <div>Loading...</div>; // Show loading indicator while fetching data
   }
@@ -45,34 +47,28 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="p-4b w-full">
+    <div >
       <div className="flex min-h-screen w-full flex-col bg-muted/40">
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-          <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+          {/* <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
             <h1 className="text-lg font-semibold">Products</h1>
             <div className="relative ml-auto flex-1 md:grow-0">
-              <AlertDialog style={{ width:"max-content" }}>
-                <AlertDialogTrigger>Add Products</AlertDialogTrigger>
-                <AlertDialogContent>
+              <AlertDialog>
+                <AlertDialogTrigger className=" text-sm ">Add Products</AlertDialogTrigger>
+                <AlertDialogContent className="w-fit">
                   <AlertDialogHeader>
-                    {/* <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle> */}
                     <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    {/* <AlertDialogAction>Continue</AlertDialogAction> */}
                   </AlertDialogFooter>
                     <AlertDialogDescription>
-                  <AddProduct/>
+                 
                     </AlertDialogDescription>
                   </AlertDialogHeader>
-                  {/* <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction>Continue</AlertDialogAction>
-                  </AlertDialogFooter> */}
                 </AlertDialogContent>
               </AlertDialog>
 
             </div>
-          </header>
+          </header> */}
           <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
             {/* Tabs and add supplier button */}
             {/* Table */}
@@ -80,6 +76,22 @@ export default function Dashboard() {
               <CardHeader>
                 <CardTitle>Products</CardTitle>
                 <CardDescription>Lorem description.</CardDescription>
+                <div className="ml-auto flex items-center gap-2">
+                    <AlertDialog>
+                      <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Product</AlertDialogTrigger>
+                      <AlertDialogContent className="w-fit">
+                        <AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          </AlertDialogFooter>
+                          <AlertDialogDescription>
+                          <AddProduct/>
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
               </CardHeader>
               <CardContent>
                 <Table>
@@ -100,7 +112,7 @@ export default function Dashboard() {
                         <TableCell>{product.name}</TableCell>
                         <TableCell>{product.quantity}</TableCell>
                         <TableCell>{product.price}</TableCell>
-                        <TableCell>{product.category}</TableCell>
+                        <TableCell>{product.category.name}</TableCell>
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -111,7 +123,7 @@ export default function Dashboard() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem>Edit</DropdownMenuItem>
-                              <DropdownMenuItem>Delete</DropdownMenuItem>
+                              <DropdownMenuItem onClick={()=> deletingProduct(product.id)}>Delete</DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </TableCell>

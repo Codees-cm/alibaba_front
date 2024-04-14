@@ -2,7 +2,7 @@ import instance from '../api';
 
 
 export const fetchSuppliers = async () => {
-    const response = await instance.get('/suppliers')
+    const response = await instance.get('/suppliers/')
                                       .then((res)=>{
                                         return res
                                       })
@@ -10,7 +10,7 @@ export const fetchSuppliers = async () => {
 }
 
 export const createSuppliers = async (data) => {
-    const response = await instance.post('/suppliers',data)
+    const response = await instance.post('/suppliers/',data)
     .then((res)=>{
       return res
     })
@@ -18,7 +18,7 @@ export const createSuppliers = async (data) => {
 }
 
 export const editSuppliers = async (data) => {
-    const response = await instance.put('/suppliers',data)
+    const response = await instance.put('/suppliers/',data)
     .then((res)=>{
       return res
     })
@@ -27,7 +27,7 @@ export const editSuppliers = async (data) => {
 
 
 export const viewSuppliers = async (id) => {
-    const response = await instance.get(`/suppliers/${id}`)
+    const response = await instance.get(`/suppliers/${id}/`)
     .then((res)=>{
       return res
     })
@@ -35,7 +35,7 @@ export const viewSuppliers = async (id) => {
 }
 
 export const deleteSuppliers = async (id) => {
-    const response = await instance.delete(`/suppliers/${id}`)
+    const response = await instance.delete(`/suppliers/${id}/`)
     .then((res)=>{
       return res
     })

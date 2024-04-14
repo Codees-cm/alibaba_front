@@ -27,7 +27,7 @@ export const editProducts = async (data) => {
 
 
 export const viewProducts = async (id) => {
-    const response = await instance.get(`/products/${id}`)
+    const response = await instance.get(`/products/${id}/`)
     .then((res)=>{
       return res
     })
@@ -35,7 +35,7 @@ export const viewProducts = async (id) => {
 }
 
 export const deleteProducts = async (id) => {
-    const response = await instance.delete(`/products/${id}`)
+    const response = await instance.delete(`/products/${id}/`)
     .then((res)=>{
       return res
     })

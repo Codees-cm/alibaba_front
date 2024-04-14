@@ -6,34 +6,9 @@ import SalesCard, { SalesProps } from "@/components/SalesCard";
 import { Activity, CreditCard, ArrowRightLeft, Users, Folder, DollarSign } from "lucide-react";
 
 import Image from "next/image";
+import { useDashboard } from "@/hooks/analysis/use-dashboard";
 
 
-const cardData: CardProps[] = [
-  {
-    label: "Total Sales",
-    amount: "+500",
-    discription:"",
-    icon: DollarSign,
-  },
-  {
-    label: "Total Employees",
-    amount: "+200",
-    discription:"",
-    icon: Users,
-  },
-  {
-    label: "Today Transactions",
-    amount: "12,234",
-    discription: "+12.1% from last month",
-    icon: ArrowRightLeft,
-  },
-  {
-    label: "Total Products",
-    amount: "+573",
-    discription: "+281 sold from last month",
-    icon: Activity,
-  },
-];
 
 const UserSalesData: SalesProps [] = [
   {
@@ -59,6 +34,37 @@ const UserSalesData: SalesProps [] = [
 ];
 
 export default function Home() {
+  const {data} = useDashboard()
+
+  // console.log(data?.data)
+
+  const cardData: CardProps[] = [
+    {
+      label: "Total Sales",
+      amount: "----",
+      discription:"",
+      icon: DollarSign,
+    },
+    {
+      label: "Total Employees",
+      amount: "----",
+      discription:"",
+      icon: Users,
+    },
+    {
+      label: "Today Transactions",
+      amount: "----",
+      discription: "+12.1% from last month",
+      icon: ArrowRightLeft,
+    },
+    {
+      label: "Total Products",
+      amount: data?.data["total_products"],
+      discription: "+281 sold from last month",
+      icon: Activity,
+    },
+  ];
+
   return (
     <div className="p-8 w-full">
  <div className="flex flex-col gap-8 w-full">

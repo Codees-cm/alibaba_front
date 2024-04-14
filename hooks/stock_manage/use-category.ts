@@ -1,4 +1,4 @@
-
+"use client"
 import React from "react";
 import { useQuery , useMutation , useQueryClient } from "@tanstack/react-query";
 // import { viewCategorie } from "@/utils/api/categorie";
@@ -9,7 +9,7 @@ export const useCategories = () => {
     const [errorMessage, setErrorMessage] = React.useState("");
     const queryClient = useQueryClient();
 
-    const {data:categorie , isLoading :allLoading ,error:allFetchError , refetch} = useQuery({
+    const {data:categories , isLoading :allLoading ,error:allFetchError , refetch} = useQuery({
         queryKey : ['categories'],
         queryFn: fetchCategories,
         staleTime: 300000,
@@ -20,6 +20,7 @@ export const useCategories = () => {
         queryKey : ['viewCategorie'],
         queryFn: viewCategories,
         staleTime: 300000,
+        enabled: false, // Disable the query by default, enable it only when needed
     })
 
     const {mutate:addCategorieMutation, isPending:isAddingCategorie} = useMutation({
@@ -77,7 +78,7 @@ export const useCategories = () => {
     }
 
     return {
-        categorie,
+        categories,
         allLoading,
         allFetchError,
 

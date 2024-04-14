@@ -27,7 +27,7 @@ export const editWarehouse = async (data) => {
 
 
 export const viewWarehouse = async (id) => {
-    const response = await instance.get(`/warehouses/${id}`)
+    const response = await instance.get(`/warehouses/${id}/`)
     .then((res)=>{
       return res
     })
@@ -35,7 +35,7 @@ export const viewWarehouse = async (id) => {
 }
 
 export const deleteWarehouse = async (id) => {
-    const response = await instance.delete(`/warehouses/${id}`)
+    const response = await instance.delete(`/warehouses/${id}/`)
     .then((res)=>{
       return res
     })

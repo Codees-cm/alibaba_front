@@ -95,23 +95,3 @@ export const useWarehouses = () => {
 };
 
 
-// import { useQuery } from "@tanstack/react-query";
-// // import { retrieveUser } from "@/utils/apis/auth";
-// import { fetchWarehouse } from "@/utils/apis/warehouse";
-// export const useWarehouses = () => {
-//     const {data: warehouses, isLoading: allLoading,error:allFetchError , refetch} =  useQuery({
-//         queryKey : ['warehouses'],
-//         queryFn: fetchWarehouse,
-//         staleTime: 300000,
-//     })
-
-
-//     return {
-//       warehouses,
-//             allLoading,
-//             allFetchError,
-//         refetch
-//     }
-// }
-
-

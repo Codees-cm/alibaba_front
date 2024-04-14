@@ -15,7 +15,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { MoreHorizontal } from "lucide-react";
 import { useSuppliers } from "@/hooks/stock_manage/use-suppliers";
 export default function Dashboard() {
-  const { suppliers,allFetchError,allLoading } = useSuppliers()
+  const { suppliers,allFetchError,allLoading, deletingSupplier } = useSuppliers()
 
 
   if (allLoading) {
@@ -27,7 +27,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="p-8 w-full">
+    <div >
       <div className="flex min-h-screen w-full flex-col bg-muted/40">
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
@@ -62,7 +62,7 @@ export default function Dashboard() {
                       <TableRow key={supplier.id}>
                         <TableCell className="font-medium">{supplier.name}</TableCell>
                         <TableCell>{supplier.email}</TableCell>
-                        <TableCell>{supplier.phoneNumber}</TableCell>
+                        <TableCell>{supplier.contact_number}</TableCell>
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -73,7 +73,7 @@ export default function Dashboard() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem>Edit</DropdownMenuItem>
-                              <DropdownMenuItem>Delete</DropdownMenuItem>
+                              <DropdownMenuItem onClick={()=>deletingSupplier(supplier.id)}>Delete</DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </TableCell>

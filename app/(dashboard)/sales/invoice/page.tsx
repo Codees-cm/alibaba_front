@@ -28,7 +28,7 @@ import {
   Paper,
   Button,
 } from '@mui/material';
-import generatePdf from '@/utils/pdfGenerator';
+// import generatePdf from '@/utils/pdfGenerator';
 import { redirect } from 'next/navigation';
 
 const InvoicePage = () => {
@@ -51,7 +51,7 @@ const InvoicePage = () => {
 
   const handleGeneratePdf = () => {
     if (pdfRef.current) {
-      generatePdf(pdfRef.current, 'sales_receipt.pdf');
+      // generatePdf(pdfRef.current, 'sales_receipt.pdf');
       localStorage.clear();
       redirect("/sales")
     }

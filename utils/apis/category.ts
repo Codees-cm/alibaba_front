@@ -2,7 +2,7 @@ import instance from '../api';
 
 
 export const fetchCategories = async () => {
-    const response = await instance.get('/categories')
+    const response = await instance.get('/categories/')
                                       .then((res)=>{
                                         return res
                                       })
@@ -10,7 +10,7 @@ export const fetchCategories = async () => {
 }
 
 export const createCategories = async (data) => {
-    const response = await instance.post('/categories',data)
+    const response = await instance.post('/categories/',data)
     .then((res)=>{
       return res
     })
@@ -18,7 +18,7 @@ export const createCategories = async (data) => {
 }
 
 export const editCategories = async (data) => {
-    const response = await instance.put('/categories',data)
+    const response = await instance.put('/categories/',data)
     .then((res)=>{
       return res
     })
@@ -27,7 +27,7 @@ export const editCategories = async (data) => {
 
 
 export const viewCategories = async (id) => {
-    const response = await instance.get(`/categories/${id}`)
+    const response = await instance.get(`/categories/${id}/`)
     .then((res)=>{
       return res
     })
@@ -35,7 +35,7 @@ export const viewCategories = async (id) => {
 }
 
 export const deleteCategories = async (id) => {
-    const response = await instance.delete(`/categories/${id}`)
+    const response = await instance.delete(`/categories/${id}/`)
     .then((res)=>{
       return res
     })
