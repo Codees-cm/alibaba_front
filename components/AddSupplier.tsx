@@ -25,7 +25,7 @@ export default function AddSupplier() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          console.log("hello",supplierData)
+         
             await addSupplier(supplierData);
             // Reset form after successful submission
             setSupplierData({
@@ -43,8 +43,9 @@ export default function AddSupplier() {
       <CardTitle>Add Supplier</CardTitle>
       <CardDescription>Lorem description.</CardDescription>
     </CardHeader>
-    <CardContent>
     <form onSubmit={handleSubmit} >
+    <CardContent>
+   
         <div className="grid w-full items-center gap-4">
         <div className="flex flex-col space-y-1.5">
             <Label htmlFor="framework"> Name</Label>
@@ -56,15 +57,15 @@ export default function AddSupplier() {
           </div>
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="quantity">Phone Number</Label>
-            <Input type="number" id="telephone"  value={supplierData.contact_number} onChange={handleInputChange} placeholder="6XXXXXXXX" />
+            <Input type="text" id="contact_number"  value={supplierData.contact_number} onChange={handleInputChange} placeholder="6XXXXXXXX" />
           </div>
         </div>
-      </form>
+     
     </CardContent>
     <CardFooter className="flex justify-between">
-      <Button variant="outline">Cancel</Button>
-      <Button>Save</Button>
+      <Button type='submit'>Save</Button>
     </CardFooter>
+    </form>
   </Card>
   )
 }

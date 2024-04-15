@@ -49,85 +49,42 @@ export default function AddProduct() {
   };
 
   return (
-    <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
-      <div className="flex items-center gap-4">
-        <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">Add Product</h1>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
-          <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
-            <Card>
-              <CardHeader>
-                <CardTitle>Product Details</CardTitle>
-                <CardDescription>Lipsum dolor sit amet, consectetur adipiscing elit</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-6">
-                  <div className="grid gap-3">
-                    <Label htmlFor="name">Name</Label>
-                    <Input id="name" type="text" className="w-full" value={productData.name} onChange={handleInputChange} />
-                  </div>
-                  <div className="grid gap-3">
-                    <Label htmlFor="description">Description</Label>
-                    <Textarea id="description" className="min-h-32" value={productData.description} onChange={handleInputChange} />
-                  </div>
-                  <div className="grid gap-3">
-                    <Label htmlFor="price_with_tax">Price with Tax</Label>
-                    <Input id="price_with_tax" type="number" className="w-full" value={productData.price_with_tax} onChange={handleInputChange} />
-                  </div>
-                  <div className="grid gap-3">
-                    <Label htmlFor="price">Price without Tax</Label>
-                    <Input id="price" type="number" className="w-full" value={productData.price} onChange={handleInputChange} />
-                  </div>
-                  <div className="grid gap-3">
-                    <Label htmlFor="quantity">Quantity</Label>
-                    <Input id="quantity" type="number" className="w-full" value={productData.quantity} onChange={handleInputChange} />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+    <div className="mx-auto max-w-[59rem]">
+    <Card className="p-5">
+    <h1 className="text-xl font-semibold">Add Product</h1>
+    <form onSubmit={handleSubmit}>
+     
+        <CardContent>
+          <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-3 lg:gap-8">
+            <div className="grid gap-4 lg:col-span-2">
+              <Input id="name" type="text" placeholder="Name" value={productData.name} onChange={handleInputChange} />
+              <Textarea id="description" placeholder="Description" value={productData.description} onChange={handleInputChange} />
+              <Input id="price_with_tax" type="number" placeholder="Price with Tax" value={productData.price_with_tax} onChange={handleInputChange} />
+              <Input id="price" type="number" placeholder="Price without Tax" value={productData.price} onChange={handleInputChange} />
+              <Input id="quantity" type="number" placeholder="Quantity" value={productData.quantity} onChange={handleInputChange} />
+            </div>
+            <div className="grid gap-4">
+              <Select onValueChange={(value) => setProductData({ ...productData, category: value })} >
+                <SelectTrigger id="category" aria-label="Select category" name="category" value={productData.category} >
+                  <SelectValue placeholder="Select category" />
+                </SelectTrigger >
+                <SelectContent >
+                  {categories?.data.map((category) => (
+                    <SelectItem key={category.id} value={category.id.toString()}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-          <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
-            <Card>
-              <CardHeader>
-                <CardTitle>Product Category</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-6 sm:grid-cols-3">
-                  <div className="grid gap-3">
-                    <Label htmlFor="category">Category</Label>
-                    <Select  onValueChange={(value) => setProductData({ ...productData, category: value })} >
-  <SelectTrigger
-    id="category"
-    aria-label="Select category"
-    name="category"
-    value={productData.category}  // Pass the selected category value directly to the SelectTrigger
-    // onChange={(value) => setProductData({ ...productData, category: value })}  // Update the category state when a new value is selected
-    onChange={(value) => console.log(value)}  // Update the category state when a new value is selected
-  >
-    <SelectValue placeholder="Select category" />
-
-  </SelectTrigger >
-  <SelectContent >
-    {categories?.data.map((category) => (
-      <SelectItem key={category.id} value={category.id}>
-        {category.name}
-      </SelectItem>
-    ))}
-  </SelectContent>
-</Select>
-          
-
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-        <CardFooter className="flex justify-between pt-5">
+        </CardContent>
+        <CardFooter>
           <Button type="submit">Save</Button>
         </CardFooter>
-      </form>
-    </div>
+      
+    </form>
+    </Card>
+  </div>
   );
 }

@@ -7,37 +7,39 @@ import React from 'react'
 
 type Props = {}
 
-export default function UsersPage({}: Props) {
+export default function UsersPage({ }: Props) {
   return (
-    
-    <div className="flex flex-col gap-5 w-full">
-      <section className="grid grid-cols-2 gap-8 sm:grid-cols-2 xl:grid-cols-2">
-  <div className="col-span-1"><PageTitle title="Employees" /></div>
-  <div className="col-span-1"><Navigation/></div>
-</section>
-      <DataTable columns={columns} data={data} />
+    <div className='p-8 w-full'>
+      <div className="flex flex-col gap-5 w-full">
+        <section className="grid grid-cols-2 gap-8 sm:grid-cols-2 xl:grid-cols-2">
+          <div className="col-span-1"><PageTitle title="Employees" /></div>
+          <div className="col-span-1"><Navigation /></div>
+        </section>
+        <DataTable columns={columns} data={data} />
+      </div>
     </div>
+
   )
-} 
+}
 
 
 export const columns: ColumnDef<Payment>[] = [
   {
     accessorKey: "name",
     header: "Name",
-    cell:({row})=>{
-      return (<div className="flex gap-2 items-center"> 
-      <img 
-      className="h-10 w-10"
-      src={`https://api.dicebear.com/7.x/lorelei/svg?seed=${row.getValue}(
+    cell: ({ row }) => {
+      return (<div className="flex gap-2 items-center">
+        <img
+          className="h-10 w-10"
+          src={`https://api.dicebear.com/7.x/lorelei/svg?seed=${row.getValue}(
         "name"
         )}`}
-        alt="user-image"
-      />
-      <p>{row.getValue("name")} </p>
+          alt="user-image"
+        />
+        <p>{row.getValue("name")} </p>
       </div>
-      );  
-  }
+      );
+    }
 
   },
   {
@@ -56,8 +58,8 @@ export const columns: ColumnDef<Payment>[] = [
 ];
 
 type Payment = {
-  name:string;
-  email:string;
+  name: string;
+  email: string;
   lastTransaction: string;
   method: string;
 };

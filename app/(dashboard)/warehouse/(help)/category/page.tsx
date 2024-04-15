@@ -64,9 +64,6 @@ export default function Category() {
 
   const { categories, allFetchError, allLoading, deletingCategorie } = useCategories();
 
-  if (allLoading) {
-    return <div>Loading...</div>; // Show loading indicator while fetching data
-  }
 
   if (allFetchError) {
     return <div>Error: {allFetchError.message}</div>; // Show error message if fetching data fails
@@ -155,7 +152,9 @@ export default function Category() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {categories?.data.map((categori) => (
+                    {
+                  allLoading ? (<>isLoading</>) : (<>
+                   {categories?.data.map((categori) => (
                         <TableRow key={categori.id}>
                           <TableCell className="font-medium">{categori.name}</TableCell>
                           <TableCell>
@@ -179,6 +178,9 @@ export default function Category() {
                           </TableCell>
                         </TableRow>
                       ))}
+                  </>)
+                }
+                     
 
                     </TableBody>
                   </Table>

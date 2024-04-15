@@ -9,18 +9,25 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { MoreHorizontal } from "lucide-react";
 import { useSuppliers } from "@/hooks/stock_manage/use-suppliers";
+import AddSupplier from "@/components/AddSupplier";
 export default function Dashboard() {
   const { suppliers,allFetchError,allLoading, deletingSupplier } = useSuppliers()
-
-
-  if (allLoading) {
-    return <div>Loading...</div>; // Show loading indicator while fetching data
-  }
 
   if (allFetchError) {
     return <div>Error: {allFetchError.message}</div>; // Show error message if fetching data fails
@@ -46,6 +53,22 @@ export default function Dashboard() {
               <CardHeader>
                 <CardTitle>Suppliers</CardTitle>
                 <CardDescription>Lorem description.</CardDescription>
+                <div className="ml-auto flex items-center gap-2">
+                    <AlertDialog>
+                      <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Product</AlertDialogTrigger>
+                      <AlertDialogContent className="w-fit">
+                        <AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          </AlertDialogFooter>
+                          <AlertDialogDescription>
+                          <AddSupplier/>
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
               </CardHeader>
               <CardContent>
                 <Table>
@@ -58,7 +81,9 @@ export default function Dashboard() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {suppliers?.data.map((supplier) => (
+                  {
+                  allLoading ? (<>isLoading</>) : (<>
+                   {suppliers?.data.map((supplier) => (
                       <TableRow key={supplier.id}>
                         <TableCell className="font-medium">{supplier.name}</TableCell>
                         <TableCell>{supplier.email}</TableCell>
@@ -79,6 +104,9 @@ export default function Dashboard() {
                         </TableCell>
                       </TableRow>
                     ))}
+                  </>)
+                }
+                   
                   </TableBody>
                 </Table>
               </CardContent>

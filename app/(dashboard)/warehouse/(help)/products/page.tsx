@@ -37,11 +37,7 @@ export default function Dashboard() {
   const { products, allLoading, allFetchError ,deletingProduct } = useProducts()
 
 
-  console.log(products?.data)
-  if (allLoading) {
-    return <div>Loading...</div>; // Show loading indicator while fetching data
-  }
-
+ 
   if (allFetchError) {
     return <div>Error: {allFetchError.message}</div>; // Show error message if fetching data fails
   }
@@ -106,7 +102,9 @@ export default function Dashboard() {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {products?.data.map((product) => (
+                  {
+                  allLoading ? (<>isLoading</>) : (<>
+                   {products?.data.map((product) => (
                       <TableRow key={product.id}>
                         <TableCell className="font-medium">{product.product_code}</TableCell>
                         <TableCell>{product.name}</TableCell>
@@ -129,6 +127,9 @@ export default function Dashboard() {
                         </TableCell>
                       </TableRow>
                     ))}
+                  </>)
+                }
+                   
                   </TableBody>
                 </Table>
               </CardContent>
