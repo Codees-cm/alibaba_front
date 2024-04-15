@@ -20,11 +20,22 @@ export default function AddProduct() {
     quantity: "",
     category: "",
   });
+  const handleFormChange = (value) => {
+    const selectedCategory = categories.data.find(category => category.id.toString() === value);
+    if (selectedCategory) {
+      // console.log(selectedCategory)
+      setProductData(prevState => ({
+            ...prevState,
+            category: selectedCategory.id,
+            // quantity: selectedProduct.quantity
+        }));
+    }
+};
 
   // Function to handle input change
   const handleInputChange = (e) => {
     const { id, value } = e.target;
-    console.log({ id, value })
+    // console.log({ id, value })
 
     setProductData({ ...productData, [id]: value });
   };
@@ -33,6 +44,7 @@ export default function AddProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // productData.category =  JSON.parse(productData.category)
       // console.log(productData)
       await addProduct(productData);
       setProductData({
@@ -64,7 +76,7 @@ export default function AddProduct() {
               <Input id="quantity" type="number" placeholder="Quantity" value={productData.quantity} onChange={handleInputChange} />
             </div>
             <div className="grid gap-4">
-              <Select onValueChange={(value) => setProductData({ ...productData, category: value })} >
+              <Select  onValueChange={handleFormChange} >
                 <SelectTrigger id="category" aria-label="Select category" name="category" value={productData.category} >
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger >

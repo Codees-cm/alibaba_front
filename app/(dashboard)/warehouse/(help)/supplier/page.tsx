@@ -37,15 +37,7 @@ export default function Dashboard() {
     <div >
       <div className="flex min-h-screen w-full flex-col bg-muted/40">
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-            {/* Header content */}
-            <h1 className="text-lg font-semibold">Suppliers</h1>
-            <div className="relative ml-auto flex-1 md:grow-0">
-              <Button size="sm" variant="outline">
-                Add Supplier
-              </Button>
-            </div>
-          </header>
+       
           <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
             {/* Tabs and add supplier button */}
             {/* Table */}
@@ -55,7 +47,7 @@ export default function Dashboard() {
                 <CardDescription>Lorem description.</CardDescription>
                 <div className="ml-auto flex items-center gap-2">
                     <AlertDialog>
-                      <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Product</AlertDialogTrigger>
+                      <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">    Add Supplier</AlertDialogTrigger>
                       <AlertDialogContent className="w-fit">
                         <AlertDialogHeader>
                           <AlertDialogFooter>

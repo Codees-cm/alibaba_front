@@ -58,12 +58,6 @@ export default function Sidenavbar({}: Props) {
             icon: UsersRound,
             variant: "ghost",
           },
-          // {
-          //   title: "Products",
-          //   href: "/products",
-          //   icon: Package ,
-          //   variant: "ghost",
-          // },
           {
             title: "Warehouse",
             href: "/warehouse",
@@ -84,7 +78,7 @@ export default function Sidenavbar({}: Props) {
           },
           {
             title: "Sales",
-            href: "sales",
+            href: "/sales",
             icon: DollarSign,
             variant: "ghost",
           },

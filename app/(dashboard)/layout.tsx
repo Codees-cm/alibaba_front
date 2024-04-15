@@ -39,7 +39,7 @@ if(me?.data){
 
   return (
 
-    <div style={{ margin:0 , lineHeight:"inherit",paddingBottom:"299px",display:"-webkit-inline-box"}}>
+    <div style={{ margin:0 , lineHeight:"inherit",paddingBottom:"0",display:"-webkit-inline-box"}}>
           <Sidenavbar />
             {/*main page */}
             {/* <div className="p-8 w-full"> */}
