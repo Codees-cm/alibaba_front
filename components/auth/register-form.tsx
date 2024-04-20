@@ -29,7 +29,7 @@ const LoginForm = () => {
   const onSubmit = async (data :z.infer<typeof RegisterSchema>) => {
     // event.preventDefault();
     setLoading(true);
-    console.log(data);
+    // console.log(data);
     // Simulate API call delay
     try {
       await register(data);

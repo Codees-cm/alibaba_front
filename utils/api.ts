@@ -7,8 +7,8 @@ import { useRouter } from 'next/navigation';
 
 
 const instance  = axios.create({
-  baseURL: "https://fnmalic.pythonanywhere.com/api",
-  // baseURL: "http://127.0.0.1:8000/api/",
+  // baseURL: "https://fnmalic.pythonanywhere.com/api",
+  baseURL: "http://127.0.0.1:8000/api/",
 
 });
 
@@ -16,15 +16,11 @@ const instance  = axios.create({
 instance.interceptors.request.use(
   (config) => {
     const accessToken = Cookies.get('access'); // Retrieve access token from cookies
-    console.log(accessToken)
+    // console.log(accessToken)
 
     if (accessToken) {
       // If access token exists, add it to the request headers
       config.headers.Authorization = `Bearer ${accessToken}`;
-    }else{
-      const router = useRouter()
-      // Redirect to login page
-      router.push('/auth/login');
     }
     
     return config;
@@ -51,8 +47,8 @@ instance.interceptors.response.use(
       try {
         const refreshToken = Cookies.get('refresh'); // Assuming you store the refresh token in a cookie
         const response = await axios.post(
-          // 'http://127.0.0.1:8000/api/jwt/refresh/',
-          'https://fnmalic.pythonanywhere.com/api/jwt/refresh/',
+          'http://127.0.0.1:8000/api/jwt/refresh/',
+          // 'https://fnmalic.pythonanywhere.com/api/jwt/refresh/',
           { refresh: refreshToken }
         );
         const newToken = response.data.access;
@@ -63,9 +59,6 @@ instance.interceptors.response.use(
         return axios(originalRequest);
       } catch (error) {
         // Handle error while refreshing token
-        const router = useRouter()
-        // Redirect to login page
-        router.push('/auth/login');
         return Promise.reject(error);
       }
      

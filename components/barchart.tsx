@@ -10,14 +10,7 @@ import {
 type Props = {};
 
 const data = [
-  {
-    name: "Jan",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: "Feb",
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
+ 
   {
     name: "Mar",
     total: Math.floor(Math.random() * 5000) + 1000,
@@ -58,7 +51,7 @@ const data = [
 ];
 export default function Barchart({}: Props) {
   return (
-    <ResponsiveContainer width={"100%"} height={350}>
+    <ResponsiveContainer width={"80%"} height={350}>
       <BarGraph data={data}>
         <XAxis
           dataKey={"name"}
@@ -71,7 +64,7 @@ export default function Barchart({}: Props) {
           tickLine={false}
           axisLine={false}
           stroke="#888888"
-          fontSize={12}
+          fontSize={9}
           tickFormatter={(value) => `$${value}`}
         />
         <Bar dataKey={"total"} radius={[4,4,0,0]} />

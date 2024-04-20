@@ -1,19 +1,27 @@
 
 import React, { ReactNode } from 'react'
+// import {NextIntlClientProvider} from 'next-intl';
+import TanstackProvider from '../providers/TanstackProvider'
+// import NextIntClint
+import { dir } from 'i18next'
+import { languages } from '../i18n/settings'
 
-import TanstackProvider from './providers/TanstackProvider'
 
 
-
-interface Props {
-  children: ReactNode
+export async function generateStaticParams() {
+  return languages.map((locale) => ({ locale }))
 }
 
-export default async function layout({ children }: Props) {
-
+export default function LocaleLayout({
+  children,
+  params: {locale}
+}: {
+  children: React.ReactNode;
+  params: {locale: string};
+}) {
   return (
     <>
-      <html lang="en">
+      <html lang={locale}  dir={dir(locale)}>
       <head>
           <link rel='manifest' href='/manifest.json' />
           <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
@@ -23,8 +31,8 @@ export default async function layout({ children }: Props) {
         </head>
         <body style={{ overflowX: "hidden" }}>
             <TanstackProvider>
-              {children}
-            </TanstackProvider>
+            {children}
+        </TanstackProvider>
         
       {/* swDev() */}
         </body>

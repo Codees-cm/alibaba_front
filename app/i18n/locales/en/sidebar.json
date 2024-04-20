@@ -1,0 +1,11 @@
+{
+    "dashboard": "Dashboard",
+    "employee": "Employee",
+    "warehouse": "Warehouse",
+    "transactions": "Transactions",
+    "analysis": "Analysis",
+    "sales": "Sales",
+    "notifications": "Notifications",
+    "settings": "Settings"
+
+}

@@ -15,6 +15,9 @@ export default function WarehouseDetail({ params }: Props) {
 
   const { warehouseproducts,allLoading,allFetchError } = useStockItem(params.id)
 
+  if (allLoading) {
+    return <div>..loading</div>; // Show error message if fetching data fails
+  }
  
 
   if (allFetchError) {

@@ -36,7 +36,7 @@ const LoginForm = () => {
   const onSubmit = async(data: z.infer<typeof LoginSchema>) => {
       // event.preventDefault();
       setLoading(true);
-      console.log(data);
+      // console.log(data);
       // Simulate API call delay
       try {
         await login(data);
@@ -51,7 +51,7 @@ const LoginForm = () => {
   
     useEffect(() => {
       if (isSuccess) {
-        router.push('/dashboard')
+        router.push('/en/dashboard')
       }
     }, [isSuccess,router ]);
   

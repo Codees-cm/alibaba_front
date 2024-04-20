@@ -1,10 +1,6 @@
 "use client";
-
 import React, { useState } from "react";
 import { Nav } from "./ui/nav";
-
-type Props = {};
-
 import {
   ArrowRightLeft ,
   UsersRound,
@@ -19,9 +15,11 @@ import {
   Package
 } from "lucide-react";
 import { Button } from "./ui/button";
-
 import { useWindowWidth } from "@react-hook/window-size";
-export default function Sidenavbar({}: Props) {
+import { useTranslation } from "@/app/i18n/client";
+
+export default function Sidenavbar({lang}) {
+  const { t } =  useTranslation(lang,'sidebar')
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const onlyWidth = useWindowWidth();
@@ -47,50 +45,50 @@ export default function Sidenavbar({}: Props) {
         isCollapsed={mobilewidth ? true : isCollapsed}
         links={[
           {
-            title: "Dashboard",
-            href: "/dashboard",
+            title: t('dashboard'),
+            href: "dashboard",
             icon: LayoutDashboard,
             variant: "default",
           },
           {
-            title: "Employee",
-            href: "/users",
+            title: t('employee'),
+            href: "users",
             icon: UsersRound,
             variant: "ghost",
           },
           {
-            title: "Warehouse",
-            href: "/warehouse",
+            title: t('warehouse'),
+            href: "warehouse",
             icon: Home,
             variant: "ghost",
           },
           {
-            title: "Transactions",
-            href: "/viewTransaction",
+            title:  t('transactions'),
+            href: "viewTransaction",
             icon: ArrowRightLeft,
             variant: "ghost",
           },
           {
-            title: "Analysis",
-            href: "/#",
+            title:  t('analysis'),
+            href: "#",
             icon: LineChart,
             variant: "ghost",
           },
           {
-            title: "Sales",
-            href: "/sales",
+            title: t('sales'),
+            href: "sales",
             icon: DollarSign,
             variant: "ghost",
           },
           {
-            title: "Notifications",
+            title:  t('notifications'),
             href: "/#",
             icon: BellRing,
             variant: "ghost",
           },
           {
-            title: "Settings",
-            href: "/settings",
+            title:  t('settings'),
+            href: "settings",
             icon: Settings, 
             variant: "ghost",
           },

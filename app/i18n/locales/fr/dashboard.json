@@ -1,0 +1,9 @@
+{
+    "title": "Hallo von der zweiten Seite!",
+    "overview": "Vue d'ensemble",
+    "total-sales": "Ventes totales",
+    "total-employees":"Nombre total d'employés",
+    "today-transaction":"Transaction aujourd'hui",
+    "total-products":"Total des produits",
+    "recent-transactions":"Transactions récentes"
+}
