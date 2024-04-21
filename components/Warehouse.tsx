@@ -32,6 +32,8 @@ export default function Warehouse({ lang }) {
   const { warehouses, allLoading, allFetchError, deletingWarehouse } = useWarehouses();
   const router = useRouter()
 
+  const { t } = useTranslation(lang,'warehouse')
+
   if (allFetchError) {
     return <div>Error: {allFetchError.message}</div>; // Show error message if fetching data fails
   }
@@ -40,7 +42,6 @@ export default function Warehouse({ lang }) {
     console.log(1)
   }
 
-  const { t } = useTranslation(lang,'warehouse')
 
   return (
     <>
