@@ -46,25 +46,33 @@ export default function Sidenavbar({lang}) {
         links={[
           {
             title: t('dashboard'),
-            href: "dashboard",
+            // href: "dashboard",
+            href: `/${lang}/dashboard`,
+
             icon: LayoutDashboard,
             variant: "default",
           },
           {
             title: t('employee'),
-            href: "users",
+            // href: "users",
+            href: `/${lang}/users`,
+
             icon: UsersRound,
             variant: "ghost",
           },
           {
             title: t('warehouse'),
-            href: "warehouse",
+            // href: "warehouse",
+            href: `/${lang}/warehouse`,
+
             icon: Home,
             variant: "ghost",
           },
           {
             title:  t('transactions'),
-            href: "viewTransaction",
+            // href: "viewTransaction",
+            href: `/${lang}/viewTransaction`,
+
             icon: ArrowRightLeft,
             variant: "ghost",
           },
@@ -76,7 +84,9 @@ export default function Sidenavbar({lang}) {
           },
           {
             title: t('sales'),
-            href: "sales",
+        
+            href: `/${lang}/sales`,
+
             icon: DollarSign,
             variant: "ghost",
           },
@@ -88,7 +98,7 @@ export default function Sidenavbar({lang}) {
           },
           {
             title:  t('settings'),
-            href: "settings",
+            href: `/${lang}/settings`,
             icon: Settings, 
             variant: "ghost",
           },

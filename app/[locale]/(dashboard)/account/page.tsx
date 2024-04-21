@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
-import { CircleUser, Menu, Package2, Search } from "lucide-react";
-
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,19 +10,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { languages } from '../../../i18n/settings'
 import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Trans } from 'react-i18next/TransWithoutContext'
+import { useTranslation } from "@/app/i18n/client";
 
-export default function Dashboard() {
+export default function Dashboard({ locale }: string) {
+  const { t } = useTranslation()
+  const router = useRouter()
   return (
     <div className="flex min-h-screen w-full flex-col">
       <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
@@ -72,6 +66,22 @@ export default function Dashboard() {
                   <CardDescription>
                     You can @mention other users and organizations to link to
                     them.
+                    <Trans i18nKey="languageSwitcher" t={t}>
+                      Switch from <strong>{ locale }</strong> to:{' '}
+                    </Trans>
+                    {languages.filter((l) => locale !== l).map((l, index) => {
+                      return (
+                        <span key={l}>
+                          {index > 0 && ('-or-')}
+                          {/* <Link href={`/${l}/`}>
+                           
+                          </Link> */}
+                          <div onClick={(l) => router.push(`/${l}`) }>
+                             {l}
+                          </div>
+                        </span>
+                      )
+                    })}
                   </CardDescription>
                 </form>
               </CardContent>
@@ -80,7 +90,7 @@ export default function Dashboard() {
               </CardFooter>
             </Card>
             <Card>
-              
+
             </Card>
           </div>
         </div>
