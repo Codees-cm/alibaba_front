@@ -4,7 +4,7 @@
 import { Home, MoreHorizontal, PlusCircle, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-
+import { useTranslation } from "@/app/i18n/client";
 import { useWarehouses } from "@/hooks/stock_manage/use-warehouse";
 import {
   AlertDialog,
@@ -28,10 +28,9 @@ import Navigation from "./Navigation";
 import PageTitle from "./PageTitle";
 import { Progress } from "./ui/progress";
 
-export default function Warehouse() {
+export default function Warehouse({ lang }) {
   const { warehouses, allLoading, allFetchError, deletingWarehouse } = useWarehouses();
   const router = useRouter()
-
 
   if (allFetchError) {
     return <div>Error: {allFetchError.message}</div>; // Show error message if fetching data fails
@@ -40,6 +39,8 @@ export default function Warehouse() {
   const editWarehouse = (warehouse) => {
     console.log(1)
   }
+
+  const { t } = useTranslation(lang,'warehouse')
 
   return (
     <>
@@ -56,7 +57,8 @@ export default function Warehouse() {
               <CardHeader style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
                 <div>
                   <CardTitle>
-                    Warehouses
+                   { t('warehouses')}
+                    
                   </CardTitle>
                   <CardDescription>Lorem description.</CardDescription>
                 </div>
@@ -105,8 +107,8 @@ export default function Warehouse() {
 
                             </CardHeader>
                             <CardContent>
-                              <div className="text-sm font-bold">Location: {warehouse.location}</div>
-                              <p className="text-xs text-muted-foreground">Capacity: {warehouse.capacity}</p>
+                              <div className="text-sm font-bold">{t('location')}: {warehouse.location}</div>
+                              <p className="text-xs text-muted-foreground">{t('capacity')}: {warehouse.capacity}</p>
                             </CardContent>
                             <CardFooter>
                               <Progress value={warehouse.percentage_full} aria-label={`${warehouse.percentage_full}% increase`} />

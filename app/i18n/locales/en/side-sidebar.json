@@ -1,8 +1,8 @@
 {
     "warehouse": "Magasin",
-    "warehouse": "Magasin",
-    "warehouse": "Magasin",
-    "warehouse": "Magasin",
-    "warehouse": "Magasin"
+    "products": "Products",
+    "suppliers": "Suppliers",
+    "category": "Category",
+    "orders": "Orders"
    
 }

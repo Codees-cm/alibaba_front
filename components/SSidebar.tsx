@@ -21,8 +21,10 @@ import {
 import { Button } from "./ui/button";
 
 import { useWindowWidth } from "@react-hook/window-size";
-export default function SSidenavbar({}: Props) {
+import { useTranslation } from "@/app/i18n/client";
+export default function SSidenavbar({lang}) {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const {t} = useTranslation(lang,'side-sidebar')
 
   const onlyWidth = useWindowWidth();
   const mobilewidth = onlyWidth < 768;
@@ -46,32 +48,36 @@ export default function SSidenavbar({}: Props) {
         isCollapsed={mobilewidth ? true : isCollapsed}
         links={[
           {
-            title: "warehouse",
-            href: "/warehouse",
+            title:  t('warehouse'),
+            href: "warehouse",
             icon: LayoutDashboard,
             variant: "default",
           },
           {
-            title: "products",
-            href: "/warehouse/products",
+            title:  t('products'),
+
+            href: "warehouse/products",
             icon: UsersRound,
             variant: "ghost",
           },
           {
-            title: "suppliers",
-            href: "/warehouse/supplier",
+            title:  t('suppliers'),
+
+            href: "warehouse/supplier",
             icon: UsersRound,
             variant: "ghost",
           },
           {
-            title: "category",
-            href: "/warehouse/category",
+            title:  t('category'),
+
+            href: "warehouse/category",
             icon: UsersRound,
             variant: "ghost",
           },
           {
-            title: "Orders",
-            href: "/warehouse/Orders",
+            title:  t('orders'),
+
+            href: "warehouse/Orders",
             icon: ShoppingCart,
             variant: "ghost",
           },

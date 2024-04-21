@@ -14,7 +14,7 @@ export const useStockItem = (warehouseId=null) => {
         queryKey : ['warehouseproduct'],
         queryFn: ()=> fetchItemsInWarehouse(warehouseId),
         staleTime: 300000,
-        enabled: false, 
+        // enabled: false, 
     })
 
 
@@ -78,10 +78,6 @@ export const useStockItem = (warehouseId=null) => {
         warehouseproducts,
         allLoading,
         allFetchError,
-
-        // oneProduct,
-        // singleLoading,
-        // singleFetchError,
 
         addProductToWarehouse,
         isAddingProductToWarehouse,

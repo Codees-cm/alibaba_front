@@ -24,8 +24,7 @@ export default function WarehouseDetail({ params }: Props) {
     return <div>Error: {allFetchError.message}</div>; // Show error message if fetching data fails
   }
 
-  // console.log(fetchProductsInWare(params.id))
-  // console.log()
+
   return (
 
     <div className='p-8'>
@@ -36,6 +35,7 @@ export default function WarehouseDetail({ params }: Props) {
         </section>
         {
           allLoading ? (<>Loading...</>) : (<>
+          { console.log(warehouseproducts?.data) }
         <DataTable columns={columns} data={warehouseproducts?.data} />
           
           </>)
@@ -76,115 +76,3 @@ type Payment = {
   quantity: string;
 };
 
-
-export const data: Payment[] = [
-  {
-    id: 1,
-    name: "Product 1",
-    productcode: "Prod-001",
-    quantity: "50",
-  },
-  {
-    id: 2,
-    name: "Product 2",
-    productcode: "Prod-002",
-    quantity: "25",
-  },
-  {
-    id: 3,
-    name: "Product 3",
-    productcode: "Prod-003",
-    quantity: "120",
-  },
-  {
-    id: 4,
-    name: "Product 4",
-    productcode: "Prod-004",
-    quantity: "0",
-  },
-  {
-    id: 5,
-    name: "Product 5",
-    productcode: "Prod-005",
-    quantity: "10",
-  },
-  {
-    id: 6,
-    name: "Product 6",
-    productcode: "Prod-006",
-    quantity: "250",
-  },
-  {
-    id: 7,
-    name: "Product 7",
-    productcode: "Prod-007",
-    quantity: "0",
-  },
-  {
-    id: 8,
-    name: "Product 8",
-    productcode: "Prod-008",
-    quantity: "25",
-  },
-  {
-    id: 9,
-    name: "Product 9",
-    productcode: "Prod-009",
-    quantity: "100",
-  },
-  {
-    id: 10,
-    name: "Product 10",
-    productcode: "Prod-010",
-    quantity: "65",
-  },
-  {
-    id: 11,
-    name: "Product 11",
-    productcode: "Prod-011",
-    quantity: "1000",
-  },
-  {
-    id: 12,
-    name: "Product 12",
-    productcode: "Prod-012",
-    quantity: "250",
-  },
-  {
-    id: 13,
-    name: "Product 13",
-    productcode: "Prod-013",
-    quantity: "0",
-  },
-  {
-    id: 14,
-    name: "Product 14",
-    productcode: "Prod-014",
-    quantity: "100",
-  },
-  {
-    id: 15,
-    name: "Product 15",
-    productcode: "Prod-015",
-    quantity: "1",
-  },
-  {
-    id: 16,
-    name: "Product 16",
-    productcode: "Prod-016",
-    quantity: "0",
-  },
-  {
-    id: 17,
-    name: "Product 17",
-    productcode: "Prod-017",
-    quantity: "2",
-  },
-  {
-    id: 18,
-    name: "Product 18",
-    productcode: "Prod-018",
-    quantity: "0",
-  }
-  // ...
-]
