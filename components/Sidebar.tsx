@@ -29,7 +29,7 @@ export default function Sidenavbar({lang}) {
     setIsCollapsed(!isCollapsed);
   }
   return (
-    <div className="relative w-max border-r px-3 pb-10 pt-24">
+    <div className="relative w-max border-r bg-amber-100 px-3 pb-10 pt-24">
      {!mobilewidth && (
       <div className="absolute right-[-20px] top-7">
         <Button

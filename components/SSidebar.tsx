@@ -33,7 +33,7 @@ export default function SSidenavbar({lang}) {
     setIsCollapsed(!isCollapsed);
   }
   return (
-    <div className="relative w-max border-r px-3 pb-10 pt-24">
+    <div className="relative w-max border-r  bg-amber-100 px-3 pb-10 pt-24">
      {/* {!mobilewidth && (
       <div className="absolute right-[-20px] top-7">
         <Button
@@ -49,35 +49,35 @@ export default function SSidenavbar({lang}) {
         links={[
           {
             title:  t('warehouse'),
-            href: "warehouse",
+            href: `/${lang}/warehouse`,
             icon: LayoutDashboard,
             variant: "default",
           },
           {
             title:  t('products'),
 
-            href: "warehouse/products",
+            href: `/${lang}/warehouse/products`,
             icon: UsersRound,
             variant: "ghost",
           },
           {
             title:  t('suppliers'),
 
-            href: "warehouse/supplier",
+            href:`/${lang}/warehouse/supplier`,
             icon: UsersRound,
             variant: "ghost",
           },
           {
             title:  t('category'),
 
-            href: "warehouse/category",
+            href:`/${lang}/warehouse/category`,
             icon: UsersRound,
             variant: "ghost",
           },
           {
             title:  t('orders'),
 
-            href: "warehouse/Orders",
+            href:`/${lang}/warehouse/Orders`,
             icon: ShoppingCart,
             variant: "ghost",
           },

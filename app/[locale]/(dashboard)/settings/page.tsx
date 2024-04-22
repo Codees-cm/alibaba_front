@@ -29,11 +29,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-export default function Dashboard() {
+export default function Dashboard({locale}: string) {
   return (
-    <div classname="p-8 w-full">
+    <div className=" bg-gradient-to-r from-amber-100 to-white">
    <div className="flex min-h-screen w-full flex-col">
-      <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
+      <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4  p-4 md:gap-8 md:p-10">
         <div className="mx-auto grid w-full max-w-6xl gap-2">
         <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
           <Sheet>
@@ -81,12 +81,12 @@ export default function Dashboard() {
         </header>
           <h1 className="text-3xl font-semibold">Settings</h1>
         </div>
-        <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
+        <div className="mx-auto grid w-full max-w-6xl items-start gap-3 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
           <nav className="grid gap-4 text-sm text-muted-foreground">
-            <Link href="/settings" className="font-semibold text-primary">
+            <Link href={`/${locale}/settings`} className="font-semibold text-primary">
               Profile
             </Link>
-            <Link href="/account">Account</Link>
+            <Link href={`/${locale}/settings/account`}>Account</Link>
             <Link href="#">Apperance</Link>
             <Link href="#">Notifications</Link>
             <Link href="#">Display</Link>

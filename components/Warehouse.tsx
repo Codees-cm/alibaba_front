@@ -46,12 +46,18 @@ export default function Warehouse({ lang }) {
   return (
     <>
 
-      <div className="flex min-h-screen w-full flex-col bg-muted/40">
+      <div className="flex min-h-screen w-full flex-col  bg-gradient-to-r from-amber-100 to-white">
+     
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
           {/* <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
             <div className="relative ml-auto flex-1 md:grow-0">
             </div>
           </header> */}
+           <section className="grid grid-cols-2 gap-3 sm:grid-cols-2 xl:grid-cols-2">
+          <div className="col-span-1"><PageTitle title="Dashboard" /></div>
+          {/* <h1>{t('title')}</h1> */}
+          {/* <div className="col-span-1"><Navigation /></div> */}
+        </section>
 
           <main className="grid items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 md:grid-cols-2">
             <Card>
