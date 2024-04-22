@@ -72,7 +72,7 @@ export default function AddProductToWarehouse() {
                             <Label htmlFor="framework">Product Name</Label>
                             <Select value={formData.product} onValueChange={handleProductChange}>
                                 <SelectTrigger id="name" value={formData.product} name="product">
-                                    <SelectValue placeholder />
+                                    <SelectValue placeholder="select product" />
                                 </SelectTrigger>
                                 <SelectGroup>
                                     <SelectContent position="popper">

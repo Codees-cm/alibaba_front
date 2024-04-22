@@ -83,8 +83,8 @@ export default  function Home({ params: { locale } }) {
       <div className="flex flex-col gap-8 w-full">
         <section className="grid grid-cols-2 gap-8 sm:grid-cols-2 xl:grid-cols-2">
           <div className="col-span-1"><PageTitle title="Dashboard" /></div>
-          {/* <h1>{t('title')}</h1> */}
-          <div className="col-span-1"><Navigation /></div>
+      
+          <div className="col-span-1"><Navigation  lang={locale}/></div>
         </section>
 
 

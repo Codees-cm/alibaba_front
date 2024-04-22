@@ -3,7 +3,8 @@
 import React from 'react'
 import { Button } from "@/components/ui/button"
 import Link from 'next/link';
-import Image from "next/image"
+// import Image from "next/image"
+import { useRouter } from 'next/navigation';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import {
 
@@ -23,7 +24,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
-export default function Navigation() {
+export default function Navigation({lang}) {
+  const router = useRouter()
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
       <Sheet>
@@ -62,7 +64,7 @@ export default function Navigation() {
           >
 
             
-    <img width={200} height={200} src={`https://api.dicebear.com/7.x/lorelei/svg?seed=thomas`} alt="avatar" />
+    <img width={200} height={200} src={`https://api.dicebear.com/7.x/lorelei/svg?seed=JoelAdmin`} alt="avatar" />
             
             {/* <Image
             
@@ -77,7 +79,7 @@ export default function Navigation() {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuItem onClick={()=> router.push(`/${lang}/settings`)}>Settings</DropdownMenuItem>
           <DropdownMenuItem>Support</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Logout</DropdownMenuItem>
