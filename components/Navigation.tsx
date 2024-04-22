@@ -1,4 +1,5 @@
 'use client'
+/* eslint-disable @next/next/no-img-element */
 import React from 'react'
 import { Button } from "@/components/ui/button"
 import Link from 'next/link';
@@ -59,13 +60,18 @@ export default function Navigation() {
             size="icon"
             className="overflow-hidden rounded-full"
           >
-            <Image
-              src="/img/download.jpg"
+
+            
+    <img width={200} height={200} src={`https://api.dicebear.com/7.x/lorelei/svg?seed=thomas`} alt="avatar" />
+            
+            {/* <Image
+            
+            src={`https://api.dicebear.com/7.x/lorelei/svg?seed=thomas`}
               width={36}
               height={36}
               alt="Avatar"
               className="overflow-hidden"
-            />
+            /> */}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

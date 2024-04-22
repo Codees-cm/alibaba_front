@@ -10,7 +10,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { languages } from '../../../i18n/settings'
+// import { languages } from '../../../i18n/settings'
+import { languages } from "@/app/i18n/settings";
 import { Input } from "@/components/ui/input";
 import { Trans } from 'react-i18next/TransWithoutContext'
 import { useTranslation } from "@/app/i18n/client";

@@ -29,7 +29,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-export default function Dashboard({locale}: string) {
+export default function Dashboard({locale}) {
+ 
   return (
     <div className=" bg-gradient-to-r from-amber-100 to-white">
    <div className="flex min-h-screen w-full flex-col">
