@@ -3,7 +3,7 @@ import React from "react";
 import { useQuery , useMutation , useQueryClient } from "@tanstack/react-query";
 import { fetchSales,createSales , viewSales ,deleteSales } from "@/utils/apis/sale";
 
-export const useSales = () => {
+export const useSales = (enableQuery: boolean = false) => {
     const [isSuccess, setIsSuccess] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState("");
     const queryClient = useQueryClient();
@@ -12,6 +12,7 @@ export const useSales = () => {
         queryKey : ['sales'],
         queryFn: fetchSales,
         staleTime: 300000,
+        enabled:enableQuery
     })
 
 
@@ -19,6 +20,7 @@ export const useSales = () => {
         queryKey : ['viewSale'],
         queryFn: viewSales,
         staleTime: 300000,
+        enabled:false
     })
 
     const {mutate:addSaleMutation, isPending:isAddingSale} = useMutation({
@@ -51,8 +53,14 @@ export const useSales = () => {
 
 
 
-    const addSale = async (newSale)=>{
-            await  addSaleMutation(newSale); 
+    const addSale = async (newSales)=>{
+        try {
+            // Iterate over each sale in newSales array and send them for saving
+            const promises = newSales.map(sale => addSaleMutation(sale));
+            await Promise.all(promises); // Wait for all sales to be saved
+        } catch (error) {
+            setErrorMessage(error.message);
+        }
     }
 
     const deletingSale = async (id)=>{

@@ -9,7 +9,7 @@ import PageTitle from "@/components/PageTitle";
 import SalesCard, { SalesProps } from "@/components/SalesCard";
 import { Activity, ArrowRightLeft, Users, DollarSign } from "lucide-react";
 import Barchart from "@/components/barchart";
-
+import { Skeleton } from "@/components/ui/skeleton"
 
 const UserSalesData: SalesProps[] = [
   {
@@ -35,21 +35,10 @@ const UserSalesData: SalesProps[] = [
 ];
 
 
-export default  function Home({ params: { locale } }) {
-  const { t } =  useTranslation(locale,"dashboard")
-  console.log(t('title'))
+export default function Home({ params: { locale } }) {
+  const { t } = useTranslation(locale, "dashboard")
 
   const { data, isLoading } = useDashboard()
-  if (isLoading){ 
-
-    return(
-    <>
-    ...Loading
-    </>
-    )
-  }
-
-  console.log(data)
 
   const cardData: CardProps[] = [
     {
@@ -71,7 +60,7 @@ export default  function Home({ params: { locale } }) {
       icon: ArrowRightLeft,
     },
     {
-      label:t('total-products'),
+      label: t('total-products'),
       amount: data?.data["total_products"],
       discription: "+281 sold from last month",
       icon: Activity,
@@ -83,8 +72,8 @@ export default  function Home({ params: { locale } }) {
       <div className="flex flex-col gap-8 w-full">
         <section className="grid grid-cols-2 gap-8 sm:grid-cols-2 xl:grid-cols-2">
           <div className="col-span-1"><PageTitle title="Dashboard" /></div>
-      
-          <div className="col-span-1"><Navigation  lang={locale}/></div>
+
+          <div className="col-span-1"><Navigation lang={locale} /></div>
         </section>
 
 
@@ -92,44 +81,82 @@ export default  function Home({ params: { locale } }) {
           className="grid w-full grid-cols-1 gap-4 gap-x-4 transition-all 
       sm:grid-cols-2 xl:grid-cols-4"
         >
-          {cardData.map((d, i) => (
-            <Card
-              key={i}
-              amount={d.amount}
-              discription={d.discription}
-              icon={d.icon}
-              label={d.label}
-              // className="shadow-sm"
-            />
-          ))}
+          {
+            isLoading ? (
+              <>
+                {cardData.map((d, i) => (
+
+                  <Skeleton key={i} className="h-[125px] w-[210px] rounded-xl" />
+
+                ))}
+              </>
+            ) : (
+              <>
+                {cardData.map((d, i) => (
+                  <Card
+                    key={i}
+                    amount={d.amount}
+                    discription={d.discription}
+                    icon={d.icon}
+                    label={d.label}
+                  // className="shadow-sm"
+                  />
+                ))}
+              </>
+            )
+          }
+
+
 
         </section>
         <section className=" grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
-          <CardContent>
-            <p className="p-4 font-semibold">{t('overview')}</p>
+          {
+            isLoading ? (
+              <>
+                <Skeleton className="h-[300px] w-[470px] rounded-xl" />
+              </>
+            ) : (
+              <>
+                <CardContent>
+                  <p className="p-4 font-semibold">{t('overview')}</p>
 
-            <Barchart />
+                  <Barchart />
 
-          </CardContent>
-          <CardContent className="flex justify-between gap-4">
-            <section>
-              <p>Recent transactions</p>
-              <p className="text-sm text-gray-400">
-                you made 26 transactions in one months
-              </p>
+                </CardContent>
+              </>
+            )
+          }
+          {
+            isLoading ? (
+              <>
+                <Skeleton className="h-[300px] w-[450px] rounded-xl" />
+              </>
+            ) : (
+              <>
+                <CardContent className="flex justify-between gap-4">
+                  <section>
+                    <p>Recent transactions</p>
+                    <p className="text-sm text-gray-400">
+                      you made 26 transactions in one months
+                    </p>
 
 
-            </section>
-            {UserSalesData.map((d, i) => (
-              <SalesCard
-                key={i}
-                name={d.name}
-                email={d.email}
-                saleAmount={d.saleAmount}
-              />
-            ))}
+                  </section>
+                  {UserSalesData.map((d, i) => (
+                    <SalesCard
+                      key={i}
+                      name={d.name}
+                      email={d.email}
+                      saleAmount={d.saleAmount}
+                    />
+                  ))}
 
-          </CardContent>
+                </CardContent>
+              </>
+            )
+          }
+
+
 
 
           {/**/}

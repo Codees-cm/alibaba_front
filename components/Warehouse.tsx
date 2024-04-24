@@ -27,6 +27,7 @@ import AddProductToWarehouse from "./AddProductToWarehouse";
 import Navigation from "./Navigation";
 import PageTitle from "./PageTitle";
 import { Progress } from "./ui/progress";
+import { Skeleton } from "./ui/skeleton";
 
 export default function Warehouse({ lang }) {
   const { warehouses, allLoading, allFetchError, deletingWarehouse } = useWarehouses();
@@ -54,12 +55,13 @@ export default function Warehouse({ lang }) {
             </div>
           </header> */}
            <section className="grid grid-cols-2 gap-3 sm:grid-cols-2 xl:grid-cols-2">
-          <div className="col-span-1"><PageTitle title="Dashboard" /></div>
+          <div className="col-span-1"><PageTitle title="Warehouse" /></div>
           {/* <h1>{t('title')}</h1> */}
           {/* <div className="col-span-1"><Navigation /></div> */}
         </section>
 
           <main className="grid items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 md:grid-cols-2">
+            
             <Card>
               <CardHeader style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
                 <div>
@@ -91,7 +93,10 @@ export default function Warehouse({ lang }) {
               <CardContent className="p-10">
 
                 {
-                  allLoading ? (<>isLoading</>) : (<>
+                  allLoading ? (<>
+                <Skeleton className="h-[225px] w-[218px] rounded-xl" />
+                  
+                  </>) : (<>
                     <div className="grid md:grid-cols-2 md:gap-8 ">
                       {warehouses?.data.map((warehouse) => (
                         <Card key={warehouse.id}>
