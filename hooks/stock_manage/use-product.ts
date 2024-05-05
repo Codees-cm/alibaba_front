@@ -2,9 +2,9 @@
 import React from "react";
 import { useQuery , useMutation , useQueryClient } from "@tanstack/react-query";
 // import { viewProduct } from "@/utils/api/product";
-import { fetchProducts,createProducts , editProducts, viewProducts ,deleteProducts } from "@/utils/apis/product";
+import { fetchProducts,createProducts , editProducts, viewProducts ,deleteProducts , productTransactions } from "@/utils/apis/product";
 
-export const useProducts = () => {
+export const useProducts = (enable:boolean = false , productId:number|null = null) => {
     const [isSuccess, setIsSuccess] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState("");
     const queryClient = useQueryClient();
@@ -13,15 +13,23 @@ export const useProducts = () => {
         queryKey : ['products'],
         queryFn: fetchProducts,
         staleTime: 300000,
+        enabled: !enable,
     })
 
 
     const {data:oneProduct , isLoading:singleLoading ,error:singleFetchError } = useQuery({
-        queryKey : ['viewProduct'],
-        queryFn: viewProducts,
+        queryKey :['product', productId],
+        queryFn: () => viewProducts(productId),
         staleTime: 300000,
-      enabled: false, // Disable the query by default, enable it only when needed
+      enabled: enable && productId !== null, // Disable the query by default, enable it only when needed
     })
+
+    const {data:productTrans , isLoading:loadingProdTrans ,error:errorProdTrans } = useQuery({
+      queryKey : ['productTransactions', productId],
+      queryFn: () => productTransactions(productId),
+      staleTime: 300000,
+    enabled: enable && productId !== null, // Disable the query by default, enable it only when needed
+  })
 
     const {mutate:addProductMutation, isPending:isAddingProduct} = useMutation({
         mutationFn: createProducts,
@@ -85,6 +93,10 @@ export const useProducts = () => {
         oneProduct,
         singleLoading,
         singleFetchError,
+
+        productTrans,
+        loadingProdTrans,
+        errorProdTrans,
 
         addProduct,
         isAddingProduct,

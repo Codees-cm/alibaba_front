@@ -27,7 +27,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import AddProduct from "@/components/AddProduct";
-import PageTitle from "@/components/PageTitle";
+import { useRouter } from "next/navigation";
 
 
 
@@ -36,7 +36,7 @@ import PageTitle from "@/components/PageTitle";
 export default function Dashboard() {
   // Sample supplier data
   const { products, allLoading, allFetchError ,deletingProduct } = useProducts()
-
+  const router = useRouter()
 
  
   if (allFetchError) {
@@ -58,12 +58,12 @@ export default function Dashboard() {
                 <div className="ml-auto flex items-center gap-2">
                     <AlertDialog>
                       <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Product</AlertDialogTrigger>
-                      <AlertDialogContent className="w-fit">
+                      <AlertDialogContent style={{ maxInlineSize : 'min-content' , placeContent :'center' }}>
                         <AlertDialogHeader>
                           <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                           </AlertDialogFooter>
-                          <AlertDialogDescription>
+                          <AlertDialogDescription style={{ minWidth : 'max-content' }}>
                           <AddProduct/>
                           </AlertDialogDescription>
                         </AlertDialogHeader>
@@ -103,6 +103,7 @@ export default function Dashboard() {
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => router.push(`products/${product.id}`)}>Details</DropdownMenuItem>
                               <DropdownMenuItem>Edit</DropdownMenuItem>
                               <DropdownMenuItem onClick={()=> deletingProduct(product.id)}>Delete</DropdownMenuItem>
                             </DropdownMenuContent>

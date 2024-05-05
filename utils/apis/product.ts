@@ -41,3 +41,12 @@ export const deleteProducts = async (id) => {
     })
     return response;
 }
+
+
+export const productTransactions = async (id) => {
+  const response = await instance.get(`/product/${id}/transactions/`)
+  .then((res)=>{
+    return res
+  })
+  return response;
+}

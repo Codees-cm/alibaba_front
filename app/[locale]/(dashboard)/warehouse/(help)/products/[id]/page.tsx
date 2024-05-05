@@ -1,0 +1,192 @@
+"use client"
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DataTable } from "@/components/DataTable";
+import React from 'react';
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+    type CarouselApi,
+} from "@/components/ui/carousel"
+import ProductInfo from "@/components/ProductInfo";
+import SalesCard, { SalesProps } from "@/components/SalesCard";
+import { useProducts } from "@/hooks/stock_manage/use-product";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from "@/components/ui/alert-dialog"
+import Editor from "@/components/Editor";
+const UserSalesData: SalesProps[] = [
+    {
+        name: "Oliviia Martin",
+        email: "olivia.marting@gmail.com",
+        saleAmount: "$1,999.0"
+    },
+    {
+        name: "Ricky Farel",
+        email: "ricky.farel@gmail.com",
+        saleAmount: "$3,999.0"
+    },
+    {
+        name: "William kit",
+        email: "wiliam.kit@gmail.com",
+        saleAmount: "$299.0"
+    },
+    {
+        name: "Jackson luc",
+        email: "jackson.luc@gmail.com",
+        saleAmount: "$799.0"
+    }
+];
+
+type Props = {
+    params: {
+        id: number;
+    };
+};
+
+const Page: React.FC<Props> = ({ params }) => {
+    // Assuming you fetch the product data here based on params.id
+    const { oneProduct, singleLoading, singleFetchError, productTrans, loadingProdTrans } = useProducts(true, params.id);
+
+
+
+    //  console.log(oneProduct);
+    if (singleLoading || loadingProdTrans) {
+        return (
+            <>
+                ...
+            </>
+        )
+
+    }
+
+    console.log(productTrans?.data)
+    const product = {
+        name: oneProduct?.data.name,
+        code: oneProduct?.data.product_code,
+        available: oneProduct?.data.quantity,
+        description: oneProduct?.data.description,
+        price: oneProduct?.data.price,
+        price_with_tax: oneProduct?.data.price_with_tax,
+        online: oneProduct?.data.available
+    };
+
+    return (
+        <div className="  bg-gradient-to-r from-amber-100 to-white">
+            <div className="m-10 flex justify-between mt-10" style={{ width: "110vh" }}>
+                
+                <div className="w-[100%] flex justify-center" style={{ height: 'max-content' }}>
+                    <Carousel className="w-[300px] max-w-xs">
+                        <CarouselContent>
+                            {Array.from({ length: 5 }).map((_, index) => (
+                                <CarouselItem key={index}>
+                                    <div className="p-1">
+                                        <Card>
+                                            <CardContent className="flex aspect-square items-center justify-center p-6">
+                                                <span className="text-4xl font-semibold">{index + 1}</span>
+                                            </CardContent>
+                                        </Card>
+                                    </div>
+                                </CarouselItem>
+                            ))}
+                        </CarouselContent>
+                    </Carousel>
+                </div>
+                <div className="w-[100%] flex justify-center">
+                    <ProductInfo product={product} />
+                </div>
+            </div>
+            <div className="m-10 flex justify-between mt-10" style={{ width: "110vh" }}>
+                <Card>
+                <CardHeader>
+                Recent transactions
+                    </CardHeader>
+                    <CardContent>
+                        <section>
+                          
+                            <p className="text-sm text-gray-400">
+                               last 10 transactions on this product
+                            </p>
+                        </section>
+                        <DataTable columns={columns} data={productTrans?.data} />
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader>
+                        Product Details
+                        <div className="ml-auto flex items-center gap-2">
+                    <AlertDialog>
+                      <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Product</AlertDialogTrigger>
+                      <AlertDialogContent style={{ maxInlineSize : 'min-content' , placeContent :'center' }}>
+                        <AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          </AlertDialogFooter>
+                          <AlertDialogDescription style={{ minWidth : 'max-content' }}>
+                          {/* <AddProduc/> */}
+                          {/* <p>hello</p> */}
+                          <Editor/>
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
+                    </CardHeader>
+                    <CardContent>
+                        <section>
+                            <p className="text-sm text-gray-400">
+                                you made 26 transactions in one months
+                            </p>
+                        </section>
+                        {/* { */}
+                            {/* productTrans?.data ? ( <> */}
+                        <DataTable columns={columns} data={productTrans?.data} />
+                            
+                            {/* </>) : (<>
+                            test
+                            </>)
+                        } */}
+                    </CardContent>
+                </Card>
+               
+            </div>
+        </div>
+    );
+};
+
+export const columns = [
+  
+    {
+        accessorKey: "quantity_sold",
+        header: "Quantity"
+    },
+    {
+        accessorKey: "sale_date",
+        header: " Date"
+    },
+    {
+        accessorKey: "sale_price",
+        header: " Price"
+    },
+];
+
+
+export default Page;
