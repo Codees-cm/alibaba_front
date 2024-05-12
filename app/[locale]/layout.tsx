@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-sync-scripts */
 
 import React, { ReactNode } from 'react'
 // import {NextIntlClientProvider} from 'next-intl';
