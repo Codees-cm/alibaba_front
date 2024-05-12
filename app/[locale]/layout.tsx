@@ -34,7 +34,7 @@ export default function LocaleLayout({
             <TanstackProvider>
             {children}
         </TanstackProvider>
-        
+        <script src="./sw.js"></script>
       {/* swDev() */}
         </body>
       </html>

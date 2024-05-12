@@ -91,7 +91,7 @@ const Page: React.FC<Props> = ({ params }) => {
     console.log(oneProduct?.data.images)
     return (
         <div className="  bg-gradient-to-r from-amber-100 to-white">
-            <div className="m-10 flex justify-between mt-10" style={{ width: "110vh" }}>
+            <div className="m-10 flex justify-between mt-10" style={{ width: "90vh" }}>
                 
                 <div className="w-[100%] flex justify-center" style={{ height: 'max-content' }}>
                     <Carousel className="w-[300px] max-w-xs">
@@ -115,7 +115,7 @@ const Page: React.FC<Props> = ({ params }) => {
                     <ProductInfo product={product} />
                 </div>
             </div>
-            <div className="m-10 flex justify-between mt-10" style={{ width: "110vh" }}>
+            <div className="m-10 flex justify-between mt-10" style={{ width: "90vh" }}>
                 <Card>
                 <CardHeader>
                 Recent transactions
