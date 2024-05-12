@@ -24,10 +24,9 @@ const UserSalesData: SalesProps[] = [
 export default function Analysis({ params: { locale } }) {
   const { t } = useTranslation(locale, "dashboard")
 
-  const { data, isLoading , data_bar,loading_bar, data_inventStat,
-    data_catInsight,
-    data_topSellingReview
-    } = useAnalysis()
+  const { data, isLoading , data_bar,loading_bar, data_inventStat,data_catInsight,data_topSellingReview , loading_inventStat,
+    loading_catInsight,
+    loading_topSellingReview} = useAnalysis()
 
   const cardData: CardProps[] = [
     {
@@ -118,7 +117,8 @@ export default function Analysis({ params: { locale } }) {
       sm:grid-cols-2 xl:grid-cols-4"
         >
           {
-            isLoading ? (
+            (isLoading && loading_inventStat &&
+              loading_catInsight &&  loading_topSellingReview ) ? (
               <>
                 {cardData.map((d, i) => (
 
