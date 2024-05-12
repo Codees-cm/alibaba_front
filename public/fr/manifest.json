@@ -6,8 +6,8 @@
   "description": "easy test",
   "dir": "auto",
   "lang": "en",
-  "display": "standalone",
-  "orientation": "portrait",
+  "orientation": "landscape",
+  "display": "fullscreen",
   "scope": "/en/",
   "start_url": "/en/",
   "icons": [
