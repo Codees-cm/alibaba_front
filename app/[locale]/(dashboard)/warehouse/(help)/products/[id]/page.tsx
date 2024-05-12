@@ -63,8 +63,7 @@ type Props = {
 
 const Page: React.FC<Props> = ({ params }) => {
     // Assuming you fetch the product data here based on params.id
-    const { oneProduct, singleLoading, singleFetchError, productTrans, loadingProdTrans } = useProducts(true, params.id);
-
+    const { oneProduct, singleLoading, singleFetchError, productTrans, loadingProdTrans,} = useProducts(true, params.id);
 
 
     //  console.log(oneProduct);
@@ -77,8 +76,9 @@ const Page: React.FC<Props> = ({ params }) => {
 
     }
 
-    console.log(productTrans?.data)
+    // console.log(productTrans?.data)
     const product = {
+        id: oneProduct?.data.id,
         name: oneProduct?.data.name,
         code: oneProduct?.data.product_code,
         available: oneProduct?.data.quantity,
@@ -88,6 +88,7 @@ const Page: React.FC<Props> = ({ params }) => {
         online: oneProduct?.data.available
     };
 
+    console.log(oneProduct?.data.images)
     return (
         <div className="  bg-gradient-to-r from-amber-100 to-white">
             <div className="m-10 flex justify-between mt-10" style={{ width: "110vh" }}>
@@ -95,12 +96,13 @@ const Page: React.FC<Props> = ({ params }) => {
                 <div className="w-[100%] flex justify-center" style={{ height: 'max-content' }}>
                     <Carousel className="w-[300px] max-w-xs">
                         <CarouselContent>
-                            {Array.from({ length: 5 }).map((_, index) => (
+                            {oneProduct?.data.images.map((image, index) => (
                                 <CarouselItem key={index}>
                                     <div className="p-1">
                                         <Card>
                                             <CardContent className="flex aspect-square items-center justify-center p-6">
-                                                <span className="text-4xl font-semibold">{index + 1}</span>
+                                                {/* <span className="text-4xl font-semibold">{index + 1}</span> */}
+                                                <img src={image.image_url} alt="" />
                                             </CardContent>
                                         </Card>
                                     </div>
@@ -119,16 +121,11 @@ const Page: React.FC<Props> = ({ params }) => {
                 Recent transactions
                     </CardHeader>
                     <CardContent>
-                        <section>
-                          
-                            <p className="text-sm text-gray-400">
-                               last 10 transactions on this product
-                            </p>
-                        </section>
+                       
                         <DataTable columns={columns} data={productTrans?.data} />
                     </CardContent>
                 </Card>
-                <Card>
+                <Card  style={{ maxWidth: "min-content" }}>
                     <CardHeader>
                         Product Details
                         <div className="ml-auto flex items-center gap-2">
@@ -140,9 +137,7 @@ const Page: React.FC<Props> = ({ params }) => {
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                           </AlertDialogFooter>
                           <AlertDialogDescription style={{ minWidth : 'max-content' }}>
-                          {/* <AddProduc/> */}
-                          {/* <p>hello</p> */}
-                          <Editor/>
+                          <Editor id={product.id}/>
                           </AlertDialogDescription>
                         </AlertDialogHeader>
 
@@ -151,19 +146,10 @@ const Page: React.FC<Props> = ({ params }) => {
                   </div>
                     </CardHeader>
                     <CardContent>
-                        <section>
-                            <p className="text-sm text-gray-400">
-                                you made 26 transactions in one months
-                            </p>
-                        </section>
-                        {/* { */}
-                            {/* productTrans?.data ? ( <> */}
-                        <DataTable columns={columns} data={productTrans?.data} />
-                            
-                            {/* </>) : (<>
-                            test
-                            </>)
-                        } */}
+                        
+                     
+                        <DataTable columns={file_columns}  data={oneProduct?.data.markdown_files} />
+             
                     </CardContent>
                 </Card>
                
@@ -188,5 +174,13 @@ export const columns = [
     },
 ];
 
+
+export const file_columns = [
+  
+    {
+        accessorKey: "file_url",
+        header: "Markdown Url"
+    },
+];
 
 export default Page;

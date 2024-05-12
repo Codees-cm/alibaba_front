@@ -1,29 +1,32 @@
 "use client"
-import {useState} from "react"
+import { useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardFooter,
+    CardHeader,
+    CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
 } from "@/components/ui/select"
+import { CirclePlus as AddCircleIcon } from 'lucide-react';
 import { useProducts } from "@/hooks/stock_manage/use-product"
 import { useWarehouses } from "@/hooks/stock_manage/use-warehouse"
 import { useStockItem } from "@/hooks/stock_manage/use-stockitem"
+import { useRouter } from "next/navigation";
 export default function AddProductToWarehouse() {
+    const router = useRouter()
     const { products } = useProducts();
     const { warehouses } = useWarehouses();
     const { addProductToWarehouse } = useStockItem();
@@ -68,23 +71,32 @@ export default function AddProductToWarehouse() {
             <form onSubmit={handleSubmit}>
                 <CardContent>
                     <div className="grid w-full items-center gap-4">
-                        <div className="flex flex-col space-y-1.5">
+                        <div className="flex items-center flex-col space-y-1.5">
                             <Label htmlFor="framework">Product Name</Label>
-                            <Select value={formData.product} onValueChange={handleProductChange}>
-                                <SelectTrigger id="name" value={formData.product} name="product">
-                                    <SelectValue placeholder="select product" />
-                                </SelectTrigger>
-                                <SelectGroup>
-                                    <SelectContent position="popper">
-                                        {products?.data.map((product) => (
-                                            <SelectItem key={product.id} value={product.id.toString()}>
-                                                {product.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </SelectGroup>
-                            </Select>
+                            <div className="relative flex items-center w-full">
+                                {/* Select Component */}
+                                <Select value={formData.product} onValueChange={handleProductChange} className="w-full">
+                                    <SelectTrigger id="name" value={formData.product} name="product">
+                                        <SelectValue placeholder="Select product" />
+                                    </SelectTrigger>
+                                    <SelectGroup>
+                                        <SelectContent position="popper">
+                                            {products?.data.map((product) => (
+                                                <SelectItem key={product.id} value={product.id.toString()}>
+                                                    {product.name}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </SelectGroup>
+                                </Select>
+
+                                {/* Add Circle Icon */}
+                                <div className="absolute right-0 top-0 h-full flex items-center pr-2">
+                                    <AddCircleIcon className="text-green-500 cursor-pointer" onClick={()=>router.replace('warehouse/products')} />
+                                </div>
+                            </div>
                         </div>
+
                         <div className="flex flex-col space-y-1.5">
                             <Label htmlFor="framework">Warehouse</Label>
                             <Select value={formData.warehouse} onValueChange={(value) => setFormData({ ...formData, warehouse: value })}>

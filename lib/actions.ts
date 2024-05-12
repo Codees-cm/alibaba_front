@@ -4,10 +4,10 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import Jimp from "jimp";
 
 const s3Client = new S3Client({
-  region: process.env.NEXT_PUBLIC_AWS_BUCKET_REGION,
+  region: process.env.NEXT_AWS_BUCKET_REGION,
   credentials: {
-    accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY,
-    secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY,
+    accessKeyId: process.env.NEXT_AWS_ACCESS_KEY,
+    secretAccessKey: process.env.NEXT_AWS_SECRET_ACCESS_KEY,
   },
 });
 
@@ -20,7 +20,7 @@ async function uploadFileToS3(file, fileName) {
     const buffer = await image.getBufferAsync(Jimp.MIME_JPEG); // Get the image buffer in JPEG format
 
     const params = {
-      Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
+      Bucket: process.env.NEXT_AWS_BUCKET_NAME,
       Key: `${fileName}`,
       Body: buffer,
       ContentType: "image/jpeg", // Set the content type to image/jpeg
@@ -61,7 +61,7 @@ export async function uploadFile(formData) {
 export async function uploadEditorFile(content, fileName) {
   try {
       const params = {
-          Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
+          Bucket: process.env.NEXT_AWS_BUCKET_NAME,
           Key: fileName,
           Body: content,
           ContentType: "text/plain", // Set the content type to plain text

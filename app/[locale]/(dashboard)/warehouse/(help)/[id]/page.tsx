@@ -27,7 +27,7 @@ export default function WarehouseDetail({ params }: Props) {
 
   return (
 
-    <div className='p-8'>
+    <div className='p-8  bg-gradient-to-r from-amber-100 to-white'>
       <div className="flex flex-col gap-5 w-full">
         <section className="grid grid-cols-2 gap-8 sm:grid-cols-2 xl:grid-cols-2">
           <div className="col-span-1"><PageTitle title="Warehouse Details" /></div>

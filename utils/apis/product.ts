@@ -17,15 +17,30 @@ export const createProducts = async (data) => {
     return response;
 }
 
-export const editProducts = async (data) => {
-    const response = await instance.put('/products/',data)
-    .then((res)=>{
-      return res
-    })
-    return response;
+
+export const createProductsMarkdown = async (data) => {
+//  console.log(edit,id)
+  try {
+    console.log(data)
+    const response = await instance.post(`/products-markdown/`, data);
+    return response.data; // Return the response data
+  } catch (error) {
+    throw error; // Propagate the error
+  }
+};
+
+
+export const updateProduct = async (product) => {
+
+  try {
+    // const {} = product
+    console.log(product)
+      const response = await instance.patch(`/update-product/${product.id}/`,  product.data);
+      return response.data; // Return the response data
+    } catch (error) {
+      throw error; // Propagate the error
+    }
 }
-
-
 export const viewProducts = async (id) => {
     const response = await instance.get(`/products/${id}/`)
     .then((res)=>{

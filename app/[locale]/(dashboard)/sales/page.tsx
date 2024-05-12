@@ -15,7 +15,10 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { DataTable } from "@/components/DataTable";
 import { useProducts } from "@/hooks/stock_manage/use-product";
 import { useSales } from "@/hooks/use-sales";
+import { useRouter } from "next/navigation";
 export type SaleInfo = {
+  price(price: any): number;
+  sale_price: any;
   product: string;
   quantity_sold: string;
   productName: string;
@@ -26,7 +29,7 @@ export default function Supplier() {
   const [salesData, setSalesData] = useState<SaleInfo[]>([]);
   const { products, allLoading } = useProducts();
   const {addSale,isAddingSale,isSuccess} = useSales()
-
+  const router = useRouter()
 
   if (allLoading) {
     return (
@@ -47,6 +50,7 @@ export default function Supplier() {
       setSaleFormData(prevState => ({
         ...prevState,
         product: value,
+        product_id: selectedProduct.id,
         productName: selectedProduct.name,
         price: selectedProduct.price ,
         sale_price: selectedProduct.price
@@ -74,8 +78,20 @@ export default function Supplier() {
 
 
   const handleSaleSubmit = async () => {
-    await addSale(salesData)
+    const typedSalesData: SaleInfo[] = salesData.map(sale => ({
+      product: parseInt(sale.product, 10), // Convert product to number (product ID)
+      quantity_sold: sale.quantity_sold,
+      product_id:parseInt(sale.product, 10),
+      sale_price: sale.sale_price,
+      // productName: sale.productName,
+      price: parseFloat(sale.price) // Convert price to number
+    }));
+    
+    localStorage.setItem('salesData', JSON.stringify(typedSalesData));
+  
+    await addSale(typedSalesData);
     setSalesData([]);
+    router.push('sales/0')
   };
 
   return (

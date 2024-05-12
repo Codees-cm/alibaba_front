@@ -27,7 +27,7 @@ export const editCategories = async (data) => {
 
 
 export const viewCategories = async (id) => {
-    const response = await instance.get(`/categories/${id}/`)
+    const response = await instance.get(`/products_by_category/${id}/`)
     .then((res)=>{
       return res
     })

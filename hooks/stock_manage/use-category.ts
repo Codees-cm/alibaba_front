@@ -4,7 +4,7 @@ import { useQuery , useMutation , useQueryClient } from "@tanstack/react-query";
 // import { viewCategorie } from "@/utils/api/categorie";
 import { fetchCategories,createCategories , editCategories, viewCategories ,deleteCategories } from "@/utils/apis/category";
 
-export const useCategories = () => {
+export const useCategories = (enable:boolean = false , categoryId:number|null = null) => {
     const [isSuccess, setIsSuccess] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState("");
     const queryClient = useQueryClient();
@@ -13,14 +13,16 @@ export const useCategories = () => {
         queryKey : ['categories'],
         queryFn: fetchCategories,
         staleTime: 300000,
+        enabled: !enable , // Disable the query by default, enable it only when needed
+
     })
 
 
     const {data:oneCategorie , isLoading:singleLoading ,error:singleFetchError } = useQuery({
-        queryKey : ['viewCategorie'],
-        queryFn: viewCategories,
+        queryKey : ['viewCategorie',categoryId],
+        queryFn:  () =>  viewCategories(categoryId),
         staleTime: 300000,
-        enabled: false, // Disable the query by default, enable it only when needed
+        enabled: enable && categoryId !== null, 
     })
 
     const {mutate:addCategorieMutation, isPending:isAddingCategorie} = useMutation({

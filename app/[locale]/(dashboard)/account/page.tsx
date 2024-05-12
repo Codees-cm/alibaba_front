@@ -14,10 +14,24 @@ import { languages } from '../../../i18n/settings'
 import { Input } from "@/components/ui/input";
 import { Trans } from 'react-i18next/TransWithoutContext'
 import { useTranslation } from "@/app/i18n/client";
+import { useState } from "react";
 
 export default function Dashboard({ locale }: string) {
   const { t } = useTranslation()
   const router = useRouter()
+  const [selectedLanguage, setSelectedLanguage] = useState(""); // State to hold selected language
+
+  const handleLanguageChange = (e) => {
+    const selectedValue = e.target.value;
+    setSelectedLanguage(selectedValue);
+
+    // Navigate to the selected language route
+    if (selectedValue === "English") {
+      router.push("/en");
+    } else if (selectedValue === "French") {
+      router.push("/fr");
+    }
+  };
   return (
     <div className="flex min-h-screen w-full flex-col">
       <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
@@ -59,30 +73,30 @@ export default function Dashboard({ locale }: string) {
                   </CardDescription>
                   <br />
                   <label>Language</label>
-                  <select>
-                    <option>English</option>
-                    <option>French</option>
+                  <select value={selectedLanguage} onChange={handleLanguageChange}>
+                    <option value="English">English</option>
+                    <option value="French">French</option>
                   </select>
-                  <CardDescription>
+                  {/* <CardDescription>
                     You can @mention other users and organizations to link to
                     them.
                     <Trans i18nKey="languageSwitcher" t={t}>
                       Switch from <strong>{ locale }</strong> to:{' '}
                     </Trans>
-                    {languages.filter((l) => locale !== l).map((l, index) => {
-                      return (
+                    {languages
+                      .filter((l) => locale !== l)
+                      .map((l, index) => (
                         <span key={l}>
-                          {index > 0 && ('-or-')}
-                          {/* <Link href={`/${l}/`}>
+                          {index > 0 && " - "}
+                          <Link href={`/${l}/`} passHref>
+                            <div onClick={()=>router.push(`/${l}/`)}>
+                            {l}
+                            </div>
                            
-                          </Link> */}
-                          <div onClick={(l) => router.push(`/${l}`) }>
-                             {l}
-                          </div>
+                          </Link>
                         </span>
-                      )
-                    })}
-                  </CardDescription>
+                      ))}
+                  </CardDescription> */}
                 </form>
               </CardContent>
               <CardFooter className="border-t px-6 py-4">

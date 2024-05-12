@@ -17,45 +17,30 @@ const UserSalesData: SalesProps[] = [
     email: "olivia.marting@gmail.com",
     saleAmount: "$1,999.0"
   },
-  {
-    name: "Ricky Farel",
-    email: "ricky.farel@gmail.com",
-    saleAmount: "$3,999.0"
-  },
-  {
-    name: "William kit",
-    email: "wiliam.kit@gmail.com",
-    saleAmount: "$299.0"
-  },
-  {
-    name: "Jackson luc",
-    email: "jackson.luc@gmail.com",
-    saleAmount: "$799.0"
-  }
 ];
 
 
 export default function Home({ params: { locale } }) {
   const { t } = useTranslation(locale, "dashboard")
 
-  const { data, isLoading } = useDashboard()
+  const { data, isLoading , data_bar,loading_bar} = useDashboard()
 
   const cardData: CardProps[] = [
     {
       label: t('total-sales'),
-      amount: "----",
+      amount: data?.data["total_sale_month"],
       discription: "",
       icon: DollarSign,
     },
     {
       label: t('total-employees'),
-      amount: "----",
+      amount: data?.data["number_of_employee"],
       discription: "",
       icon: Users,
     },
     {
       label: t('today-transaction'),
-      amount: "----",
+      amount: data?.data["today_sales_count"],
       discription: "+12.1% from last month",
       icon: ArrowRightLeft,
     },
@@ -111,7 +96,7 @@ export default function Home({ params: { locale } }) {
         </section>
         <section className=" grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
           {
-            isLoading ? (
+            (isLoading&&loading_bar) ? (
               <>
                 <Skeleton className="h-[300px] w-[470px] rounded-xl" />
               </>
@@ -120,7 +105,7 @@ export default function Home({ params: { locale } }) {
                 <CardContent>
                   <p className="p-4 font-semibold">{t('overview')}</p>
 
-                  <Barchart />
+                  <Barchart data={data_bar?.data}/>
 
                 </CardContent>
               </>

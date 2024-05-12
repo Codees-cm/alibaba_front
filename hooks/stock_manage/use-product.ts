@@ -2,7 +2,7 @@
 import React from "react";
 import { useQuery , useMutation , useQueryClient } from "@tanstack/react-query";
 // import { viewProduct } from "@/utils/api/product";
-import { fetchProducts,createProducts , editProducts, viewProducts ,deleteProducts , productTransactions } from "@/utils/apis/product";
+import { fetchProducts,createProducts , createProductsMarkdown, viewProducts ,deleteProducts , productTransactions, updateProduct, editProductsMarkdown } from "@/utils/apis/product";
 
 export const useProducts = (enable:boolean = false , productId:number|null = null) => {
     const [isSuccess, setIsSuccess] = React.useState(false);
@@ -46,9 +46,9 @@ export const useProducts = (enable:boolean = false , productId:number|null = nul
 
     
     const {mutate:editProductMutation, isPending:isEditingProduct} = useMutation({
-        mutationFn: editProducts,
+        mutationFn: updateProduct,
         onSuccess: () => {
-            queryClient.invalidateQueries(["products"])
+            queryClient.invalidateQueries(["product",productId])
             setIsSuccess(true);
           },
           onError: (error) => {
@@ -57,6 +57,18 @@ export const useProducts = (enable:boolean = false , productId:number|null = nul
           },
     })
 
+
+    const {mutate:createProductsMarkdownMutation, isPending:isCreatingProductsMarkdown} = useMutation({
+      mutationFn: createProductsMarkdown,
+      onSuccess: () => {
+          queryClient.invalidateQueries(["product",productId])
+          setIsSuccess(true);
+        },
+        onError: (error) => {
+          setErrorMessage(error.message)
+          // console.error("Error occurred during registration:", error);
+        },
+  })
 
     const {mutate:deleteProductMutation, isPending:isDeletingProduct} = useMutation({
         mutationFn: deleteProducts,
@@ -77,8 +89,14 @@ export const useProducts = (enable:boolean = false , productId:number|null = nul
             await  addProductMutation(newProduct); 
     }
 
-    const modifyProduct = async (editProduct)=>{
-        await  editProductMutation(editProduct); 
+    const modifyProduct = async (product)=>{
+      console.log(product)
+        editProductMutation(product); 
+    }
+
+    const createProductMarkdown = async (product)=>{
+      // console.log(product)
+      createProductsMarkdownMutation(product); 
     }
 
     const deletingProduct = async (id)=>{
@@ -104,6 +122,9 @@ export const useProducts = (enable:boolean = false , productId:number|null = nul
         
         modifyProduct,
         isEditingProduct,
+
+        createProductMarkdown,
+        isCreatingProductsMarkdown,
 
         deletingProduct,
         isDeletingProduct,

@@ -9,14 +9,17 @@ import { useProducts } from "@/hooks/stock_manage/use-product";
 import { Textarea } from "@/components/ui/textarea";
 import { uploadFile } from "@/lib/actions";
 import { CirclePlus as AddCircleIcon } from 'lucide-react';
+import { useRouter } from "next/navigation";
 export default function AddProduct() {
+  const router = useRouter();
   const { categories } = useCategories();
-  const { addProduct } = useProducts();
+  const { addProduct ,isAddingProduct} = useProducts();
   const [productData, setProductData] = useState({
     name: "",
     description: "",
     price_with_tax: "",
     price: "",
+    available: false,
     quantity: "",
     category: "",
   });
@@ -53,7 +56,7 @@ export default function AddProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await addProduct({ ...productData}); // Include image file in product data
+      
       if (!imageFile) {
         console.error("Please select an image.");
         return;
@@ -61,14 +64,25 @@ export default function AddProduct() {
       const formData = new FormData();
       formData.append("file", imageFile);
       console.log("file", imageFile);
+      // console.log("productData ........... : ",productData)
+
       const { status, message, fileName } = await uploadFile(formData);
+      // console.log("productData ........... : ",productData)
+
       if (status === "success") {
-        await addProduct({ ...productData, image_urls: fileName });
+        const updatedProductData = {
+          ...productData,
+          images: [`https://larcraft-storage.s3.eu-north-1.amazonaws.com/${fileName}`],
+        };
+        await addProduct({ ...updatedProductData});
+        // console.log("productData ........... : ",updatedProductData)
+    
         setProductData({
           name: "",
           description: "",
           price_with_tax: "",
           price: "",
+          available: false,
           quantity: "",
           category: "",
         });
@@ -87,7 +101,7 @@ export default function AddProduct() {
       <Card className="p-2">
         <h1 className="text-xl font-semibold">Add Product</h1>
         <form onSubmit={handleSubmit} method="post">
-          <CardContent>
+          <CardContent className="p-2">
             <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-2 lg:gap-8">
               <div className="grid gap-4 lg:col-span-1">
                 <Input id="name" type="text" placeholder="Name" value={productData.name} onChange={handleInputChange} />
@@ -112,7 +126,7 @@ export default function AddProduct() {
                         ))}
                       </SelectContent>
                     </Select>
-                    <AddCircleIcon className="text-green-500 cursor-pointer" />
+                    <AddCircleIcon className="text-green-500 cursor-pointer" onClick={()=>router.replace('category')} />
                   </div>
                   <div className="p-2">
                     {/* File input for image selection */}
@@ -134,7 +148,9 @@ export default function AddProduct() {
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit">Save</Button>
+          <Button type="submit" disabled={isAddingProduct}>
+              {isAddingProduct ? "Adding Product..." : "Save"}
+            </Button>
           </CardFooter>
         </form>
       </Card>

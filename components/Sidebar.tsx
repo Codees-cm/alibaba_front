@@ -54,45 +54,37 @@ export default function Sidenavbar({lang}) {
           },
           {
             title: t('employee'),
-            // href: "users",
             href: `/${lang}/employees`,
-
             icon: UsersRound,
             variant: "ghost",
           },
           {
             title: t('warehouse'),
-            // href: "warehouse",
             href: `/${lang}/warehouse`,
-
             icon: Home,
             variant: "ghost",
           },
           {
             title:  t('transactions'),
-            // href: "viewTransaction",
             href: `/${lang}/viewTransaction`,
-
             icon: ArrowRightLeft,
             variant: "ghost",
           },
           {
             title:  t('analysis'),
-            href: "#",
+            href: `/${lang}/analysis`,
             icon: LineChart,
             variant: "ghost",
           },
           {
             title: t('sales'),
-        
             href: `/${lang}/sales`,
-
             icon: DollarSign,
             variant: "ghost",
           },
           {
             title:  t('notifications'),
-            href: "/#",
+           href: `/${lang}/sales`,
             icon: BellRing,
             variant: "ghost",
           },
