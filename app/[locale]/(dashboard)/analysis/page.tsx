@@ -34,53 +34,106 @@ export default function Analysis({ params: { locale } }) {
         return(<> ...</>)
     }
 
-  const cardData: CardProps[] = [
+  // Define default values for cardData
+  const defaultCardData: CardProps[] = [
     {
       label: t('total-sales'),
-      amount: data?.data["total_sale_month"],
-      discription: "",
+      amount: 'Loading...', // Default amount while data is loading
+      discription: '',
       icon: DollarSign,
     },
     {
       label: t('total-employees'),
-      amount: data?.data["number_of_employee"],
-      discription: "",
+      amount: 'Loading...',
+      discription: '',
       icon: Users,
     },
     {
       label: t('today-transaction'),
-      amount: data?.data["today_sales_count"],
-      discription: "+12.1% from last month",
+      amount: 'Loading...',
+      discription: '+12.1% from last month',
       icon: ArrowRightLeft,
     },
     {
       label: t('total-products'),
-      amount: data?.data["total_products"],
-      discription: "+281 sold from last month",
+      amount: 'Loading...',
+      discription: '+281 sold from last month',
       icon: Activity,
     },
     {
-      label: "products out of stock",
-      amount: data_inventStat?.data["out_of_stock_count"],
-      discription: "+12.1% from last month",
+      label: 'products out of stock',
+      amount: 'Loading...',
+      discription: '+12.1% from last month',
       icon: ArrowRightLeft,
     },
     {
-      label: "Total products in stock",
-      amount: data_inventStat?.data["total_available_quantity"],
-      discription: "+12.1% from last month",
+      label: 'Total products in stock',
+      amount: 'Loading...',
+      discription: '+12.1% from last month',
       icon: ArrowRightLeft,
     },
     {
-      label: "High value category",
-      amount: data_catInsight?.data[0]["name"],
-      discription: `the average price of this category is ${data_catInsight?.data[0]["average_price"]}` ,
+      label: 'High value category',
+      amount: 'Loading...',
+      discription: `the average price of this category is Loading...`,
       icon: Activity,
     },
     {
-      label: "Top sale Product",
-      amount: data_topSellingReview?.data['top_selling_products'][0]["name"],
-      discription: `the total revenue is ${data_topSellingReview?.data["total_revenue"]}` ,
+      label: 'Top sale Product',
+      amount: 'Loading...',
+      discription: `the total revenue is Loading...`,
+      icon: Activity,
+    },
+  ];
+
+  // Use default values if data is loading or not available
+  const cardData = isLoading || loading_inventStat || loading_catInsight || loading_topSellingReview ? defaultCardData : [
+    {
+      label: t('total-sales'),
+      amount: data?.data['total_sale_month'],
+      discription: '',
+      icon: DollarSign,
+    },
+    {
+      label: t('total-employees'),
+      amount: data?.data['number_of_employee'],
+      discription: '',
+      icon: Users,
+    },
+    {
+      label: t('today-transaction'),
+      amount: data?.data['today_sales_count'],
+      discription: '+12.1% from last month',
+      icon: ArrowRightLeft,
+    },
+    {
+      label: t('total-products'),
+      amount: data?.data['total_products'],
+      discription: '+281 sold from last month',
+      icon: Activity,
+    },
+    {
+      label: 'products out of stock',
+      amount: data_inventStat?.data['out_of_stock_count'],
+      discription: '+12.1% from last month',
+      icon: ArrowRightLeft,
+    },
+    {
+      label: 'Total products in stock',
+      amount: data_inventStat?.data['total_available_quantity'],
+      discription: '+12.1% from last month',
+      icon: ArrowRightLeft,
+    },
+    {
+      label: 'High value category',
+      amount: data_catInsight?.data[0]?.name || 'N/A',
+      discription: `the average price of this category is ${data_catInsight?.data[0]?.average_price || 'N/A'}`,
+      icon: Activity,
+    },
+    {
+      label: 'Top sale Product',
+      amount: data_topSellingReview?.data['top_selling_products'][0]?.name || 'N/A',
+      discription: `the total revenue is ${data_topSellingReview?.data['total_revenue'] || 'N/A'}`,
       icon: Activity,
     },
   ];
@@ -122,31 +175,19 @@ export default function Analysis({ params: { locale } }) {
           className="grid w-full grid-cols-1 gap-4 gap-x-4 transition-all 
       sm:grid-cols-2 xl:grid-cols-4"
         >
-          {
-            (isLoading && loading_inventStat &&
-              loading_catInsight &&  loading_topSellingReview ) ? (
-              <>
-                {cardData.map((d, i) => (
-
-                  <Skeleton key={i} className="h-[125px] w-[210px] rounded-xl" />
-
-                ))}
-              </>
-            ) : (
-              <>
-                {cardData.map((d, i) => (
-                  <Card
-                    key={i}
-                    amount={d.amount}
-                    discription={d.discription}
-                    icon={d.icon}
-                    label={d.label}
-                  // className="shadow-sm"
-                  />
-                ))}
-              </>
-            )
-          }
+         {isLoading || loading_inventStat || loading_catInsight || loading_topSellingReview ? (
+            <>
+              {cardData.map((d, i) => (
+                <Skeleton key={i} className="h-[125px] w-[210px] rounded-xl" />
+              ))}
+            </>
+          ) : (
+            <>
+              {cardData.map((d, i) => (
+                <Card key={i} amount={d.amount} discription={d.discription} icon={d.icon} label={d.label} />
+              ))}
+            </>
+          )}
 
 
 
