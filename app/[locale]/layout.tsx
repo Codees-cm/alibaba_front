@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-sync-scripts */
-
+// "use client"
 import React, { ReactNode } from 'react'
 // import {NextIntlClientProvider} from 'next-intl';
 import TanstackProvider from '../providers/TanstackProvider'
@@ -20,6 +20,7 @@ export default function LocaleLayout({
   children: React.ReactNode;
   params: {locale: string};
 }) {
+ 
   return (
     <>
       <html lang={locale}  dir={dir(locale)}>
@@ -35,8 +36,7 @@ export default function LocaleLayout({
             <TanstackProvider>
             {children}
         </TanstackProvider>
-        <script src="./sw.js"></script>
-      {/* swDev() */}
+     
         </body>
       </html>
     </>

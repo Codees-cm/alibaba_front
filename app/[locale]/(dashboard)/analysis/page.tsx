@@ -28,6 +28,12 @@ export default function Analysis({ params: { locale } }) {
     loading_catInsight,
     loading_topSellingReview} = useAnalysis()
 
+
+    if(isLoading && loading_inventStat &&
+      loading_catInsight &&  loading_topSellingReview){
+        return(<> ...</>)
+    }
+
   const cardData: CardProps[] = [
     {
       label: t('total-sales'),

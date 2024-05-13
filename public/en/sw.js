@@ -1,52 +1,51 @@
-const CACHE = "pwabuilder-offline-page";
+  // The install button.
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log("agdjagsdjhasgjdh")
 
-// self.importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
-import workbox from 'https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js';
-
-const offlineFallbackPage = "offline.html";
-
-self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
-    self.skipWaiting();
-  }
-});
-
-self.addEventListener('install', async (event) => {
-  event.waitUntil(
-    caches.open(CACHE)
-      .then((cache) => cache.add(offlineFallbackPage))
-  );
-});
-
-if (workbox.navigationPreload.isSupported()) {
-  workbox.navigationPreload.enable();
-}
-
-workbox.routing.registerRoute(
-  new RegExp('/*'),
-  new workbox.strategies.StaleWhileRevalidate({
-    cacheName: CACHE
-  })
-);
-
-self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
-    event.respondWith((async () => {
-      try {
-        const preloadResp = await event.preloadResponse;
-
-        if (preloadResp) {
-          return preloadResp;
+    const installButton =  document.getElementById('myElement');
+    
+    // Only relevant for browsers that support installation.
+    if ('BeforeInstallPromptEvent' in window) {
+     
+      let installEvent = null;
+    
+      // Function that will be run when the app is installed.
+      const onInstall = () => {
+        // Disable the install button.
+        installButton.disabled = true;
+        // No longer needed.
+        installEvent = null;
+      };
+    
+      window.addEventListener('beforeinstallprompt', (event) => {
+        // Do not show the install prompt quite yet.
+        event.preventDefault();
+      
+        installEvent = event;
+        // Enable the install button.
+        installButton.disabled = false;
+      });
+    
+      installButton.addEventListener('click', async () => {
+      console.log("agdjagsdjhasgjdh")
+        if (!installEvent) {
+          return;
         }
-
-        const networkResp = await fetch(event.request);
-        return networkResp;
-      } catch (error) {
-
-        const cache = await caches.open(CACHE);
-        const cachedResp = await cache.match(offlineFallbackPage);
-        return cachedResp;
-      }
-    })());
-  }
-});
+     
+        installEvent.prompt();
+        const result = await installEvent.userChoice;
+     
+        if (result.outcome === 'accepted') {
+          onInstall();
+        }
+      });
+    
+      // The user can decide to ignore the install button
+      // and just use the browser prompt directly. In this case
+   
+      window.addEventListener('appinstalled', () => {
+        onInstall();
+      });
+    }
+        
+  });

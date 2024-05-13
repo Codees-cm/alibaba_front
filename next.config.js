@@ -4,6 +4,8 @@ const withPWA = require("next-pwa")({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
+  // swSrc: 'service-worker.js',
+  // swDest: 'service-worker.js',
 });
 
 // const createNextIntlPlugin = require('next-intl/plugin');

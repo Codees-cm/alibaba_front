@@ -9,7 +9,8 @@ import PageTitle from "@/components/PageTitle";
 import SalesCard, { SalesProps } from "@/components/SalesCard";
 import { Activity, ArrowRightLeft, Users, DollarSign } from "lucide-react";
 import Barchart from "@/components/barchart";
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from "@/components/ui/skeleton";
+import  {useEffect} from "react"
 
 const UserSalesData: SalesProps[] = [
   {
@@ -24,6 +25,14 @@ export default function Home({ params: { locale } }) {
   const { t } = useTranslation(locale, "dashboard")
 
   const { data, isLoading , data_bar,loading_bar} = useDashboard()
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/service-worker.js')
+        .then((registration) => console.log('Service Worker registered with scope: ', registration.scope))
+        .catch((error) => console.error('Service Worker registration failed: ', error));
+    }
+  }, []);
 
   const cardData: CardProps[] = [
     {

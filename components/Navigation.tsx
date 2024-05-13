@@ -7,12 +7,9 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import {
-
   Package2,
   PanelLeft,
-
   Search,
-
 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import {
@@ -23,11 +20,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+// import Pwa from './Pwa';
 
 export default function Navigation({lang}) {
+
   const router = useRouter()
+  
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+      {/* <Pwa/> */}
       <Sheet>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
@@ -79,8 +80,9 @@ export default function Navigation({lang}) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={()=> router.push(`/${lang}/settings`)}>Settings</DropdownMenuItem>
+          <DropdownMenuItem onClick={()=> router.push(`/${lang}/settings`)} >Settings</DropdownMenuItem>
           <DropdownMenuItem>Support</DropdownMenuItem>
+          <DropdownMenuItem>Install</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Logout</DropdownMenuItem>
         </DropdownMenuContent>
