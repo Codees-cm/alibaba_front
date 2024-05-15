@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 export default function AddProduct() {
   const router = useRouter();
   const { categories } = useCategories();
-  const { addProduct ,isAddingProduct} = useProducts();
+  const { addProduct ,isAddingProduct , isSuccess, errorMessage} = useProducts();
   const [productData, setProductData] = useState({
     name: "",
     description: "",
@@ -23,9 +23,10 @@ export default function AddProduct() {
     quantity: "",
     category: "",
   });
+  
   const [imageFile, setImageFile] = useState(null); // State for image file
   const [imagePreview, setImagePreview] = useState(null); // State for image preview
-
+const [loading, setLoading] = useState(false);
   const handleFormChange = (value) => {
     const selectedCategory = categories.data.find(category => category.id.toString() === value);
     if (selectedCategory) {
@@ -55,10 +56,13 @@ export default function AddProduct() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     try {
+      setLoading(true)
       
       if (!imageFile) {
         console.error("Please select an image.");
+        setLoading(false)
         return;
       }
       const formData = new FormData();
@@ -88,12 +92,17 @@ export default function AddProduct() {
         });
         setImageFile(null);
         setImagePreview(null);
+     setLoading(false)
+
       } else {
+     setLoading(false)
         console.error("Failed to upload file:", message);
       }
     } catch (error) {
+     setLoading(false)
       console.error("Error adding product:", error);
     }
+    
   };
 
   return (
@@ -148,9 +157,11 @@ export default function AddProduct() {
             </div>
           </CardContent>
           <CardFooter>
-          <Button type="submit" disabled={isAddingProduct}>
-              {isAddingProduct ? "Adding Product..." : "Save"}
+          <Button type="submit" disabled={loading}>
+              {loading ? ("Adding Product...") : "Save"}
             </Button>
+            {isSuccess && <p className="text-green-500">Product added successfully!</p>}
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           </CardFooter>
         </form>
       </Card>
