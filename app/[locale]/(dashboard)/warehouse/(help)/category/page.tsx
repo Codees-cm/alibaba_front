@@ -2,13 +2,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-
   MoreHorizontal,
-
   PanelLeft,
-
   Search,
-
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -55,6 +51,7 @@ import {
 
 import AddCategory from "@/components/AddCategory";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 
 
@@ -65,11 +62,37 @@ export default function Category() {
 
   const { categories, allFetchError, allLoading, deletingCategorie } = useCategories();
   const router = useRouter()
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
 
 
   if (allFetchError) {
     return <div>Error: {allFetchError.message}</div>; // Show error message if fetching data fails
   }
+
+
+  // Function to handle page change
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+   // Filter categories based on search term
+   const filteredCategories = categories?.data.filter(category =>
+    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    setCurrentPage(1); // Reset to first page on new search
+  };
+
+  const itemsPerPage = 5; // Number of items to display per page
+  const pageCount = Math.ceil(filteredCategories.length / itemsPerPage); // Calculate number of pages
+
+
+  // Calculate start and end index based on currentPage
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const displayedItems = filteredCategories.slice(startIndex, endIndex);
 
   return (
     <div className="flex min-h-screen w-full flex-col  bg-gradient-to-r from-amber-100 to-white">
@@ -84,6 +107,13 @@ export default function Category() {
                 <CardHeader>
                   <CardTitle>Category</CardTitle>
                   <div className="ml-auto flex items-center gap-2">
+                  <Input
+                  type="text"
+                  placeholder="Search categories..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="mr-2"
+                />
                     <AlertDialog>
                       <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Category</AlertDialogTrigger>
                       <AlertDialogContent className="w-fit">
@@ -110,42 +140,55 @@ export default function Category() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                    {
-                  allLoading ? (<>isLoading</>) : (<>
-                   {categories?.data.map((categori) => (
-                        <TableRow key={categori.id}>
-                          <TableCell className="font-medium">{categori.name}</TableCell>
-                          <TableCell>
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button
-                                  aria-haspopup="true"
-                                  size="icon"
-                                  variant="ghost"
-                                >
-                                  <MoreHorizontal className="h-4 w-4" />
+                  {allLoading ? (
+                    <TableRow>
+                      <TableCell colSpan={2}>Loading...</TableCell>
+                    </TableRow>
+                  ) : (
+                    displayedItems.map((category) => (
+                      <TableRow key={category.id}>
+                        <TableCell className="font-medium">{category.name}</TableCell>
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button aria-haspopup="true" size="icon" variant="ghost">
+                              <MoreHorizontal className="h-4 w-4" />
                                   <span className="sr-only">Toggle menu</span>
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                              <DropdownMenuItem onClick={() => router.push(`category/${categori.id}`)}>Details</DropdownMenuItem>
-                                <DropdownMenuItem>Edit</DropdownMenuItem>
-                                <DropdownMenuItem onClick={() => deletingCategorie(categori.id)}>Delete</DropdownMenuItem>
-
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </>)
-                }
-                     
-
-                    </TableBody>
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => router.push(`category/${category.id}`)}>Details</DropdownMenuItem>
+                              <DropdownMenuItem>Edit</DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => deletingCategorie(category.id)}>Delete</DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  )}
+                </TableBody>
                   </Table>
+                  {pageCount > 1 && (
+                <div className="flex justify-center mt-4">
+                  {[...Array(pageCount)].map((_, index) => (
+                    <Button
+                      key={index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                      variant={currentPage === index + 1 ? 'solid' : 'ghost'}
+                      className={`px-3 py-1 ${
+                        currentPage === index + 1 ? 'bg-orange-200 text-orange-800' : 'text-gray-600'
+                      }`}
+                    >
+                      {index + 1}
+                    </Button>
+                  ))}
+                </div>
+              )}
                 </CardContent>
-
               </Card>
+              <div className="mt-4 text-center text-sm text-gray-600">
+            Showing page {currentPage} of {pageCount}
+          </div>
             </TabsContent>
           </Tabs>
         </main>

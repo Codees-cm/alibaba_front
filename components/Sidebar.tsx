@@ -17,6 +17,8 @@ import {
 import { Button } from "./ui/button";
 import { useWindowWidth } from "@react-hook/window-size";
 import { useTranslation } from "@/app/i18n/client";
+import Image from "next/image";
+import LogoPic from '../public/img/icon-512x512.png'
 
 export default function Sidenavbar({lang}) {
   const { t } =  useTranslation(lang,'sidebar')
@@ -30,16 +32,24 @@ export default function Sidenavbar({lang}) {
   }
   return (
     <div className="relative w-max h-screen border-r bg-amber-100 px-3 pb-10 pt-24">
-     {!mobilewidth && (
+     
+     {!mobilewidth && (<>
+   
+       <div className="flex items-center justify-center mb-6">
+       <Image src={LogoPic} alt={"logo"}   width={isCollapsed ? 40 : 100}
+          height={isCollapsed ? 40 : 100}
+          className="transition-all" />
+     </div>
       <div className="absolute right-[-20px] top-7">
         <Button
           onClick={toggleSidebar}
-          variant="secondary"
+          variant="secondary" 
           className=" rounded-full p-2"
         >
           <ChevronRight />
         </Button>
       </div>
+      </>
      )} 
       <Nav
         isCollapsed={mobilewidth ? true : isCollapsed}

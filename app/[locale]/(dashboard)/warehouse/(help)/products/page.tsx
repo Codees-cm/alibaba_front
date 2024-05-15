@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { MoreHorizontal } from "lucide-react";
 import { useProducts } from "@/hooks/stock_manage/use-product";
-
+import { Input } from "@/components/ui/input";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import AddProduct from "@/components/AddProduct";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 
 
@@ -37,12 +38,43 @@ export default function Dashboard() {
   // Sample supplier data
   const { products, allLoading, allFetchError ,deletingProduct } = useProducts()
   const router = useRouter()
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+
+
+  if (allLoading) {
+    return <div>loading</div>; // Show error message if fetching data fails
+  }
 
  
   if (allFetchError) {
     return <div>Error: {allFetchError.message}</div>; // Show error message if fetching data fails
   }
 
+
+    // Function to handle page change
+    const handlePageChange = (page) => {
+      setCurrentPage(page);
+    };
+  
+
+     const filteredProducts = products?.data.filter(category =>
+      category.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    const handleSearchChange = (event) => {
+      setSearchTerm(event.target.value);
+      setCurrentPage(1); // Reset to first page on new search
+    };
+  
+    const itemsPerPage = 5; // Number of items to display per page
+    const pageCount = Math.ceil(filteredProducts.length / itemsPerPage); // Calculate number of pages
+  
+  
+    // Calculate start and end index based on currentPage
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const displayedItems = filteredProducts.slice(startIndex, endIndex);
+  
   return (
     <div className=" bg-gradient-to-r from-amber-100 to-white" >
       <div className="flex min-h-screen w-full flex-col ">
@@ -55,7 +87,15 @@ export default function Dashboard() {
               <CardHeader>
                 <CardTitle>Products</CardTitle>
                 <CardDescription>Lorem description.</CardDescription>
+               
                 <div className="ml-auto flex items-center gap-2">
+                <Input
+                  type="text"
+                  placeholder="Search product..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="mr-2"
+                />
                     <AlertDialog>
                       <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Product</AlertDialogTrigger>
                       <AlertDialogContent style={{ maxInlineSize : 'min-content' , placeContent :'center' }}>
@@ -87,7 +127,7 @@ export default function Dashboard() {
                   <TableBody>
                   {
                   allLoading ? (<>isLoading</>) : (<>
-                   {products?.data.map((product) => (
+                   {displayedItems.map((product) => (
                       <TableRow key={product.id}>
                         <TableCell className="font-medium">{product.product_code}</TableCell>
                         <TableCell>{product.name}</TableCell>
@@ -116,8 +156,25 @@ export default function Dashboard() {
                    
                   </TableBody>
                 </Table>
+                {pageCount > 1 && (
+                <div className="flex justify-center mt-4">
+                  {[...Array(pageCount)].map((_, index) => (
+                    <Button
+                      key={index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                      variant={currentPage === index + 1 ? 'solid' : 'ghost'}
+                      className={`px-3 py-1 ${
+                        currentPage === index + 1 ? 'bg-orange-200 text-orange-800' : 'text-gray-600'
+                      }`}
+                    >
+                      {index + 1}
+                    </Button>
+                  ))}
+                </div>
+              )}
               </CardContent>
             </Card>
+            Showing page {currentPage} of {pageCount}
           </main>
         </div>
       </div>
