@@ -1,7 +1,7 @@
 "use server";
 import { revalidatePath } from "next/cache";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
-import Jimp from "jimp";
+import sharp from "sharp";
 
 const s3Client = new S3Client({
   region: process.env.DB_NEXT_AWS_BUCKET_REGION,
@@ -11,19 +11,13 @@ const s3Client = new S3Client({
   },
 });
 
-async function uploadFileToS3(file, fileName) {
+async function uploadFileToS3(file, fileName, contentType) {
   try {
-    const image = await Jimp.read(file); // Read the file as an image with Jimp
-    await image.quality(50); // Set the image quality to 50%
-    await image.resize(800, 400); // Resize the image to 800x400
-
-    const buffer = await image.getBufferAsync(Jimp.MIME_JPEG); // Get the image buffer in JPEG format
-
     const params = {
       Bucket: process.env.DB_NEXT_AWS_BUCKET_NAME,
       Key: `${fileName}`,
-      Body: buffer,
-      ContentType: "image/jpeg", // Set the content type to image/jpeg
+      Body: file,
+      ContentType: contentType,
     };
 
     const command = new PutObjectCommand(params);
@@ -37,7 +31,6 @@ async function uploadFileToS3(file, fileName) {
 
 export async function uploadFile(formData) {
   try {
-    console.log(formData)
     const file = formData.get("file");
 
     if (file.size === 0) {
@@ -45,13 +38,35 @@ export async function uploadFile(formData) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
+    let fileName = file.name; // Get the filename from the file object
+    let contentType = file.type; // Get the content type from the file object
 
-    const fileName = file.name; // Get the filename from the file object
+    let processedBuffer = buffer;
 
-    await uploadFileToS3(buffer, fileName); // Upload the file to S3
+    // Check if the file is an AVIF image and convert if necessary
+    if (contentType === 'image/avif') {
+      const image = sharp(buffer);
+      processedBuffer = await image
+        .resize(800, 400)
+        .jpeg({ quality: 50 })
+        .toBuffer();
+      fileName = fileName.replace(/\.[^/.]+$/, ".jpg"); // Change the file extension to .jpg
+      contentType = "image/jpeg"; // Set the content type to image/jpeg
+    } else {
+      const image = sharp(buffer);
+      processedBuffer = await image
+        .resize(800, 400)
+        .toBuffer({ resolveWithObject: true })
+        .then(({ data, info }) => {
+          contentType = `image/${info.format}`;
+          return data;
+        });
+    }
+
+    await uploadFileToS3(processedBuffer, fileName, contentType); // Upload the file to S3
 
     revalidatePath("/");
-    return { status: "success", message: "File has been uploaded." ,fileName};
+    return { status: "success", message: "File has been uploaded.", fileName };
   } catch (error) {
     console.log(error);
     return { status: "error", message: "Failed to upload file." };
@@ -60,18 +75,18 @@ export async function uploadFile(formData) {
 
 export async function uploadEditorFile(content, fileName) {
   try {
-      const params = {
-          Bucket: process.env.DB_NEXT_AWS_BUCKET_NAME,
-          Key: fileName,
-          Body: content,
-          ContentType: "text/plain", // Set the content type to plain text
-      };
+    const params = {
+      Bucket: process.env.DB_NEXT_AWS_BUCKET_NAME,
+      Key: fileName,
+      Body: content,
+      ContentType: "text/plain", // Set the content type to plain text
+    };
 
-      const command = new PutObjectCommand(params);
-      const response = await s3Client.send(command);
+    const command = new PutObjectCommand(params);
+    const response = await s3Client.send(command);
 
-      return response;
+    return response;
   } catch (error) {
-      throw error;
+    throw error;
   }
 }
