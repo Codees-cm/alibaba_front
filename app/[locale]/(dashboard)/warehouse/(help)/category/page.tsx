@@ -64,6 +64,9 @@ export default function Category() {
   const router = useRouter()
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  if (allLoading) {
+    return <div>loading</div>; // Show error message if fetching data fails
+  }
 
 
   if (allFetchError) {
