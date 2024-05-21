@@ -20,12 +20,7 @@ async function uploadFileToS3(file, fileName, contentType) {
       ContentType: contentType,
     };
 
-    // Ensure headers are strings
-    for (const headerName in params) {
-      if (typeof params[headerName] !== 'string') {
-        params[headerName] = String(params[headerName]);
-      }
-    }
+    console.log("Uploading to S3 with params:", params);
 
     const command = new PutObjectCommand(params);
     const response = await s3Client.send(command);
@@ -49,24 +44,25 @@ export async function uploadFile(formData) {
     let fileName = file.name; // Get the filename from the file object
     let contentType = file.type; // Get the content type from the file object
 
-    let processedBuffer = buffer;
+    // Log buffer and content type details
+    console.log("Uploading file:", fileName);
+    console.log("Content type:", contentType);
+    console.log("Buffer length:", buffer.length);
 
-    // Check if the file is an AVIF image and convert if necessary
-    if (contentType === 'image/avif') {
-      const image = await Jimp.read(buffer);
-      processedBuffer = await image
-        .resize(800, 400)
-        .quality(50) // Adjust the quality of the JPEG output
-        .getBufferAsync(Jimp.MIME_JPEG);
-      fileName = fileName.replace(/\.[^/.]+$/, ".jpg"); // Change the file extension to .jpg
-      contentType = "image/jpeg"; // Set the content type to image/jpeg
-    } else {
-      const image = await Jimp.read(buffer);
-      processedBuffer = await image
-        .resize(800, 400)
-        .getBufferAsync(Jimp.AUTO); // This will automatically set the format
-      contentType = Jimp.AUTO;
+    // Check if the file is an AVIF or HEIF image and directly upload if necessary
+    if (contentType === 'image/avif' || contentType === 'image/heif') {
+      await uploadFileToS3(buffer, fileName, contentType);
+      revalidatePath("/");
+      return { status: "success", message: "File has been uploaded.", fileName };
     }
+
+    // For other image types, process the image
+    const image = await Jimp.read(buffer);
+    const processedBuffer = await image
+      .resize(800, 400)
+      .getBufferAsync(Jimp.MIME_JPEG); // Explicitly set the format to JPEG
+    fileName = fileName.replace(/\.[^/.]+$/, ".jpg"); // Change the file extension to .jpg
+    contentType = "image/jpeg"; // Set the content type to image/jpeg
 
     await uploadFileToS3(processedBuffer, fileName, contentType); // Upload the file to S3
 
@@ -86,13 +82,6 @@ export async function uploadEditorFile(content, fileName) {
       Body: content,
       ContentType: "text/plain", // Set the content type to plain text
     };
-
-    // Ensure headers are strings
-    for (const headerName in params) {
-      if (typeof params[headerName] !== 'string') {
-        params[headerName] = String(params[headerName]);
-      }
-    }
 
     const command = new PutObjectCommand(params);
     const response = await s3Client.send(command);
