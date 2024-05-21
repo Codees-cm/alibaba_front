@@ -41,13 +41,11 @@
     "eslint-config-next": "14.1.0",
     "fetch-headers": "^3.0.1",
     "framer-motion": "^11.0.24",
-    // "heic-decode": "^2.0.0",/
     "i18next": "^23.11.2",
     "i18next-browser-languagedetector": "^7.2.1",
     "i18next-resources-to-backend": "^1.2.1",
     "jimp": "^0.22.12",
     "js-cookie": "^3.0.5",
-    // "leaflet": "^1.6.0",
     "lucide-react": "^0.365.0",
     "md-editor-rt": "^4.13.5",
     "next": "14.1.0",
@@ -66,15 +64,10 @@
     "react-qr-code": "^2.0.12",
     "react-toastify": "^10.0.5",
     "recharts": "^2.12.3",
-    // "sharp": "^0.33.4",
     "tailwind-merge": "^2.2.2",
     "tailwindcss": "3.4.1",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.3.3",
     "zod": "^3.22.4"
-  },
-  "devDependencies": {
-    // "@types/heic-decode": "^1.1.2",
-    // "@types/leaflet": "^1.9.12"
   }
 }
