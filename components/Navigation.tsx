@@ -1,6 +1,6 @@
 'use client'
 /* eslint-disable @next/next/no-img-element */
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import Link from 'next/link';
 // import Image from "next/image"
@@ -20,15 +20,33 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-// import Pwa from './Pwa';
+import { Trans } from 'react-i18next/TransWithoutContext'
+import { useTranslation } from "@/app/i18n/client";
+import { languages } from "@/app/i18n/settings";
 
-export default function Navigation({lang}) {
 
+export default function Navigation({ lang }) {
+  // const { t } = useTranslation()
   const router = useRouter()
+  const [newLang, setNewLang] = useState("")
+
+
+  useEffect(() => {
+    (lang === 'en' ) ? setNewLang("fr") : setNewLang("en")
+  }, [lang])
   
+  
+
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-      {/* <Pwa/> */}
+      {/* {languages.filter((l) => lang !== l).map((l, index) => {
+        return (
+          <span key={l}>
+            {index > 0 && " - "}
+            <Link href={`/${l}/dashboard`}> {l}</Link>
+          </span>
+        );
+      })} */}
       <Sheet>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
@@ -43,7 +61,7 @@ export default function Navigation({lang}) {
               className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
             >
               <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
-              <span className="sr-only">Acme Inc</span>
+              <span className="sr-only">Labcraft Inc</span>
             </Link>
           </nav>
         </SheetContent>
@@ -63,26 +81,15 @@ export default function Navigation({lang}) {
             size="icon"
             className="overflow-hidden rounded-full"
           >
-
-            
-    <img width={200} height={200} src={`https://api.dicebear.com/7.x/lorelei/svg?seed=JoelAdmin`} alt="avatar" />
-            
-            {/* <Image
-            
-            src={`https://api.dicebear.com/7.x/lorelei/svg?seed=thomas`}
-              width={36}
-              height={36}
-              alt="Avatar"
-              className="overflow-hidden"
-            /> */}
+            <img width={200} height={200} src={`https://api.dicebear.com/7.x/lorelei/svg?seed=JoelAdmin`} alt="avatar" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={()=> router.push(`/${lang}/settings`)} >Settings</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push(`/${lang}/settings`)} >Settings</DropdownMenuItem>
           <DropdownMenuItem>Support</DropdownMenuItem>
-          <DropdownMenuItem>Install</DropdownMenuItem>
+          <DropdownMenuItem  onClick={() => router.push(`/${newLang}/dashboard`)}>Switch to {newLang} </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Logout</DropdownMenuItem>
         </DropdownMenuContent>

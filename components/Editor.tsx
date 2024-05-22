@@ -4,9 +4,11 @@ import { MdEditor } from "md-editor-rt";
 import "md-editor-rt/lib/style.css";
 import { uploadEditorFile } from '@/lib/actions';
 import { useProducts } from '@/hooks/stock_manage/use-product';
+import { useRouter } from 'next/navigation';
 function Editor(id) {
     const [text, setText] = useState("hello md-editor-rt！");
     const { createProductMarkdown,isCreatingProductsMarkdown,}=useProducts()
+    const router = useRouter()
     const handleSave = async () => {
         const fileName = 'editor_content.md'; // Define the filename for the content
 
@@ -18,6 +20,8 @@ function Editor(id) {
             }
             await createProductMarkdown(payload)
             console.log("File uploaded successfully:", response);
+            router.back();
+
         } catch (error) {
             console.error("Failed to upload file:", error);
         }
@@ -25,6 +29,7 @@ function Editor(id) {
 
     return (
         <MdEditor
+        style={{ zIndex:"300" }}
             language='en-US'
             modelValue={text}
             onChange={(modelValue) => {

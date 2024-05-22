@@ -48,7 +48,7 @@ instance.interceptors.response.use(
         const refreshToken = Cookies.get('refresh'); // Assuming you store the refresh token in a cookie
         const response = await axios.post(
           // 'http://127.0.0.1:8000/api/jwt/refresh/',
-          'https://fnmalic.pythonanywhere.com/api/j0wt/refresh/',
+          'https://fnmalic.pythonanywhere.com/api/jwt/refresh/',
           { refresh: refreshToken }
         );
         const newToken = response.data.access;

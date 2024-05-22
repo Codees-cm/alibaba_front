@@ -94,7 +94,7 @@ export default function Sidenavbar({lang}) {
           },
           {
             title:  t('notifications'),
-           href: `/${lang}/sales`,
+            href: `/#`,
             icon: BellRing,
             variant: "ghost",
           },
