@@ -4,12 +4,13 @@ import Navigation from '@/components/Navigation'
 import PageTitle from '@/components/PageTitle'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
-import { useSales } from '@/hooks/use-sales'
+// import { useSales } from '@/hooks/use-sales'
+import { useTransactions } from '@/hooks/transactions/use-transactions'
 type Props = {}
 
 
-export default function UsersPage({ }: Props) {
-  const { sale, allLoading } = useSales(true)
+export default function UsersPage({locale}: Props) {
+  const { transactions, allLoading } = useTransactions(true)
 
 
   if (allLoading) {
@@ -17,7 +18,7 @@ export default function UsersPage({ }: Props) {
       ... is loading
     </>)
   }
-  console.log(sale?.data)
+  console.log(transactions?.data)
 
   return (
 
@@ -25,9 +26,16 @@ export default function UsersPage({ }: Props) {
       <div className="flex flex-col gap-5 w-full">
         <section className="grid grid-cols-2 gap-8 sm:grid-cols-2 xl:grid-cols-2">
           <div className="col-span-1"><PageTitle title="Transactions" /></div>
-          <div className="col-span-1"><Navigation /></div>
+          <div className="col-span-1">
+            <Navigation lang={locale}  />
+            </div>
         </section>
-        <DataTable columns={columns} data={sale?.data} />
+        {transactions?.data !== undefined ? (
+       <DataTable columns={columns} data={transactions?.data} />
+      ) : (
+        <div>Non data</div>
+      )}
+       
       </div>
     </div>
 
@@ -37,27 +45,23 @@ export default function UsersPage({ }: Props) {
 
 export const columns = [
   {
-    accessorKey: "id",
-    header: "ID"
+    accessorKey: "user",
+    header: "User"
   },
   {
-    accessorKey: "quantity_sold",
-    header: "Quantity"
+    accessorKey: "transaction_type",
+    header: "Transaction type"
   },
   {
-    accessorKey: "product.name",
-    header: "Product"
+    accessorKey: "payment_method",
+    header: " method"
   },
   {
-    accessorKey: "sale_date",
-    header: " Date"
+    accessorKey: "amount",
+    header: "Amount"
   },
   {
-    accessorKey: "sale_price",
-    header: " Price"
-  },
-  {
-    accessorKey: "In shop",
-    header: "method"
+    accessorKey: "sale_id",
+    header: "Sales Id"
   },
 ];

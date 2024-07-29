@@ -9,6 +9,16 @@ export const getProductsAmount = async () => {
     return response;
 }
 
+
+export const getProductsAmount_employee = async () => {
+  const response = await instance.get('/analysis/count/')
+                                    .then((res)=>{
+                                      return res
+                                    })
+  return response;
+}
+
+
 export const getBarGraph = async () => {
   const response = await instance.get('/analysis/monthly-sales-data/')
                                     .then((res)=>{

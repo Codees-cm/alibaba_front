@@ -1,54 +1,40 @@
+
 "use client"
-import "./../globals.css"
-import { cn } from "@/lib/utils";
+import "./../globals.css";
 import Sidenavbar from "@/components/Sidebar";
-import { useRouter } from "next/navigation";
+import withAuth from "@/hooks/withAuth";
+import { useNotifications } from "@/hooks/useNotifications";
 import { useMe } from "@/hooks/use-retiveme";
-// import { useEffect } from "react";
-export default function RootLayout({
+import { useRouter } from "next/navigation";
+import Loader from "@/components/Loader";
+import { UserRoleProvider } from "@/components/context/UserRoleContext";
+export default function Layout({
   children,
-  params: {locale}
+  params: { locale }
 }: {
   children: React.ReactNode;
-  params: {locale: string};
+  params: { locale: string };
 }) {
-const router = useRouter()
-  const { me , isLoading, error } =  useMe(); 
+  const router = useRouter();
+  const { notifications, connectWebSocket } = useNotifications();
+  const { me, isLoading, error } = useMe();
+  connectWebSocket();
 
-
-if (isLoading){ 
-
-  return(
-  <>
-  ...Loading
-  </>
-  )
-}
-
-setTimeout(() => {
-  console.log(me); // Now 'me' should have a value
-  if (!me) {
-    router.push('/en/auth/login');
+  if (error) {
+    router.replace('auth/login');
   }
-}, 3000);
 
-console.log(" this is the user credential:",error)
-
-
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
-
-    <div style={{ margin:0 , lineHeight:"inherit",paddingBottom:"0",display:"-webkit-inline-box"}}>
-          <Sidenavbar  lang={locale}/>
-            {/*main page */}
-            {/* <div className="p-8 w-full"> */}
-              {children}
-              {/* </div> */}
+    <UserRoleProvider role={me?.data.role}>
+      <div style={{ margin: 0, lineHeight: "inherit", paddingBottom: "0", display: "-webkit-inline-box" }}>
+        <Sidenavbar lang={locale} role={me?.data.role} />
+        {/* main page */}
+        {children}
       </div>
-
-  
-     
-       
-   
+    </UserRoleProvider>
   );
-}
+};

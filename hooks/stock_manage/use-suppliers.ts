@@ -66,15 +66,15 @@ export const useSuppliers = () => {
 
 
 
-    const addSupplier = async (newSupplier)=>{
+    const addSupplier = async (newSupplier: any)=>{
             await  addSupplierMutation(newSupplier); 
     }
 
-    const modifySupplier = async (editSupplier)=>{
+    const modifySupplier = async (editSupplier: any)=>{
         await  editSupplierMutation(editSupplier); 
     }
 
-    const deletingSupplier = async (id)=>{
+    const deletingSupplier = async (id: any)=>{
         await  deleteSupplierMutation(id); 
     }
 

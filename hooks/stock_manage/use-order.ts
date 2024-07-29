@@ -7,7 +7,7 @@ export const useOrders = () => {
   const queryClient = useQueryClient();
 
   // Fetch all orders
-  const { data: orders, isLoading: ordersLoading } = useQuery({
+  const { data: orders, isLoading: ordersLoading , error} = useQuery({
     queryKey: ['orders'],
     queryFn: fetchOrders,
     staleTime: 300000,
@@ -29,17 +29,18 @@ export const useOrders = () => {
     },
   });
 
-  const createNewOrder = async (orderData) => {
+  const createNewOrder = async (orderData: any) => {
     await createOrderMutation(orderData);
   };
 
-  const markOrderAsPaid = async (orderId) => {
+  const markOrderAsPaid = async (orderId: any) => {
     await changeOrderToPaidMutation(orderId);
   };
 
   return {
     orders,
     ordersLoading,
+    error,
     createNewOrder,
     isCreatingOrder,
     markOrderAsPaid,

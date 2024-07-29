@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+// import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -29,7 +30,8 @@ import {
 import AddProduct from "@/components/AddProduct";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
+import useCSVExport from '@/hooks/handleExportToCSV';
+import { TabsContent ,Tabs} from "@/components/ui/tabs";
 
 
 
@@ -40,15 +42,17 @@ export default function Dashboard() {
   const router = useRouter()
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const exportToCSV = useCSVExport(); 
+
 
 
   if (allLoading) {
-    return <div>loading</div>; // Show error message if fetching data fails
+    return <div>loading</div>;
   }
 
  
   if (allFetchError) {
-    return <div>Error: {allFetchError.message}</div>; // Show error message if fetching data fails
+    return <div>Error: {allFetchError.message}</div>; 
   }
 
 
@@ -74,15 +78,21 @@ export default function Dashboard() {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const displayedItems = filteredProducts.slice(startIndex, endIndex);
-  
+    
+    const handleExportToCSV = () => {
+        exportToCSV(products.data, 'labcraft');
+    };
+    
   return (
-    <div className=" bg-gradient-to-r from-amber-100 to-white" >
+    <div className="flex min-h-screen w-full flex-col bg-gradient-to-r from-amber-100 to-white" >
       <div className="flex min-h-screen w-full flex-col ">
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
           
           <main className="grid flex-1 items-start ml-15 mt-10 gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
             {/* Tabs and add supplier button */}
             {/* Table */}
+            <Tabs defaultValue="all">
+            <TabsContent value="all">
             <Card>
               <CardHeader>
                 <CardTitle>Products</CardTitle>
@@ -96,6 +106,9 @@ export default function Dashboard() {
                   onChange={handleSearchChange}
                   className="mr-2"
                 />
+                <Button onClick={handleExportToCSV}>
+                  export CSV
+                </Button>
                     <AlertDialog>
                       <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Product</AlertDialogTrigger>
                       <AlertDialogContent style={{ maxInlineSize : 'min-content' , placeContent :'center' }}>
@@ -128,12 +141,14 @@ export default function Dashboard() {
                   {
                   allLoading ? (<>isLoading</>) : (<>
                    {displayedItems.map((product) => (
-                      <TableRow key={product.id}>
+                      <TableRow className={(product.quantity <= 5) ? " bg-red-300":"" } key={product.id}>
                         <TableCell className="font-medium">{product.product_code}</TableCell>
                         <TableCell>{product.name}</TableCell>
-                        <TableCell>{product.quantity}</TableCell>
+                      
+                         <TableCell className="">{product.quantity}</TableCell>
+    
                         <TableCell>{product.price}</TableCell>
-                        <TableCell>{product.category.name}</TableCell>
+                        <TableCell>{product.category}</TableCell>
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -174,7 +189,12 @@ export default function Dashboard() {
               )}
               </CardContent>
             </Card>
+            <div className="mt-4 text-center text-sm text-gray-600">
+          
             Showing page {currentPage} of {pageCount}
+            </div>
+            </TabsContent>
+          </Tabs>
           </main>
         </div>
       </div>

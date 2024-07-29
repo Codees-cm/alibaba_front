@@ -9,7 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.568.0",
+    "@edgestore/react": "^0.2.1",
+    "@edgestore/server": "^0.2.1",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fseehawer/react-circular-slider": "^2.6.4",
@@ -41,6 +42,7 @@
     "eslint-config-next": "14.1.0",
     "fetch-headers": "^3.0.1",
     "framer-motion": "^11.0.24",
+    "html2canvas": "^1.4.1",
     "i18next": "^23.11.2",
     "i18next-browser-languagedetector": "^7.2.1",
     "i18next-resources-to-backend": "^1.2.1",
@@ -68,6 +70,10 @@
     "tailwindcss": "3.4.1",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.3.3",
-    "zod": "^3.22.4"
+    "websocket": "^1.0.35",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/websocket": "^1.0.10"
   }
 }

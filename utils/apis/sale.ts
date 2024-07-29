@@ -9,7 +9,7 @@ export const fetchSales = async () => {
     return response;
 }
 
-export const createSales = async (data) => {
+export const createSales = async (data: any) => {
     const response = await instance.post('/sales/',data)
     .then((res)=>{
       return res
@@ -17,7 +17,7 @@ export const createSales = async (data) => {
     return response;
 }
 
-export const viewSales = async (id) => {
+export const viewSales = async (id: any) => {
     const response = await instance.get(`/sales/${id}/`)
     .then((res)=>{
       return res
@@ -25,7 +25,7 @@ export const viewSales = async (id) => {
     return response;
 }
 
-export const deleteSales = async (id) => {
+export const deleteSales = async (id: any) => {
     const response = await instance.delete(`/sales/${id}/`)
     .then((res)=>{
       return res

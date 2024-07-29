@@ -12,12 +12,6 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        {/* Slide bar*/}
-        {/*<p className="border" >Slidebar</p>*/}
-        {/*main page */}
-        {/* <div className="p-8 w-full"> */}
-
-        {/* </div> */}
         <main className="h-screen flex flex-col justify-center items-center">
           {children}
         </main>

@@ -20,7 +20,7 @@ import { useTranslation } from "@/app/i18n/client";
 import Image from "next/image";
 import LogoPic from '../public/img/icon-512x512.png'
 
-export default function Sidenavbar({lang}) {
+export default function Sidenavbar({ lang, role }) {
   const { t } =  useTranslation(lang,'sidebar')
   const [isCollapsed, setIsCollapsed] = useState(false);
 
@@ -32,8 +32,8 @@ export default function Sidenavbar({lang}) {
   }
   return (
     <div className="relative w-max h-screen border-r bg-amber-100 px-3 pb-10 pt-24">
-     
-     {!mobilewidth && (<>
+    
+    {!mobilewidth && (<>
    
        <div className="flex items-center justify-center mb-6">
        <Image src={LogoPic} alt={"logo"}   width={isCollapsed ? 40 : 100}
@@ -50,8 +50,10 @@ export default function Sidenavbar({lang}) {
         </Button>
       </div>
       </>
-     )} 
-      <Nav
+    )} 
+
+      {role === 'admin' && (
+        <Nav
         isCollapsed={mobilewidth ? true : isCollapsed}
         links={[
           {
@@ -81,13 +83,19 @@ export default function Sidenavbar({lang}) {
             variant: "ghost",
           },
           {
+            title:  t('sales'),
+            href: `/${lang}/viewSales`,
+            icon: ArrowRightLeft,
+            variant: "ghost",
+          },
+          {
             title:  t('analysis'),
             href: `/${lang}/analysis`,
             icon: LineChart,
             variant: "ghost",
           },
           {
-            title: t('sales'),
+            title: "Caisse",
             href: `/${lang}/sales`,
             icon: DollarSign,
             variant: "ghost",
@@ -106,6 +114,55 @@ export default function Sidenavbar({lang}) {
           },
         ]}
       />
+      )}
+
+
+{role === 'employee' && (
+        <Nav
+        isCollapsed={mobilewidth ? true : isCollapsed}
+        links={[
+          {
+            title: t('dashboard'),
+            // href: "dashboard",
+            href: `/${lang}/dashboard`,
+
+            icon: LayoutDashboard,
+            variant: "default",
+          },
+          {
+            title: t('warehouse'),
+            href: `/${lang}/warehouse`,
+            icon: Home,
+            variant: "ghost",
+          },
+          {
+            title:  t('transactions'),
+            href: `/${lang}/viewTransaction`,
+            icon: ArrowRightLeft,
+            variant: "ghost",
+          },
+          {
+            title: "Caisse",
+            href: `/${lang}/sales`,
+            icon: DollarSign,
+            variant: "ghost",
+          },
+          {
+            title:  t('notifications'),
+            href: `/#`,
+            icon: BellRing,
+            variant: "ghost",
+          },
+          {
+            title:  t('settings'),
+            href: `/${lang}/settings`,
+            icon: Settings, 
+            variant: "ghost",
+          },
+        ]}
+      />
+      )}
+      
     </div>
   );
 }

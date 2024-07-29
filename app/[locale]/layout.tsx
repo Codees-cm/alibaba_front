@@ -1,13 +1,11 @@
 /* eslint-disable @next/next/no-sync-scripts */
 // "use client"
 import React, { ReactNode } from 'react'
-// import {NextIntlClientProvider} from 'next-intl';
 import TanstackProvider from '../providers/TanstackProvider'
-// import NextIntClint
 import { dir } from 'i18next'
 import { languages } from '../i18n/settings'
 
-
+import { EdgeStoreProvider } from '@/lib/edgestore'
 
 export async function generateStaticParams() {
   return languages.map((locale) => ({ locale }))
@@ -34,7 +32,9 @@ export default function LocaleLayout({
         </head>
         <body style={{ overflowX: "hidden" }}>
             <TanstackProvider>
-            {children}
+              <EdgeStoreProvider>
+              {children}
+              </EdgeStoreProvider>
         </TanstackProvider>
      
         </body>

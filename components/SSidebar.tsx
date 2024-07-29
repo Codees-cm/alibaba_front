@@ -77,8 +77,15 @@ export default function SSidenavbar({lang}) {
           {
             title:  t('orders'),
 
-            href:`/${lang}/warehouse/Orders`,
+            href:`/${lang}/warehouse/orders`,
             icon: ShoppingCart,
+            variant: "ghost",
+          },
+          {
+            title:  'Customers',
+
+            href:`/${lang}/warehouse/customers`,
+            icon: UsersRound,
             variant: "ghost",
           },
         ]}
