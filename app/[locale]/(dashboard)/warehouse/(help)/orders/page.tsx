@@ -48,9 +48,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { useOrders } from "@/hooks/stock_manage/use-order";
-import AddCustomers from "@/components/AddCustomers";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { SetStateAction, JSXElementConstructor, Key, PromiseLikeOfReactNode, ReactElement, ReactNode, ReactPortal, useState } from "react";
 
 
 
@@ -73,27 +72,27 @@ export default function Customer() {
 
 
   // Function to handle page change
-  const handlePageChange = (page) => {
+  const handlePageChange = (page: SetStateAction<number>) => {
     setCurrentPage(page);
   };
 
-   // Filter customers based on search term
-   const filteredCustomers = orders?.data.filter(orders =>
+   // Filter orders based on search term
+   const filteredOrders = orders?.data.filter((orders: { user: string; }) =>
     orders.user.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  const handleSearchChange = (event) => {
+  const handleSearchChange = (event: { target: { value: SetStateAction<string>; }; }) => {
     setSearchTerm(event.target.value);
     setCurrentPage(1); // Reset to first page on new search
   };
 
   const itemsPerPage = 5; // Number of items to display per page
-  const pageCount = Math.ceil(filteredCustomers.length / itemsPerPage); // Calculate number of pages
+  const pageCount = Math.ceil(filteredOrders.length / itemsPerPage); // Calculate number of pages
 
 
   // Calculate start and end index based on currentPage
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedItems = filteredCustomers.slice(startIndex, endIndex);
+  const displayedItems = filteredOrders.slice(startIndex, endIndex);
 
   return (
     <div className="flex min-h-screen w-full flex-col  bg-gradient-to-r from-amber-100 to-white">
@@ -106,29 +105,16 @@ export default function Customer() {
             <TabsContent value="all">
               <Card>
                 <CardHeader>
-                  <CardTitle>Customers</CardTitle>
+                  <CardTitle>Orders</CardTitle>
                   <div className="ml-auto flex items-center gap-2">
                   <Input
                   type="text"
-                  placeholder="Search customers..."
+                  placeholder="Search orders..."
                   value={searchTerm}
                   onChange={handleSearchChange}
                   className="mr-2"
                 />
-                    <AlertDialog>
-                      <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Customers</AlertDialogTrigger>
-                      <AlertDialogContent className="w-fit">
-                        <AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          </AlertDialogFooter>
-                          <AlertDialogDescription>
-                            <AddCustomers />
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-
-                      </AlertDialogContent>
-                    </AlertDialog>
+                    
                   </div>
 
                 </CardHeader>
@@ -138,6 +124,7 @@ export default function Customer() {
                       <TableRow>
                       <TableHead>User</TableHead>
                       <TableHead>Address</TableHead>
+                      <TableHead>Postal Code</TableHead>
                         <TableHead>City</TableHead>
                         <TableHead>Paid</TableHead>
                         <TableHead>Action</TableHead>
@@ -149,7 +136,7 @@ export default function Customer() {
                       <TableCell colSpan={2}>Loading...</TableCell>
                     </TableRow>
                   ) : (
-                    displayedItems.map((order) => (
+                    displayedItems.map((order: { id: Key | null | undefined; user: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | Iterable<ReactNode> | null | undefined; address: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | Iterable<ReactNode> | null | undefined; postal_code: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | Iterable<ReactNode> | null | undefined; city: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | Iterable<ReactNode> | null | undefined; paid: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | PromiseLikeOfReactNode | Iterable<ReactNode> | null | undefined; }) => (
                       <TableRow key={order.id}>
                         <TableCell className="font-medium">{order.user}</TableCell>
                         <TableCell className="font-medium">{order.address}</TableCell>

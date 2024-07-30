@@ -10,6 +10,7 @@ import SalesCard, { SalesProps } from "@/components/SalesCard";
 import { Activity, ArrowRightLeft, Users, DollarSign } from "lucide-react";
 import Barchart from "@/components/barchart";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTransactions } from "@/hooks/transactions/use-transactions";
 import  {useEffect} from "react"
 
 const UserSalesData: SalesProps[] = [
@@ -25,6 +26,7 @@ export default function Home({ params: { locale } }) {
   const { t } = useTranslation(locale, "dashboard")
 
   const { data, isLoading , data_bar,loading_bar} = useDashboard()
+  const { transactions,allLoading }= useTransactions(true)
   useEffect(() => {
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker
@@ -121,7 +123,7 @@ export default function Home({ params: { locale } }) {
             )
           }
           {
-            isLoading ? (
+            allLoading ? (
               <>
                 <Skeleton className="h-[300px] w-[450px] rounded-xl" />
               </>
@@ -136,12 +138,12 @@ export default function Home({ params: { locale } }) {
 
 
                   </section>
-                  {UserSalesData.map((d, i) => (
+                  {transactions?.data.map((d, i) => (
                     <SalesCard
                       key={i}
-                      name={d.name}
-                      email={d.email}
-                      saleAmount={d.saleAmount}
+                      name={d.user}
+                      email={d.payment_method}
+                      saleAmount={d.amount}
                     />
                   ))}
 

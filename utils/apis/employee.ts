@@ -10,7 +10,7 @@ export const fetchEmployees = async () => {
 }
 
 export const createEmployees = async (data: any) => {
-    const response = await instance.post('/users/',data)
+    const response = await instance.post('/users/create-employee/',data)
     .then((res)=>{
       return res
     })
