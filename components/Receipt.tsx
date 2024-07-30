@@ -1,18 +1,18 @@
 import React from 'react';
 import '@/public/style.css';
 
-
 const Receipt = ({ salesData, paymentMethod, name, phoneNumber, location, totalAmount, amountReceived, balance }) => {
     const currentDate = new Date().toLocaleString();
     const receiptCode = 'LABC' + Math.floor(Math.random() * 1000000).toString();
-    console.log("update")
+    console.log("update");
+
     return (
         <div className="text-center mt-3">
             <section className="receipt container-ticket">
                 <div className="ticket">
                     <div className="head-ticket">
                         <p className="x-bold"></p>
-                        <p className="bold">Nixon lover Boy's Street, Tudor</p>
+                        <p className="bold">Labcraft&apos;s Street</p>
                         <p className="bold">Tel: +000 000 000000</p>
                         <br />
                         {/* <p className="bold">P.O BOX. 90420-80100 MSA</p> */}
