@@ -5,6 +5,8 @@ import PageTitle from '@/components/PageTitle'
 import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 import { useStockItem } from '@/hooks/stock_manage/use-stockitem'
+import Loader from "@/components/Loader";
+
 type Props = {
   params: {
     id: number
@@ -16,7 +18,7 @@ export default function WarehouseDetail({ params }: Props) {
   const { warehouseproducts,allLoading,allFetchError } = useStockItem(params.id)
 
   if (allLoading) {
-    return <div>..loading</div>; // Show error message if fetching data fails
+    return <Loader/>; // Show error message if fetching data fails
   }
  
 

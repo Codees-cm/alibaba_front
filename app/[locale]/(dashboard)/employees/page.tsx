@@ -229,7 +229,7 @@ import { useRouter } from "next/navigation";
 import { SetStateAction, JSXElementConstructor, Key, PromiseLikeOfReactNode, ReactElement, ReactNode, ReactPortal, useState } from "react";
 
 import AddEmployee from "@/components/AddEmployee";
-
+import Loader from "@/components/Loader";
 
 
 export default function Employee() {
@@ -240,7 +240,7 @@ export default function Employee() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   if (allLoading) {
-    return <div>loading</div>; // Show error message if fetching data fails
+    return <Loader/>; // Show error message if fetching data fails
   }
 
 
