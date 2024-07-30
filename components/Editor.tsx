@@ -2,24 +2,35 @@
 import React, { useState } from 'react'
 import { MdEditor } from "md-editor-rt";
 import "md-editor-rt/lib/style.css";
-import { uploadEditorFile } from '@/lib/actions';
+// import { uploadEditorFile } from '@/lib/actions';
 import { useProducts } from '@/hooks/stock_manage/use-product';
 import { useRouter } from 'next/navigation';
-function Editor(id) {
+import { useEdgeStore } from "@/lib/edgestore";
+
+function Editor(id: { id: any; }) {
     const [text, setText] = useState("hello md-editor-rt！");
     const { createProductMarkdown,isCreatingProductsMarkdown,}=useProducts()
+    const { edgestore } = useEdgeStore();
+    
     const router = useRouter()
     const handleSave = async () => {
         const fileName = 'editor_content.md'; // Define the filename for the content
 
         try {
-            const response = await uploadEditorFile(text, fileName); // Upload content to S3
+            // const response = await uploadEditorFile(text, fileName); // Upload content to S3
+           
+            // const res = await edgestore.myPublicImages.upload({ 
+            //     file: ,
+            //     onProgressChange: (progress) => {
+            //       console.log(progress);
+            //     }
+            //   });
             const payload = {
                 product_id: id.id,
                 file_url:`https://larcraft-storage.s3.eu-north-1.amazonaws.com/${fileName}`
             }
             await createProductMarkdown(payload)
-            console.log("File uploaded successfully:", response);
+            // console.log("File uploaded successfully:", response);
             router.back();
 
         } catch (error) {
@@ -35,7 +46,7 @@ function Editor(id) {
             onChange={(modelValue) => {
                 setText(modelValue);
             }}
-            onSave={handleSave} // Call handleSave when onSave is triggered
+            // onSave={handleSave} // Call handleSave when onSave is triggered
         />
     );
 }
