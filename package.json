@@ -48,6 +48,7 @@
     "i18next-resources-to-backend": "^1.2.1",
     "jimp": "^0.22.12",
     "js-cookie": "^3.0.5",
+    "jspdf": "^2.5.1",
     "lucide-react": "^0.365.0",
     "md-editor-rt": "^4.13.5",
     "next": "14.1.0",

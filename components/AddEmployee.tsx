@@ -14,6 +14,7 @@ const {register} = useEmployee()
         email: "",
         password: "",
         re_password: "",
+        role:"employee"
     });
 
     // Function to handle input change
@@ -37,6 +38,7 @@ const {register} = useEmployee()
               email: "",
               password: "",
               re_password: "",
+              role:"employee"
 
             });
         } catch (error) {
