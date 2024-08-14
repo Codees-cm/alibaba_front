@@ -5,7 +5,7 @@ import { useEdgeStore } from "./edgestore";
 const {edgestore} = useEdgeStore()
 
 
-export async function uploadFile(formData) {
+export async function uploadFile(formData: { get: (arg0: string) => any; }) {
   try {
     const file = formData.get("file");
 

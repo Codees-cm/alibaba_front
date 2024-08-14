@@ -11,7 +11,7 @@ export default function RootLayout({
   children: React.ReactNode;
   params: {locale: string};
 }) {
-  const { t } = useTranslation(locale,'warehouse')
+  // const { t } = useTranslation(locale,'warehouse')
   return (
     <>
       {/* <div className="p-8 w-full"> */}

@@ -13,14 +13,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useTransactions } from "@/hooks/transactions/use-transactions";
 import  {useEffect} from "react"
 
-const UserSalesData: SalesProps[] = [
-  {
-    name: "Oliviia Martin",
-    email: "olivia.marting@gmail.com",
-    saleAmount: "$1,999.0"
-  },
-];
-
 
 export default function Home({ params: { locale } }) {
   const { t } = useTranslation(locale, "dashboard")
@@ -52,13 +44,13 @@ export default function Home({ params: { locale } }) {
     {
       label: t('today-transaction'),
       amount: data?.data["today_sales_count"],
-      discription: "+12.1% from last month",
+      discription: "",
       icon: ArrowRightLeft,
     },
     {
       label: t('total-products'),
       amount: data?.data["total_products"],
-      discription: "+281 sold from last month",
+      discription: "",
       icon: Activity,
     },
   ];
@@ -132,10 +124,7 @@ export default function Home({ params: { locale } }) {
                 <CardContent className="flex justify-between gap-4">
                   <section>
                     <p>Recent transactions</p>
-                    <p className="text-sm text-gray-400">
-                      you made 26 transactions in one months
-                    </p>
-
+                   
 
                   </section>
                   {transactions?.data.map((d, i) => (

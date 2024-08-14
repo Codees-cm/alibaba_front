@@ -25,27 +25,60 @@ export default function Page() {
         const initialSalesData = storedSalesData ? JSON.parse(storedSalesData) : [];
         setSalesData(initialSalesData);
         // Calculate the total amount
-        const total = initialSalesData.reduce((acc, product) => acc + product.quantity_sold * product.sale_price, 0);
+        const total = initialSalesData.reduce((acc: number, product: { quantity_sold: number; sale_price: number; }) => acc + product.quantity_sold * product.sale_price, 0);
         setTotalAmount(total);
     }, []);
 
-    const handlePaymentSubmit = (details) => {
+    const handlePaymentSubmit = (details: React.SetStateAction<{ paymentMethod: string; name: string; phoneNumber: string; location: string; }>) => {
         console.log(details)
         setPaymentDetails(details);
         setAmountReceived(details.amountReceived);
         setBalance(details.amountReceived - totalAmount);
     };
 
-    const downloadReceipt = () => {
-        const input = document.getElementById('receipt');
-        html2canvas(input).then((canvas) => {
-            const imgData = canvas.toDataURL('image/png');
-            const pdf = new jsPDF();
-            pdf.addImage(imgData, 'PNG', 0, 0);
-            pdf.save("receipt.pdf");
+    const sendImageToPrinter = (filePath) => {
+        fetch('/api/print', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ filePath }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+        })
+        .catch((error) => {
+            console.error('Error:', error);
         });
     };
-
+    
+    const printReceipt = () => {
+        const input = document.getElementById('receipt');
+        html2canvas(input).then((canvas) => {
+            canvas.toBlob((blob) => {
+                const file = new File([blob], 'receipt.png', { type: 'image/png' });
+                const formData = new FormData();
+                formData.append('file', file);
+    
+                // Save the image to the server
+                fetch('/api/save-image', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        sendImageToPrinter(data.filePath);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error saving image:', error);
+                });
+            });
+        });
+    };
+    
     return (
         <div className="container mx-auto mt-10 px-4 bg-gradient-to-r from-amber-100 to-white">
             <div className="flex flex-col ml-10 lg:flex-row gap-8">
@@ -106,7 +139,7 @@ export default function Page() {
                                 balance={balance}
                             />
                         </div>
-                        <button onClick={downloadReceipt} className="mt-4 btn btn-primary">Download Receipt</button>
+                        <button onClick={printReceipt} className="mt-4 btn btn-primary">Print Receipt</button>
 
                     </div>
                 </div>

@@ -44,8 +44,8 @@ export default function Supplier() {
     setSaleFormData({ ...saleFormData, [id]: value });
   };
 
-  const handleProductChange = (value) => {
-    const selectedProduct = products.data.find(product => product.id.toString() === value);
+  const handleProductChange = (value: any) => {
+    const selectedProduct = products.data.find((product: { id: { toString: () => any; }; }) => product.id.toString() === value);
     if (selectedProduct) {
       setSaleFormData(prevState => ({
         ...prevState,
@@ -110,7 +110,7 @@ export default function Supplier() {
                       </SelectTrigger>
                       <SelectGroup>
                         <SelectContent>
-                          {products?.data.map((product) => (
+                          {products?.data.map((product: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | Iterable<React.ReactNode> | null | undefined; }) => (
                             <SelectItem key={product.id} value={product.id.toString()}>
                               {product.name}
                             </SelectItem>
