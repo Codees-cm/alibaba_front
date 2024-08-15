@@ -19,12 +19,12 @@ export default function EditProduct({ productId, initialData, onClose }) {
   
   const [productData, setProductData] = useState(initialData);
   const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(initialData.images?.[0].image_url || null);
+  const [imagePreview, setImagePreview] = useState(initialData.images?.[0] || null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setProductData(initialData);
-    setImagePreview(initialData.images?.[0].image_url || null);
+    setImagePreview(initialData.images?.[0] || null);
     console.log(initialData.images)
   }, [initialData]);
 
@@ -136,14 +136,15 @@ export default function EditProduct({ productId, initialData, onClose }) {
                   <div className="flex items-center p-5">
                     <Select
                       onValueChange={handleCategoryChange}
-                      defaultValue={productData.category.toString()}
+                      
+                      // defaultValue={productData.category.toString()}
                     >
                       <SelectTrigger id="category" aria-label="category" name="category">
-                        <SelectValue placeholder="Category" />
+                        <SelectValue placeholder={productData.category.toString()} />
                       </SelectTrigger>
                       <SelectContent>
                         {categories?.data.map((category) => (
-                          <SelectItem key={category.id} value={category.id.toString()}>
+                          <SelectItem key={category.id}  value={category.id.toString()}>
                             {category.name}
                           </SelectItem>
                         ))}
@@ -158,9 +159,9 @@ export default function EditProduct({ productId, initialData, onClose }) {
                       )}
                     </div>
                     {initialData.images?.[0] && (
-                      <div className="mt-2">
+                      <div className="mt-2 w-30 h-30">
                         <p className="text-sm">Original Image:</p>
-                        <img src={initialData.images[0]} alt="Original" className="w-full h-full object-cover mt-2" />
+                        <img src={initialData.images[0].image_url} alt="Original" className="w-full h-full object-cover" />
                       </div>
                     )}
                   </div>
