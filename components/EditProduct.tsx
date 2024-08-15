@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useCategories } from "@/hooks/stock_manage/use-category";
@@ -14,20 +14,21 @@ import { useRouter } from "next/navigation";
 export default function EditProduct({ productId, initialData, onClose }) {
   const router = useRouter();
   const { categories } = useCategories();
-  const { modifyProduct, isEditingProduct, isSuccess, errorMessage } = useProducts(false,productId);
+  const { modifyProduct, isEditingProduct, isSuccess, errorMessage } = useProducts(false, productId);
   const { edgestore } = useEdgeStore();
   
   const [productData, setProductData] = useState(initialData);
   const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(initialData.images?.[0] || null);
+  const [imagePreview, setImagePreview] = useState(initialData.images?.[0].image_url || null);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setProductData(initialData);
-    setImagePreview(initialData.images?.[0] || null);
+    setImagePreview(initialData.images?.[0].image_url || null);
+    console.log(initialData.images)
   }, [initialData]);
 
-  const handleFormChange = (value) => {
+  const handleCategoryChange = (value) => {
     const selectedCategory = categories.data.find((category) => category.id.toString() === value);
     if (selectedCategory) {
       setProductData((prevState) => ({
@@ -75,7 +76,7 @@ export default function EditProduct({ productId, initialData, onClose }) {
         ...productData,
         images: [fileName],
       };
-      // console.log({ ...updatedProductData })
+
       await modifyProduct({ ...updatedProductData });
 
       setLoading(false);
@@ -95,17 +96,49 @@ export default function EditProduct({ productId, initialData, onClose }) {
           <CardContent className="p-2">
             <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-2 lg:gap-8">
               <div className="grid gap-4 lg:col-span-1">
-                <Input id="name" type="text" placeholder="Name" value={productData.name} onChange={handleInputChange} />
-                <Textarea id="description" placeholder="Description" value={productData.description} onChange={handleInputChange} />
-                <Input id="price_with_tax" type="number" placeholder="Price with Tax" value={productData.price_with_tax} onChange={handleInputChange} />
-                <Input id="price" type="number" placeholder="Price without Tax" value={productData.price} onChange={handleInputChange} />
-                <Input id="quantity" type="number" placeholder="Quantity" value={productData.quantity} onChange={handleInputChange} />
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Name"
+                  value={productData.name}
+                  onChange={handleInputChange}
+                />
+                <Textarea
+                  id="description"
+                  placeholder="Description"
+                  value={productData.description}
+                  onChange={handleInputChange}
+                />
+                <Input
+                  id="price_with_tax"
+                  type="number"
+                  placeholder="Price with Tax"
+                  value={productData.price_with_tax}
+                  onChange={handleInputChange}
+                />
+                <Input
+                  id="price"
+                  type="number"
+                  placeholder="Price without Tax"
+                  value={productData.price}
+                  onChange={handleInputChange}
+                />
+                <Input
+                  id="quantity"
+                  type="number"
+                  placeholder="Quantity"
+                  value={productData.quantity}
+                  onChange={handleInputChange}
+                />
               </div>
               <div className="grid gap-4 lg:col-span-1">
                 <div className="mb-32">
                   <div className="flex items-center p-5">
-                    <Select onValueChange={handleFormChange}>
-                      <SelectTrigger id="category" aria-label="category" name="category" value={productData.category}>
+                    <Select
+                      onValueChange={handleCategoryChange}
+                      defaultValue={productData.category.toString()}
+                    >
+                      <SelectTrigger id="category" aria-label="category" name="category">
                         <SelectValue placeholder="Category" />
                       </SelectTrigger>
                       <SelectContent>
@@ -124,6 +157,12 @@ export default function EditProduct({ productId, initialData, onClose }) {
                         <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                       )}
                     </div>
+                    {initialData.images?.[0] && (
+                      <div className="mt-2">
+                        <p className="text-sm">Original Image:</p>
+                        <img src={initialData.images[0]} alt="Original" className="w-full h-full object-cover mt-2" />
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
