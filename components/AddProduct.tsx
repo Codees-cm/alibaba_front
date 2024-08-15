@@ -12,6 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useEdgeStore } from "@/lib/edgestore";
 import { CirclePlus as AddCircleIcon } from 'lucide-react';
 import { useRouter } from "next/navigation";
+import { Switch } from "./ui/switch"
 
 export default function AddProduct() {
   const router = useRouter();
@@ -107,7 +108,7 @@ export default function AddProduct() {
 
   return (
     <div className="mx-auto">
-      <Card className="p-2">
+      <Card >
         <h1 className="text-xl font-semibold">Add Product</h1>
         <form onSubmit={handleSubmit} method="post">
           <CardContent className="p-2">
@@ -145,6 +146,7 @@ export default function AddProduct() {
                         <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                       )}
                     </div>
+                    
                   </div>
                 </div>
               </div>

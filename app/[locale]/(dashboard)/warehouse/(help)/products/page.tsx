@@ -70,14 +70,16 @@ export default function Dashboard() {
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-gradient-to-r from-amber-100 to-white">
-      <div className="flex min-h-screen w-full flex-col">
+      {/* <div className="flex min-h-screen w-full flex-col"> */}
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-          <main className="grid flex-1 items-start ml-15 mt-10">
+          {/* <main className="grid flex-1 items-start ml-15 mt-10"> */}
+        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6  ml-15 mt-10 sm:py-0 md:gap-8">
+         
           <Tabs defaultValue="all">
             <TabsContent value="all">
             <Card className="shadow-lg">
               <CardHeader>
-                <div className="flex flex-wrap justify-between mb-2">
+                {/* <div className="flex flex-wrap justify-between mb-2"> */}
                   <div className="space-y-1">
                     <CardTitle className="text-2xl font-extrabold tracking-tight lg:text-4xl">
                       Products
@@ -85,8 +87,36 @@ export default function Dashboard() {
                     <CardDescription>
                       List of your all products you have added
                     </CardDescription>
+                    <div className="ml-auto flex items-center gap-2">
+                  <Input
+                  type="text"
+                  placeholder="Search products..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="mr-2"
+                />
+                <div>
+                      <Button onClick={handleExportToCSV} >Export</Button>
+                    </div>
+                  <AlertDialog>
+                      <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Product</AlertDialogTrigger>
+                      <AlertDialogContent className="w-auto">
+                        <AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          </AlertDialogFooter>
+                          <AlertDialogDescription>
+                          <AddProduct />
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+
+                      </AlertDialogContent>
+                    </AlertDialog>
+                </div>
+                   
+
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <AlertDialog>
                         <AlertDialogTrigger asChild>
@@ -104,37 +134,42 @@ export default function Dashboard() {
                         </AlertDialogContent>
                       </AlertDialog>
                     </div>
-                    <div>
-                      <Button onClick={handleExportToCSV} className="mt-4 mr-4">Export</Button>
-                    </div>
-                    <div>
+                    {/* <div>
+                      <Button onClick={handleExportToCSV} >Export</Button>
+                    </div> */}
+                    {/* <div>
                       <Input
                         type="text"
                         placeholder="Search Products"
                         value={searchTerm}
                         onChange={handleSearchChange}
-                        className="mt-4 mr-4"
                       />
-                    </div>
-                  </div>
-                </div>
+                    </div> */}
+                  {/* </div> */}
+                 {/* */} 
+                
+                {/* </div> */}
               </CardHeader>
               <CardContent>
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-[100px]">Name</TableHead>
-                      <TableHead>Description</TableHead>
-                      <TableHead>Price</TableHead>
+                      <TableHead>Code</TableHead>
+                      <TableHead>Name</TableHead>
+                      <TableHead>Quantity</TableHead>
+                      <TableHead>Buying Price</TableHead>
+                      <TableHead>Selling Price</TableHead>
                       <TableHead>Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {displayedItems.map((product: React.SetStateAction<null>) => (
                       <TableRow key={product.id}>
+                        <TableCell className="font-medium">{product.product_code}</TableCell>
                         <TableCell className="font-medium">{product.name}</TableCell>
-                        <TableCell>{product.description}</TableCell>
+                        <TableCell>{product.quantity}</TableCell>
                         <TableCell>{product.price_with_tax}</TableCell>
+                        <TableCell>{product.price}</TableCell>
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -164,29 +199,36 @@ export default function Dashboard() {
                       </TableRow>
                     ))}
                   </TableBody>
+                
                 </Table>
-              </CardContent>
-              <div className="mt-4">
-                {/* Add pagination controls */}
-                <div className="flex justify-center">
-                  {Array.from({ length: pageCount }, (_, i) => i + 1).map((page) => (
+                {pageCount > 1 && (
+                <div className="flex justify-center mt-4">
+                  {[...Array(pageCount)].map((_, index) => (
                     <Button
-                      key={page}
-                      variant={page === currentPage ? 'primary' : 'secondary'}
-                      onClick={() => handlePageChange(page)}
+                      key={index + 1}
+                      onClick={() => handlePageChange(index + 1)}
+                      variant={currentPage === index + 1 ? 'solid' : 'ghost'}
+                      className={`px-3 py-1 ${
+                        currentPage === index + 1 ? 'bg-orange-200 text-orange-800' : 'text-gray-600'
+                      }`}
                     >
-                      {page}
+                      {index + 1}
                     </Button>
                   ))}
                 </div>
-              </div>
+              )}
+              </CardContent>
+              
             </Card>
+            <div className="mt-4 text-center text-sm text-gray-600">
+            Showing page {currentPage} of {pageCount}
+          </div>
               </TabsContent>
             </Tabs>
        
           </main>
         </div>
-      </div>
+      {/* </div> */}
 
       {/* Edit Product Dialog */}
       {selectedProduct && (

@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react'
 import TanstackProvider from '../providers/TanstackProvider'
 import { dir } from 'i18next'
 import { languages } from '../i18n/settings'
-
+import { Toaster } from "@/components/ui/toaster"
 import { EdgeStoreProvider } from '@/lib/edgestore'
 
 export async function generateStaticParams() {
@@ -36,7 +36,7 @@ export default function LocaleLayout({
               {children}
               </EdgeStoreProvider>
         </TanstackProvider>
-     
+        <Toaster />
         </body>
       </html>
     </>

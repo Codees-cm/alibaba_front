@@ -3,11 +3,14 @@ import React from "react";
 import { useQuery , useMutation , useQueryClient } from "@tanstack/react-query";
 // import { viewProduct } from "@/utils/api/product";
 import { fetchProducts,createProducts , createProductsMarkdown, viewProducts ,deleteProducts , productTransactions, updateProduct, editProductsMarkdown } from "@/utils/apis/product";
+import { useToast } from "@/components/ui/use-toast"
 
 export const useProducts = (enable:boolean = false , productId:number|null = null) => {
     const [isSuccess, setIsSuccess] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState("");
     const queryClient = useQueryClient();
+  const { toast } = useToast()
+
 
     const {data:products , isLoading :allLoading ,error:allFetchError , refetch} = useQuery({
         queryKey : ['products'],
@@ -36,9 +39,17 @@ export const useProducts = (enable:boolean = false , productId:number|null = nul
         onSuccess: () => {
             queryClient.invalidateQueries(["products"])
             setIsSuccess(true);
+            toast({
+              title: "Product saved",
+              description: "...........",
+            })
           },
           onError: (error) => {
             setErrorMessage(error.message)
+            toast({
+              title: "Uh oh! Something went wrong.",
+              description: "There was a problem with your request.",
+            })
             // console.error("Error occurred during registration:", error);
           },
     })
@@ -49,10 +60,18 @@ export const useProducts = (enable:boolean = false , productId:number|null = nul
         mutationFn: updateProduct,
         onSuccess: () => {
             queryClient.invalidateQueries(["product",productId])
+            toast({
+              title: "Product Edited",
+              description: "...........",
+            })
             setIsSuccess(true);
           },
           onError: (error) => {
             setErrorMessage(error.message)
+            toast({
+              title: "Uh oh! Something went wrong.",
+              description: "There was a problem with your request.",
+            })
             // console.error("Error occurred during registration:", error);
           },
     })
@@ -62,10 +81,18 @@ export const useProducts = (enable:boolean = false , productId:number|null = nul
       mutationFn: createProductsMarkdown,
       onSuccess: () => {
           queryClient.invalidateQueries(["product",productId])
+          toast({
+            title: "Product Markdown saved",
+            description: "...........",
+          })
           setIsSuccess(true);
         },
         onError: (error) => {
           setErrorMessage(error.message)
+          toast({
+            title: "Uh oh! Something went wrong.",
+            description: "There was a problem with your request.",
+          })
           // console.error("Error occurred during registration:", error);
         },
   })
@@ -74,10 +101,18 @@ export const useProducts = (enable:boolean = false , productId:number|null = nul
         mutationFn: deleteProducts,
         onSuccess: () => {
             queryClient.invalidateQueries(["products"])
+            toast({
+              title: "Product deleted",
+              description: "...........",
+            })
             setIsSuccess(true);
           },
           onError: (error) => {
             setErrorMessage(error.message)
+            toast({
+              title: "Uh oh! Something went wrong.",
+              description: "There was a problem with your request.",
+            })
             // console.error("Error occurred during registration:", error);
           },
     })
@@ -90,7 +125,7 @@ export const useProducts = (enable:boolean = false , productId:number|null = nul
     }
 
     const modifyProduct = async (product)=>{
-      console.log(product)
+     
         editProductMutation(product); 
     }
 

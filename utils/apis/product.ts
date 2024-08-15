@@ -9,7 +9,7 @@ export const fetchProducts = async () => {
     return response;
 }
 
-export const createProducts = async (data) => {
+export const createProducts = async (data: any) => {
     const response = await instance.post('/products/',data)
     .then((res)=>{
       return res
@@ -18,7 +18,7 @@ export const createProducts = async (data) => {
 }
 
 
-export const createProductsMarkdown = async (data) => {
+export const createProductsMarkdown = async (data: any) => {
 //  console.log(edit,id)
   try {
     console.log(data)
@@ -31,17 +31,23 @@ export const createProductsMarkdown = async (data) => {
 
 
 export const updateProduct = async (product) => {
-
   try {
-    // const {} = product
-    console.log(product)
-      const response = await instance.patch(`/update-product/${product.id}/`,  product.data);
-      return response.data; // Return the response data
-    } catch (error) {
-      throw error; // Propagate the error
-    }
-}
-export const viewProducts = async (id) => {
+    console.log("Product data being sent:", product);
+
+    const response = await instance.patch(`/product-update/${product.id}/`, product, {
+      headers: {
+        'Content-Type': 'application/json',  // Ensure correct content type
+      },
+    });
+    console.log("Response from server:", response.data);
+    return response.data; // Return the response data
+  } catch (error) {
+    console.error("Error during product update:", error);
+    throw error; // Propagate the error
+  }
+};
+
+export const viewProducts = async (id: number | null) => {
     const response = await instance.get(`/products/${id}/`)
     .then((res)=>{
       return res
@@ -49,7 +55,7 @@ export const viewProducts = async (id) => {
     return response;
 }
 
-export const deleteProducts = async (id) => {
+export const deleteProducts = async (id: any) => {
     const response = await instance.delete(`/products/${id}/`)
     .then((res)=>{
       return res
@@ -58,7 +64,7 @@ export const deleteProducts = async (id) => {
 }
 
 
-export const productTransactions = async (id) => {
+export const productTransactions = async (id: number | null) => {
   const response = await instance.get(`/product/${id}/transactions/`)
   .then((res)=>{
     return res

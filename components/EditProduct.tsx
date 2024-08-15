@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 export default function EditProduct({ productId, initialData, onClose }) {
   const router = useRouter();
   const { categories } = useCategories();
-  const { modifyProduct, isEditingProduct, isSuccess, errorMessage } = useProducts(true, productId);
+  const { modifyProduct, isEditingProduct, isSuccess, errorMessage } = useProducts(false,productId);
   const { edgestore } = useEdgeStore();
   
   const [productData, setProductData] = useState(initialData);
@@ -75,7 +75,7 @@ export default function EditProduct({ productId, initialData, onClose }) {
         ...productData,
         images: [fileName],
       };
-
+      // console.log({ ...updatedProductData })
       await modifyProduct({ ...updatedProductData });
 
       setLoading(false);

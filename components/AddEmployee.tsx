@@ -5,7 +5,6 @@ import { Label } from './ui/label'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { useEmployee } from '@/hooks/use-employees'
-import { CollectionsOutlined } from '@mui/icons-material'
 export default function AddEmployee() {
 const {register} = useEmployee()
     const [employeeData, setCustomersData] = useState({
@@ -39,10 +38,11 @@ const {register} = useEmployee()
               password: "",
               re_password: "",
               role:"employee"
-
             });
+
+         
         } catch (error) {
-            console.error("Error adding employee:", error);
+        
         }
     };
 

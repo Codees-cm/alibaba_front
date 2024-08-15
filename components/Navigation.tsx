@@ -6,6 +6,7 @@ import Link from 'next/link';
 // import Image from "next/image"
 import { useRouter } from 'next/navigation';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import Cookies from 'js-cookie';
 import {
   Package2,
   PanelLeft,
@@ -20,33 +21,31 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Trans } from 'react-i18next/TransWithoutContext'
-import { useTranslation } from "@/app/i18n/client";
-import { languages } from "@/app/i18n/settings";
-
 
 export default function Navigation({ lang }) {
-  // const { t } = useTranslation()
   const router = useRouter()
   const [newLang, setNewLang] = useState("")
-
 
   useEffect(() => {
     (lang === 'en' ) ? setNewLang("fr") : setNewLang("en")
   }, [lang])
   
-  
+  function handleLogOut(): void {
+    // Delete the tokens from cookies
+    Cookies.remove('accessToken')
+    Cookies.remove('refreshToken')
+
+    // Redirect to the sign-in page
+    router.push(`/${lang}/auth/login`)
+  }
+
+  function hanbleContactSupport(): void {
+    // Redirect to WhatsApp with the specified number
+    window.open('https://wa.me/5683262167', '_blank')
+  }
 
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-      {/* {languages.filter((l) => lang !== l).map((l, index) => {
-        return (
-          <span key={l}>
-            {index > 0 && " - "}
-            <Link href={`/${l}/dashboard`}> {l}</Link>
-          </span>
-        );
-      })} */}
       <Sheet>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
@@ -87,14 +86,13 @@ export default function Navigation({ lang }) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => router.push(`/${lang}/settings`)} >Settings</DropdownMenuItem>
-          <DropdownMenuItem>Support</DropdownMenuItem>
-          <DropdownMenuItem  onClick={() => router.push(`/${newLang}/dashboard`)}>Switch to {newLang} </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push(`/${lang}/settings`)}>Settings</DropdownMenuItem>
+          <DropdownMenuItem onClick={hanbleContactSupport}>Support</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => router.push(`/${newLang}/dashboard`)}>Switch to {newLang}</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Logout</DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogOut}>Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>
-
   )
 }

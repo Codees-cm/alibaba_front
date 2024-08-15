@@ -2,9 +2,11 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fetchOrders, createOrder, changeOrderToPaid } from "@/utils/apis/order";
+import { useToast } from "@/components/ui/use-toast"
 
 export const useOrders = () => {
   const queryClient = useQueryClient();
+  const { toast } = useToast()
 
   // Fetch all orders
   const { data: orders, isLoading: ordersLoading , error} = useQuery({
@@ -18,6 +20,17 @@ export const useOrders = () => {
     mutationFn: createOrder,
     onSuccess: () => {
       queryClient.invalidateQueries(["orders"]);
+      toast({
+        title: "order registered",
+        description: "...........",
+      })
+    },
+    onError: (error) => {
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      })
+      // console.error("Error occurred during registration:", error);
     },
   });
 
@@ -26,6 +39,18 @@ export const useOrders = () => {
     mutationFn: changeOrderToPaid,
     onSuccess: () => {
       queryClient.invalidateQueries(["orders"]);
+      toast({
+        title: "order paid successfully",
+        description: "...........",
+      })
+    },
+    onError: (error) => {
+  
+      toast({
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      })
+      // console.error("Error occurred during registration:", error);
     },
   });
 

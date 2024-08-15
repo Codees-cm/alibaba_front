@@ -3,11 +3,13 @@ import React from "react";
 import { useQuery , useMutation , useQueryClient } from "@tanstack/react-query";
 // import { viewSupplier } from "@/utils/api/supplier";
 import { fetchSuppliers,createSuppliers , editSuppliers, viewSuppliers ,deleteSuppliers } from "@/utils/apis/supplier";
+import { useToast } from "@/components/ui/use-toast"
 
 export const useSuppliers = () => {
     const [isSuccess, setIsSuccess] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState("");
     const queryClient = useQueryClient();
+    const { toast } = useToast()
 
     const {data:suppliers , isLoading :allLoading ,error:allFetchError , refetch} = useQuery({
         queryKey : ['suppliers'],
@@ -29,9 +31,17 @@ export const useSuppliers = () => {
         onSuccess: () => {
             queryClient.invalidateQueries(["suppliers"])
             setIsSuccess(true);
+            toast({
+              title: "supplier saved",
+              description: "...........",
+            })
           },
           onError: (error) => {
             setErrorMessage(error.message)
+            toast({
+              title: "Uh oh! Something went wrong.",
+              description: "There was a problem with your request.",
+            })
             // console.error("Error occurred during registration:", error);
           },
     })
@@ -42,10 +52,18 @@ export const useSuppliers = () => {
         mutationFn: editSuppliers,
         onSuccess: () => {
             queryClient.invalidateQueries(["suppliers"])
+            toast({
+              title: "supplier edited",
+              description: "...........",
+            })
             setIsSuccess(true);
           },
           onError: (error) => {
             setErrorMessage(error.message)
+            toast({
+              title: "Uh oh! Something went wrong.",
+              description: "There was a problem with your request.",
+            })
             // console.error("Error occurred during registration:", error);
           },
     })
@@ -55,10 +73,18 @@ export const useSuppliers = () => {
         mutationFn: deleteSuppliers,
         onSuccess: () => {
             queryClient.invalidateQueries(["suppliers"])
+            toast({
+              title: "supplier deleted",
+              description: "...........",
+            })
             setIsSuccess(true);
           },
           onError: (error) => {
             setErrorMessage(error.message)
+            toast({
+              title: "Uh oh! Something went wrong.",
+              description: "There was a problem with your request.",
+            })
             // console.error("Error occurred during registration:", error);
           },
     })

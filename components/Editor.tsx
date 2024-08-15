@@ -1,17 +1,28 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdEditor } from "md-editor-rt";
 import "md-editor-rt/lib/style.css";
 import { useProducts } from '@/hooks/stock_manage/use-product';
 import { useRouter } from 'next/navigation';
 import { useEdgeStore } from "@/lib/edgestore";
 
-function Editor(id: { id: any; }) {
-    const [text, setText] = useState("hello md-editor-rt！");
+type EditorProps = {
+    id: string;
+    initialContent?: string | null;
+};
+
+function Editor({ id, initialContent }: EditorProps) {
+    const [text, setText] = useState(initialContent || "hello md-editor-rt！");
     const { createProductMarkdown, isCreatingProductsMarkdown } = useProducts();
     const { edgestore } = useEdgeStore();
     const router = useRouter();
 
+    useEffect(() => {
+        if (initialContent) {
+            setText(initialContent);
+        }
+    }, [initialContent]);
+    
     const generateRandomFilename = () => {
         const timestamp = new Date().getTime();
         return `editor_content_${timestamp}.md`;
@@ -31,7 +42,7 @@ function Editor(id: { id: any; }) {
             });
 
             const payload = {
-                product_id: id.id,
+                product_id: id,
                 file_url: res.url
             };
 

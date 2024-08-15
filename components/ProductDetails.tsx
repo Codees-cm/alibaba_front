@@ -23,29 +23,6 @@ import { useProducts } from "@/hooks/stock_manage/use-product";
 
 import Link from 'next/link';
 
-const UserSalesData: SalesProps[] = [
-    {
-        name: "Oliviia Martin",
-        email: "olivia.marting@gmail.com",
-        saleAmount: "$1,999.0"
-    },
-    {
-        name: "Ricky Farel",
-        email: "ricky.farel@gmail.com",
-        saleAmount: "$3,999.0"
-    },
-    {
-        name: "William kit",
-        email: "wiliam.kit@gmail.com",
-        saleAmount: "$299.0"
-    },
-    {
-        name: "Jackson luc",
-        email: "jackson.luc@gmail.com",
-        saleAmount: "$799.0"
-    }
-];
-
 type Props = {
     params: {
         id: number;
@@ -75,6 +52,27 @@ const ProductDetails: React.FC<Props> = ({ params }) => {
         online: oneProduct?.data.available
     };
 
+
+    const file_columns = [
+        {
+            accessorKey: "file_url",
+            header: "Markdown Url",
+        },
+        {
+            accessorKey: "edit",
+            header: "Actions",
+            cell: ({ row }) => {
+                // const product_id = row.original.product_id; // Assuming each row has a product_id
+                const file_url = oneProduct?.data.markdown_files[0].file_url; // Assuming each row has a file_url
+                console.log(file_url)
+                return (
+                    <Link href={`/products/${product.id}/markdown/edit?file_url=${encodeURIComponent(file_url)}`}>
+                        <button className="text-blue-500 hover:text-blue-700">Edit</button>
+                    </Link>
+                );
+            },
+        },
+    ];
     // console.log(oneProduct?.data.images);
     return (
         <div className="bg-gradient-to-r from-amber-100 to-white">
@@ -144,11 +142,7 @@ export const columns = [
     },
 ];
 
-export const file_columns = [
-    {
-        accessorKey: "file_url",
-        header: "Markdown Url"
-    },
-];
+ 
+
 
 export default ProductDetails;

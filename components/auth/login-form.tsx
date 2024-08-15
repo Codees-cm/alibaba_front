@@ -15,16 +15,17 @@ import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { z } from "zod";
-import { useFormStatus } from "react-dom";
-import { useState , useEffect } from "react";
-// import { useRegister } from "@/hooks/use-register";
+import { useState, useEffect } from "react";
+import { useToast } from "@/components/ui/use-toast";
 import { useLogin } from "@/hooks/use-login";
 import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
-    const [loading, setLoading] = useState(false);
-    const {login, isLoginingUser , isSuccess} = useLogin();
-    const router = useRouter()
+  const [loading, setLoading] = useState(false);
+  const { login, isLoginingUser, isSuccess, errorMsg } = useLogin();
+  const router = useRouter();
+  const { toast } = useToast();
+
   const form = useForm({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -33,35 +34,30 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = async(data: z.infer<typeof LoginSchema>) => {
-      // event.preventDefault();
-      setLoading(true);
-      // console.log(data);
-      // Simulate API call delay
-      try {
-        await login(data);
-        // if (isSuccess) 
-      } catch (error) {
-        console.error("Error occurred during form submission:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
+    setLoading(true);
+   
+    await login(data);
   
-  
-    useEffect(() => {
-      if (isSuccess) {
-        router.push('/en/dashboard')
-      }
-    }, [isSuccess,router ]);
-  
-  const { pending } = useFormStatus();
+    (errorMsg) ?  toast({ title: "Uh oh! Something went wrong.", description: errorMsg || "Please try again"}) : toast({ title: "Success",description :"please wait some seconds"})
+ 
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.push("/en/dashboard");
+    } else if(errorMsg){
+      toast({ title: "Uh oh! Something went wrong.", description: errorMsg || "Please try again"})
+    }
+  }, [isSuccess, router,errorMsg]);
+
   return (
     <CardWrapper
       label="Login to your account"
       title="Login"
       backButtonHref="/auth/register"
-      backButtonLabel="Don't have an account? Register here."
+      backButtonLabel="forgot password"
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
