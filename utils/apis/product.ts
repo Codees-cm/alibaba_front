@@ -34,7 +34,7 @@ export const updateProduct = async (product) => {
   try {
     console.log("Product data being sent:", product);
 
-    const response = await instance.patch(`/product-update/${product.id}/`, product, {
+    const response = await instance.patch(`/update-product/${product.id}/`, product, {
       headers: {
         'Content-Type': 'application/json',  // Ensure correct content type
       },

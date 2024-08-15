@@ -105,7 +105,7 @@ export default function Dashboard() {
                           <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                           </AlertDialogFooter>
-                          <AlertDialogDescription>
+                          <AlertDialogDescription style={{ minWidth : 'max-content' }}>
                           <AddProduct />
                           </AlertDialogDescription>
                         </AlertDialogHeader>
@@ -113,42 +113,7 @@ export default function Dashboard() {
                       </AlertDialogContent>
                     </AlertDialog>
                 </div>
-                   
-
                   </div>
-                  {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button className="mt-4 mr-4">Add Product</Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent className="sm:max-w-[425px]">
-                          <AlertDialogHeader>
-                            <AlertDialogDescription>
-                              <AddProduct />
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Close</AlertDialogCancel>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
-                    {/* <div>
-                      <Button onClick={handleExportToCSV} >Export</Button>
-                    </div> */}
-                    {/* <div>
-                      <Input
-                        type="text"
-                        placeholder="Search Products"
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                      />
-                    </div> */}
-                  {/* </div> */}
-                 {/* */} 
-                
-                {/* </div> */}
               </CardHeader>
               <CardContent>
                 <Table>
@@ -164,7 +129,7 @@ export default function Dashboard() {
                   </TableHeader>
                   <TableBody>
                     {displayedItems.map((product: React.SetStateAction<null>) => (
-                      <TableRow key={product.id}>
+                      <TableRow className={(product.quantity <= 5) ? " bg-red-300":"" } key={product.id}>
                         <TableCell className="font-medium">{product.product_code}</TableCell>
                         <TableCell className="font-medium">{product.name}</TableCell>
                         <TableCell>{product.quantity}</TableCell>

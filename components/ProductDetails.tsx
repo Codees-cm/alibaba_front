@@ -66,7 +66,7 @@ const ProductDetails: React.FC<Props> = ({ params }) => {
                 const file_url = oneProduct?.data.markdown_files[0].file_url; // Assuming each row has a file_url
                 console.log(file_url)
                 return (
-                    <Link href={`/products/${product.id}/markdown/edit?file_url=${encodeURIComponent(file_url)}`}>
+                    <Link href={{pathname:`/products/${product.id}/markdown/`, query: { data: JSON.stringify({product:product.name ,file_url})}}} >
                         <button className="text-blue-500 hover:text-blue-700">Edit</button>
                     </Link>
                 );

@@ -146,7 +146,17 @@ export default function AddProduct() {
                         <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                       )}
                     </div>
-                    
+                    <p className="text-sm text-gray-800 mb-4">
+    Place product online as available?:
+    <Switch 
+      className="text-sm"  
+      checked={productData.available}
+      onCheckedChange={(checked) => setProductData(prevState => ({ 
+        ...prevState, 
+        available: checked 
+      }))} 
+    />
+  </p>
                   </div>
                 </div>
               </div>
