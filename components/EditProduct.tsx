@@ -24,8 +24,8 @@ export default function EditProduct({ productId, initialData, onClose }) {
 
   useEffect(() => {
     setProductData(initialData);
-    setImagePreview(initialData.images?.[0] || null);
-    console.log(initialData.images)
+    setImagePreview(initialData.image_urls || null);
+    console.log(initialData.image_urls)
   }, [initialData]);
 
   const handleCategoryChange = (value) => {
@@ -74,7 +74,7 @@ export default function EditProduct({ productId, initialData, onClose }) {
 
       const updatedProductData = {
         ...productData,
-        images: [fileName],
+        image_urls: fileName,
       };
 
       await modifyProduct({ ...updatedProductData });
@@ -161,7 +161,7 @@ export default function EditProduct({ productId, initialData, onClose }) {
                     {initialData.images?.[0] && (
                       <div className="mt-2 w-30 h-30">
                         <p className="text-sm">Original Image:</p>
-                        <img src={initialData.images[0].image_url} alt="Original" className="w-full h-full object-cover" />
+                        <img src={initialData.image_urls} alt="Original" className="w-full h-full object-cover" />
                       </div>
                     )}
                   </div>

@@ -26,8 +26,10 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { MoreHorizontal } from "lucide-react";
 import { useSuppliers } from "@/hooks/stock_manage/use-suppliers";
 import AddSupplier from "@/components/AddSupplier";
+import EditSupplier from "@/components/EditSupplier";
 export default function Dashboard() {
   const { suppliers,allFetchError,allLoading, deletingSupplier } = useSuppliers()
+  const [selectedItem, setSelectedItem] = useState(null); // Track the selected product for editing
 
   if (allFetchError) {
     return <div>Error: {allFetchError.message}</div>; // Show error message if fetching data fails
@@ -75,7 +77,7 @@ export default function Dashboard() {
                   <TableBody>
                   {
                   allLoading ? (<>isLoading</>) : (<>
-                   {suppliers?.data.map((supplier) => (
+                   {suppliers?.data.map((supplier: React.SetStateAction<null>) => (
                       <TableRow key={supplier.id}>
                         <TableCell className="font-medium">{supplier.name}</TableCell>
                         <TableCell>{supplier.email}</TableCell>
@@ -89,7 +91,9 @@ export default function Dashboard() {
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              <DropdownMenuItem>Edit</DropdownMenuItem>
+                              <DropdownMenuItem   
+                               onClick={() => setSelectedItem(supplier)}
+                              >Edit</DropdownMenuItem>
                               <DropdownMenuItem onClick={()=>deletingSupplier(supplier.id)}>Delete</DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
@@ -106,6 +110,26 @@ export default function Dashboard() {
           </main>
         </div>
       </div>
+
+      {selectedItem && (
+        <AlertDialog open={!!selectedItem} onOpenChange={(open) => !open && setSelectedItem(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Edit Product</AlertDialogTitle>
+              <AlertDialogDescription>
+                <EditSupplier
+                  id={selectedItem.id}
+                  initialData={selectedItem}
+                  onClose={() => setSelectedItem(null)}
+                />
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setSelectedItem(null)}>Close</AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </div>
   );
 }

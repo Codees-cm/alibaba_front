@@ -24,12 +24,13 @@ import { useProducts } from "@/hooks/stock_manage/use-product";
 import Link from 'next/link';
 
 type Props = {
+    role:any;
     params: {
         id: number;
     };  
 };
 
-const ProductDetails: React.FC<Props> = ({ params }) => {
+const ProductDetails: React.FC<Props> = ({ params },role) => {
     // Assuming you fetch the product data here based on params.id
     const { oneProduct, singleLoading, singleFetchError, productTrans, loadingProdTrans } = useProducts(true, params.id);
 
@@ -46,6 +47,7 @@ const ProductDetails: React.FC<Props> = ({ params }) => {
         name: oneProduct?.data.name,
         code: oneProduct?.data.product_code,
         available: oneProduct?.data.quantity,
+        category: oneProduct?.data.category,
         description: oneProduct?.data.description,
         price: oneProduct?.data.price,
         price_with_tax: oneProduct?.data.price_with_tax,
@@ -80,22 +82,22 @@ const ProductDetails: React.FC<Props> = ({ params }) => {
                 <div className="w-[100%] flex justify-center" style={{ height: 'max-content' }}>
                     <Carousel className="w-[300px] max-w-xs">
                         <CarouselContent>
-                            {oneProduct?.data.images.map((image, index) => (
-                                <CarouselItem key={index}>
+                           
+                                <CarouselItem >
                                     <div className="p-1">
                                         <Card>
                                             <CardContent className="flex aspect-square items-center justify-center p-6">
-                                                <img src={image.image_url} alt="" />
+                                                <img src={oneProduct?.data.image_urls} alt="" />
                                             </CardContent>
                                         </Card>
                                     </div>
                                 </CarouselItem>
-                            ))}
+    
                         </CarouselContent>
                     </Carousel>
                 </div>
                 <div className="w-[100%] flex justify-center">
-                    <ProductInfo product={product} />
+                    <ProductInfo product={product} role={role} />
                 </div>
             </div>
             <div className="m-10 flex justify-between mt-10" style={{ width: "90vh" }}>
@@ -107,7 +109,9 @@ const ProductDetails: React.FC<Props> = ({ params }) => {
                         <DataTable columns={columns} data={productTrans?.data} />
                     </CardContent>
                 </Card>
-                <Card style={{ maxWidth: "min-content" }}>
+                {role === 'admin' && (
+                <>
+                   <Card style={{ maxWidth: "min-content" }}>
                     <CardHeader>
                         Product Details
                         <div className="ml-auto flex items-center gap-2">
@@ -122,6 +126,10 @@ const ProductDetails: React.FC<Props> = ({ params }) => {
                         <DataTable columns={file_columns} data={oneProduct?.data.markdown_files} />
                     </CardContent>
                 </Card>
+                </>
+              
+              )}
+            
             </div>
         </div>
     );

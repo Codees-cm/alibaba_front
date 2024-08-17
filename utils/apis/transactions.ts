@@ -18,7 +18,7 @@ export const createTransactions = async (data: any) => {
 }
 
 export const viewTransactions = async (id: any) => {
-    const response = await instance.get(`/transactions/${id}/`)
+    const response = await instance.get(`/sales_by_transaction/${id}/`)
     .then((res)=>{
       return res
     })

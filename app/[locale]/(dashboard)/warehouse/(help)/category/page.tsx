@@ -52,14 +52,16 @@ import {
 import AddCategory from "@/components/AddCategory";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
+import EditCategory from "@/components/EditCategory";
+import { useMe } from "@/hooks/use-retiveme";
 
 
 
 
 export default function Category() {
+  const { me, isLoading, error } = useMe();
 
-
+  const [selectedItem, setSelectedItem] = useState(null); // Track the selected 
   const { categories, allFetchError, allLoading, deletingCategorie } = useCategories();
   const router = useRouter()
   const [currentPage, setCurrentPage] = useState(1);
@@ -117,20 +119,27 @@ export default function Category() {
                   onChange={handleSearchChange}
                   className="mr-2"
                 />
-                    <AlertDialog>
-                      <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Category</AlertDialogTrigger>
-                      <AlertDialogContent className="w-fit">
-                        <AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          </AlertDialogFooter>
-                          <AlertDialogDescription>
-                            <AddCategory />
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
+                 
+                        {me?.data.role === 'admin' && (
+                <>
+                <AlertDialog>
+                              <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Category</AlertDialogTrigger>
+                              <AlertDialogContent className="w-fit">
+                                <AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  </AlertDialogFooter>
+                                  <AlertDialogDescription>
+                                    <AddCategory />
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                </>
+              
+              )}
 
-                      </AlertDialogContent>
-                    </AlertDialog>
+                   
                   </div>
 
                 </CardHeader>
@@ -161,8 +170,21 @@ export default function Category() {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem onClick={() => router.push(`category/${category.id}`)}>Details</DropdownMenuItem>
-                              <DropdownMenuItem>Edit</DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => deletingCategorie(category.id)}>Delete</DropdownMenuItem>
+                              
+                              
+      {me?.data.role === 'admin' && (
+        <>
+          <DropdownMenuItem
+         onClick={() => setSelectedItem(category)}
+        
+        >Edit</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => deletingCategorie(category.id)}>Delete</DropdownMenuItem>
+      
+        </>
+       
+      )}
+
+                            
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </TableCell>
@@ -196,6 +218,26 @@ export default function Category() {
           </Tabs>
         </main>
       </div>
+
+      {selectedItem && (
+        <AlertDialog open={!!selectedItem} onOpenChange={(open) => !open && setSelectedItem(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Edit Product</AlertDialogTitle>
+              <AlertDialogDescription>
+                <EditCategory
+                  id={selectedItem.id}
+                  initialData={selectedItem}
+                  onClose={() => setSelectedItem(null)}
+                />
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setSelectedItem(null)}>Close</AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </div>
   );
 }

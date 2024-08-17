@@ -5,7 +5,7 @@ import { useQuery , useMutation , useQueryClient } from "@tanstack/react-query";
 import { fetchTransactions, createTransactions , viewTransactions  } from "@/utils/apis/transactions";
 import { useToast } from "@/components/ui/use-toast"
 
-export const useTransactions = (enable: boolean = false) => {
+export const useTransactions = (enable:boolean = false , id:number|null = null) => {
     const [isSuccess, setIsSuccess] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState("");
     const queryClient = useQueryClient();
@@ -16,15 +16,16 @@ export const useTransactions = (enable: boolean = false) => {
         queryKey : ['transactions'],
         queryFn: fetchTransactions,
         staleTime: 300000,
-        enabled: enable
+        enabled: !enable
     })
 
 
     const {data:oneTransaction , isLoading:singleLoading ,error:singleFetchError } = useQuery({
-        queryKey : ['viewTransaction'],
-        queryFn: viewTransactions,
+        queryKey : ['viewTransaction',id],
+        queryFn:  () =>  viewTransactions(id),
         staleTime: 300000,
-        enabled: !enable
+        enabled: enable && id !== null, 
+
 
     })
 

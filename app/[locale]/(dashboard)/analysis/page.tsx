@@ -12,17 +12,39 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useAnalysis } from "@/hooks/analysis/use-analysis";
 import PieChartComponent from '@/components/PieChart';
 import LineChartComponent from '@/components/LineChart';
-const UserSalesData: SalesProps[] = [
-  {
-    name: "Oliviia Martin",
-    email: "olivia.marting@gmail.com",
-    saleAmount: "$1,999.0"
-  },
-];
-
+import { useEffect, useState } from 'react';
+import instance from '@/utils/api';
 
 export default function Analysis({ params: { locale } }) {
   const { t } = useTranslation(locale, "dashboard")
+
+  const [productSalesData, setProductSalesData] = useState([]);
+  const [salesDateData, setSalesDateData] = useState([]);
+  const [salesData, setSalesData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [productSalesResponse, salesDateResponse, salesResponse] = await Promise.all([
+          instance.get('/api/product-sales-data/'),
+          instance.get('/api/sales-date-data/'),
+          instance.get('/api/sales-data/'),
+        ]);
+
+        setProductSalesData(productSalesResponse.data);
+        setSalesDateData(salesDateResponse.data);
+        setSalesData(salesResponse.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
 
   const { data, isLoading , data_bar,loading_bar, data_inventStat,data_catInsight,data_topSellingReview , loading_inventStat,
     loading_catInsight,
@@ -32,6 +54,10 @@ export default function Analysis({ params: { locale } }) {
     if(isLoading && loading_inventStat &&
       loading_catInsight &&  loading_topSellingReview){
         return(<> ...</>)
+    }
+
+    if (loading) {
+      return <Skeleton className="h-[300px] w-[450px] rounded-xl" />;
     }
 
   // Define default values for cardData
@@ -137,30 +163,7 @@ export default function Analysis({ params: { locale } }) {
       icon: Activity,
     },
   ];
-  const dummyData = [
-    { name: "Product A", total: 150 },
-    { name: "Product B", total: 200 },
-    { name: "Product C", total: 120 },
-    { name: "Product D", total: 350 },
-    { name: "Product E", total: 280 },
-  ];
 
-  const salesDateData = [
-    { date: "2022-01-01", quantitySold: 150 },
-    { date: "2022-01-02", quantitySold: 200 },
-    { date: "2022-01-03", quantitySold: 120 },
-    { date: "2022-01-04", quantitySold: 350 },
-    { date: "2022-01-05", quantitySold: 280 },
-    { date: "2022-01-06", quantitySold: 400 },
-    // Add more data points for different dates
-  ];
-  const salesData = [
-    { productName: "Product A", quantitySold: 150 },
-    { productName: "Product B", quantitySold: 200 },
-    { productName: "Product C", quantitySold: 120 },
-    { productName: "Product D", quantitySold: 350 },
-    { productName: "Product E", quantitySold: 280 },
-  ];
   return (
     <div className="p-8 w-full bg-gradient-to-r from-amber-100  to-white">
       <div className="flex flex-col gap-8 w-full">
@@ -219,7 +222,7 @@ export default function Analysis({ params: { locale } }) {
               <CardContent>
                   <p className="p-4 font-semibold">{t('overview')}</p>
 
-                  <Barchart data={dummyData}/>
+                  <Barchart data={productSalesData}/>
 
                 </CardContent>
               </>

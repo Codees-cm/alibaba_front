@@ -56,11 +56,13 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 
+import { useMe } from "@/hooks/use-retiveme";
 
 
 
 export default function Customer() {
 
+  const { me, isLoading, error } = useMe();
 
   const { customers, allFetchError, allLoading,  } = useCustomer();
   const router = useRouter()
@@ -119,7 +121,10 @@ export default function Customer() {
                   onChange={handleSearchChange}
                   className="mr-2"
                 />
-                    <AlertDialog>
+
+{me?.data.role === 'admin' && (
+                <>
+                <AlertDialog>
                       <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Customers</AlertDialogTrigger>
                       <AlertDialogContent className="w-fit">
                         <AlertDialogHeader>
@@ -133,6 +138,11 @@ export default function Customer() {
 
                       </AlertDialogContent>
                     </AlertDialog>
+                </>
+              
+              )}
+
+                   
                   </div>
 
                 </CardHeader>

@@ -10,6 +10,7 @@ type Product = {
     code: string;
     available: number;
     description: string;
+    category: string;
     price: number;
     price_with_tax: number;
     online:boolean;
@@ -17,10 +18,11 @@ type Product = {
 
 type Props = {
     product: Product;
+    role:any
 };
 
-const ProductInfo: React.FC<Props> = ({ product }) => {
-    const { id,name, code, available, description, price, price_with_tax,  online } = product;
+const ProductInfo: React.FC<Props> = ({ product ,role }) => {
+    const { id,name, code, available, description, price, price_with_tax,  online ,category } = product;
     const isAvailable = available > 0;
     // State for the switch
     const [isOnline, setIsOnline] = useState(online); // Set the initial state to false (off)
@@ -55,12 +57,20 @@ const ProductInfo: React.FC<Props> = ({ product }) => {
             <CardContent className="py-4 px-6">
                 <p className="text-sm text-gray-600 mb-2">Product Code: {code}</p>
                 <p className="text-sm text-gray-600 mb-2">Availability: {isAvailable ? 'Yes' : 'No'}</p>
-                <p className="text-sm text-gray-800 mb-4">{description}</p>
-                <p className="text-lg font-semibold text-blue-600">XAF{price}</p>
+                <p className="text-sm text-gray-800 mb-4"> Category :{category}</p>
+                <p className="text-sm text-gray-800 mb-4"> Description : {description}</p>
                 <small className="text-lg font-medium text-blue-400">XAF{price_with_tax}</small>
+
+                {role === 'admin' && (
+                <>
+                     <p className="text-lg font-semibold text-blue-600">XAF{price}</p>
                 <p className="text-sm text-gray-800 mb-4"> Place product online as available ?:
                     <Switch className='text-sm' checked={isOnline} onClick={handleSwitchChange} />
                 </p>
+                </>
+              
+              )}
+              
             </CardContent>
             <CardFooter className="bg-gray-100 py-3 px-4 rounded-b-lg">
                 <p className="text-sm">

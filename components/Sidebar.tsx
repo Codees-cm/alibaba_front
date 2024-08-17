@@ -59,10 +59,16 @@ export default function Sidenavbar({ lang, role }) {
           {
             title: t('dashboard'),
             // href: "dashboard",
-            href: `/${lang}/dashboard`,
+            href: `/${lang}/analysis`,
 
             icon: LayoutDashboard,
             variant: "default",
+          },
+          {
+            title: "Caisse",
+            href: `/${lang}/sales`,
+            icon: DollarSign,
+            variant: "ghost",
           },
           {
             title: t('employee'),
@@ -83,29 +89,24 @@ export default function Sidenavbar({ lang, role }) {
             variant: "ghost",
           },
           {
+            title: 'promoCode',
+            href: `/promocode`,
+            icon: ShoppingCart,
+            variant: "ghost",
+          },
+          {
             title:  t('sales'),
             href: `/${lang}/viewSales`,
-            icon: ArrowRightLeft,
-            variant: "ghost",
-          },
-          {
-            title:  t('analysis'),
-            href: `/${lang}/analysis`,
-            icon: LineChart,
-            variant: "ghost",
-          },
-          {
-            title: "Caisse",
-            href: `/${lang}/sales`,
-            icon: DollarSign,
+            icon: Package,
             variant: "ghost",
           },
           {
             title:  t('notifications'),
-            href: `/#`,
+            href: `/notifications`,
             icon: BellRing,
             variant: "ghost",
           },
+        
           {
             title:  t('settings'),
             href: `/${lang}/settings`,
@@ -130,6 +131,12 @@ export default function Sidenavbar({ lang, role }) {
             variant: "default",
           },
           {
+            title: "Caisse",
+            href: `/${lang}/sales`,
+            icon: DollarSign,
+            variant: "ghost",
+          },
+          {
             title: t('warehouse'),
             href: `/${lang}/warehouse`,
             icon: Home,
@@ -141,18 +148,7 @@ export default function Sidenavbar({ lang, role }) {
             icon: ArrowRightLeft,
             variant: "ghost",
           },
-          {
-            title: "Caisse",
-            href: `/${lang}/sales`,
-            icon: DollarSign,
-            variant: "ghost",
-          },
-          {
-            title:  t('notifications'),
-            href: `/#`,
-            icon: BellRing,
-            variant: "ghost",
-          },
+         
           {
             title:  t('settings'),
             href: `/${lang}/settings`,

@@ -7,6 +7,7 @@ import { Label } from "./ui/label"
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { Switch } from "./ui/switch"
+import { useOrders } from '@/hooks/stock_manage/use-order';
 
 const cameroonRegions = [
     { value: 'adamawa', label: 'Adamawa' },
@@ -28,6 +29,8 @@ export function PaymentMethod({ onSubmit }) {
     const [location, setLocation] = useState('');
     const [isOrder, setIsOrder] = useState(false);
     const [amountReceived, setAmountReceived] = useState('');
+    const {createNewOrder} = useOrders()
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -40,6 +43,9 @@ export function PaymentMethod({ onSubmit }) {
         };
         onSubmit(paymentDetails);
     };
+
+   
+    
 
     return (
         <Card>
@@ -131,7 +137,7 @@ export function PaymentMethod({ onSubmit }) {
                 <Switch onChange={() => setIsOrder(!isOrder)} />
                 
                 {isOrder ? (
-                    <Button className="w-full" onClick={handleSubmit}>
+                    <Button className="w-full" onClick={handleOrderSubmit}>
                         Submit Order
                     </Button>
                 ) : (

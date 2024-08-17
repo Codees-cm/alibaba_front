@@ -1,39 +1,39 @@
 
 import React from "react";
 import { useQuery , useMutation , useQueryClient } from "@tanstack/react-query";
-// import { viewSupplier } from "@/utils/api/supplier";
-import { fetchSuppliers,createSuppliers , editSuppliers, viewSuppliers ,deleteSuppliers } from "@/utils/apis/supplier";
+// import { viewNotification } from "@/utils/api/notification";
+import { fetchNotifications,createNotifications , editNotifications, viewNotifications ,deleteNotifications } from "@/utils/apis/notifications";
 import { useToast } from "@/components/ui/use-toast"
 
-export const useSuppliers = (enable:boolean = false , id:number|null = null) => {
+export const useNotifications = (enable:boolean = false , id:number|null = null) => {
     const [isSuccess, setIsSuccess] = React.useState(false);
     const [errorMessage, setErrorMessage] = React.useState("");
     const queryClient = useQueryClient();
     const { toast } = useToast()
 
-    const {data:suppliers , isLoading :allLoading ,error:allFetchError , refetch} = useQuery({
-        queryKey : ['suppliers'],
-        queryFn: fetchSuppliers,
+    const {data:notifications , isLoading :allLoading ,error:allFetchError , refetch} = useQuery({
+        queryKey : ['notifications'],
+        queryFn: fetchNotifications,
         staleTime: 300000,
         enabled: !enable,
     })
 
 
-    const {data:oneSupplier , isLoading:singleLoading ,error:singleFetchError } = useQuery({
-        queryKey : ['viewSupplier',id],
-        queryFn: viewSuppliers,
+    const {data:oneNotification , isLoading:singleLoading ,error:singleFetchError } = useQuery({
+        queryKey : ['viewNotification',id],
+        queryFn: viewNotifications,
         staleTime: 300000,
         enabled: !enable && id !== null,
 
     })
 
-    const {mutate:addSupplierMutation, isPending:isAddingSupplier} = useMutation({
-        mutationFn: createSuppliers,
+    const {mutate:addNotificationMutation, isPending:isAddingNotification} = useMutation({
+        mutationFn: createNotifications,
         onSuccess: () => {
-            queryClient.invalidateQueries(["suppliers"])
+            queryClient.invalidateQueries(["notifications"])
             setIsSuccess(true);
             toast({
-              title: "supplier saved",
+              title: "notification saved",
               description: "...........",
             })
           },
@@ -49,12 +49,12 @@ export const useSuppliers = (enable:boolean = false , id:number|null = null) => 
 
 
     
-    const {mutate:editSupplierMutation, isPending:isEditingSupplier} = useMutation({
-        mutationFn: editSuppliers,
+    const {mutate:editNotificationMutation, isPending:isEditingNotification} = useMutation({
+        mutationFn: editNotifications,
         onSuccess: () => {
-            queryClient.invalidateQueries(["suppliers"])
+            queryClient.invalidateQueries(["notifications"])
             toast({
-              title: "supplier edited",
+              title: "notification edited",
               description: "...........",
             })
             setIsSuccess(true);
@@ -70,12 +70,12 @@ export const useSuppliers = (enable:boolean = false , id:number|null = null) => 
     })
 
 
-    const {mutate:deleteSupplierMutation, isPending:isDeletingSupplier} = useMutation({
-        mutationFn: deleteSuppliers,
+    const {mutate:deleteNotificationMutation, isPending:isDeletingNotification} = useMutation({
+        mutationFn: deleteNotifications,
         onSuccess: () => {
-            queryClient.invalidateQueries(["suppliers"])
+            queryClient.invalidateQueries(["notifications"])
             toast({
-              title: "supplier deleted",
+              title: "notification deleted",
               description: "...........",
             })
             setIsSuccess(true);
@@ -93,36 +93,36 @@ export const useSuppliers = (enable:boolean = false , id:number|null = null) => 
 
 
 
-    const addSupplier = async (newSupplier: any)=>{
-            await  addSupplierMutation(newSupplier); 
+    const addNotification = async (newNotification: any)=>{
+            await  addNotificationMutation(newNotification); 
     }
 
-    const modifySupplier = async (editSupplier: any)=>{
-        await  editSupplierMutation(editSupplier); 
+    const modifyNotification = async (editNotification: any)=>{
+        await  editNotificationMutation(editNotification); 
     }
 
-    const deletingSupplier = async (id: any)=>{
-        await  deleteSupplierMutation(id); 
+    const deletingNotification = async (id: any)=>{
+        await  deleteNotificationMutation(id); 
     }
 
     return {
-        suppliers,
+        notifications,
         allLoading,
         allFetchError,
 
-        oneSupplier,
+        oneNotification,
         singleLoading,
         singleFetchError,
 
-        addSupplier,
-        isAddingSupplier,
+        addNotification,
+        isAddingNotification,
 
         
-        modifySupplier,
-        isEditingSupplier,
+        modifyNotification,
+        isEditingNotification,
 
-        deletingSupplier,
-        isDeletingSupplier,
+        deletingNotification,
+        isDeletingNotification,
 
         isSuccess,
         errorMessage,

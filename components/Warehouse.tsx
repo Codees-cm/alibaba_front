@@ -69,7 +69,7 @@ export default function Warehouse({ lang }) {
                    { t('warehouses')}
                     
                   </CardTitle>
-                  <CardDescription>Lorem description.</CardDescription>
+                  <CardDescription>For the sorage management</CardDescription>
                 </div>
                 {/* <Button aria-haspopup="true" size="icon" variant="ghost" className="flex items-center"> */}
                 <AlertDialog>

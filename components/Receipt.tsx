@@ -1,18 +1,22 @@
 import React from 'react';
 import '@/public/style.css';
+import Image from 'next/image';
+import Image1 from "./../public/img/bw-512x512.png";
 
 const Receipt = ({ salesData, paymentMethod, name, phoneNumber, location, totalAmount, amountReceived, balance }) => {
     const currentDate = new Date().toLocaleString();
     const receiptCode = 'LABC' + Math.floor(Math.random() * 1000000).toString();
 
+
+    console.log(salesData)
     return (
-        <div className="text-center mt-3">
+        <div className="text-center">
             <section className="receipt container-ticket">
                 <div className="ticket">
                     <div className="head-ticket">
                         {/* Logo */}
                         <div className="logo">
-                            <img src="logo_url_here" alt="Labcraft Logo" className="logo-image" />
+                            <Image src={Image1} width={50} height={50} alt="Labcraft Logo" className="logo-image" />
                         </div>
                         {/* Company Info */}
                         <p className="bold">Labcraft Sarl</p>
@@ -31,14 +35,13 @@ const Receipt = ({ salesData, paymentMethod, name, phoneNumber, location, totalA
                             <p><b>Total Price</b></p>
                         </div>
                         <div className="hr-sm"></div>
-
                         {/* Product List */}
                         {salesData.map((product, index) => (
-                            <div key={index} className="col4 product-row">
+                            <div key={index} className="col4 header-row">
                                 <p>{product.product}</p>
                                 <p>{product.quantity_sold}</p>
-                                <p>{product.sale_price}</p>
-                                <p>{(product.sale_price * product.quantity_sold).toFixed(2)}</p>
+                                <p>{product.price}</p>
+                                <p>{(product.price * product.quantity_sold).toFixed(2)}</p>
                             </div>
                         ))}
 

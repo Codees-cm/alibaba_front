@@ -12,13 +12,16 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useSales } from '@/hooks/use-sales';
 
 export default function Page() {
     const [salesData, setSalesData] = useState([]);
-    const [paymentDetails, setPaymentDetails] = useState({ paymentMethod: '', name: '', phoneNumber: '', location: '' });
+    const [paymentDetails, setPaymentDetails] = useState({ paymentMethod: '', name: '', phoneNumber: '', location: '' ,order:false });
     const [totalAmount, setTotalAmount] = useState(0);
     const [amountReceived, setAmountReceived] = useState(0);
     const [balance, setBalance] = useState(0);
+  const {addSale,isAddingSale,isSuccess} = useSales()
+
 
     useEffect(() => {
         const storedSalesData = localStorage.getItem('salesData');
@@ -53,8 +56,9 @@ export default function Page() {
         });
     };
     
-    const printReceipt = () => {
+    const printReceipt =  async () => {
         const input = document.getElementById('receipt');
+        await addSale(salesData)
         html2canvas(input).then((canvas) => {
             canvas.toBlob((blob) => {
                 const file = new File([blob], 'receipt.png', { type: 'image/png' });
@@ -62,7 +66,7 @@ export default function Page() {
                 formData.append('file', file);
     
                 // Save the image to the server
-                fetch('/api/save-image', {
+               fetch('/api/save-image', {
                     method: 'POST',
                     body: formData,
                 })
@@ -125,8 +129,8 @@ export default function Page() {
                         <PaymentMethod onSubmit={handlePaymentSubmit} />
                     </div>
                 </div>
-                <div className="lg:w-[30%] ">
-                    <div className="p-4 rounded-lg">
+                <div className="lg:w-[25%] ">
+                    <div className="rounded-lg">
                         <div id="receipt">
                             <Receipt
                                 salesData={salesData}

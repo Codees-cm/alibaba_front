@@ -4,7 +4,7 @@
 import { useState, useCallback } from 'react';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 
-const client = new W3CWebSocket('ws://localhost:8001/ws/notifications/');
+const client = new W3CWebSocket('ws://localhost:8000/ws/notifications/');
 
 export const useNotifications = () => {
   const [notifications, setNotifications] = useState<string[]>([]);

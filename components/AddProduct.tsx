@@ -13,7 +13,6 @@ import { useEdgeStore } from "@/lib/edgestore";
 import { CirclePlus as AddCircleIcon } from 'lucide-react';
 import { useRouter } from "next/navigation";
 import { Switch } from "./ui/switch"
-
 export default function AddProduct() {
   const router = useRouter();
   const { categories } = useCategories();
@@ -82,7 +81,7 @@ export default function AddProduct() {
       const fileName = res.url;
       const updatedProductData = {
         ...productData,
-        images: [fileName],
+        image_urls: fileName,
       };
 
       await addProduct({ ...updatedProductData });
@@ -116,9 +115,8 @@ export default function AddProduct() {
               <div className="grid gap-4 lg:col-span-1">
                 <Input id="name" type="text" placeholder="Name" value={productData.name} onChange={handleInputChange} />
                 <Textarea id="description" placeholder="Description" value={productData.description} onChange={handleInputChange} />
-                <Input id="price" type="number" placeholder="Price without Tax" value={productData.price} onChange={handleInputChange} />
-                <Input id="price_with_tax" type="number" placeholder="Price with Tax" value={productData.price_with_tax} onChange={handleInputChange} />
-
+                <Input id="price" type="number" placeholder="Buying Price" value={productData.price} onChange={handleInputChange} />
+                <Input id="price_with_tax" type="number" placeholder="Selling Price " value={productData.price_with_tax} onChange={handleInputChange} />
                 <Input id="quantity" type="number" placeholder="Quantity" value={productData.quantity} onChange={handleInputChange} />
               </div>
               <div className="grid gap-4 lg:col-span-1">

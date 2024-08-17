@@ -11,8 +11,6 @@ const {register} = useEmployee()
         first_name: "",
         last_name: "",
         email: "",
-        password: "",
-        re_password: "",
         role:"employee"
     });
 
@@ -27,16 +25,12 @@ const {register} = useEmployee()
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          employeeData.re_password = employeeData.password
-          console.log(employeeData)
           await register(employeeData);
 
             setCustomersData({
               first_name: "",
               last_name: "",
               email: "",
-              password: "",
-              re_password: "",
               role:"employee"
             });
 
@@ -69,11 +63,7 @@ const {register} = useEmployee()
           </div>
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="framework">Password</Label>
-            <Input id="password"  value={employeeData.password} type='password' onChange={handleInputChange} placeholder="Enter password"/>
-          </div>
-          
-            <Input id="re_password" type="hidden" value={employeeData.re_password}  onChange={handleInputChange}/>
-  
+          </div>  
         </div>
      
     </CardContent>

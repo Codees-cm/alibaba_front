@@ -22,7 +22,7 @@ import { Button } from "./ui/button";
 
 import { useWindowWidth } from "@react-hook/window-size";
 import { useTranslation } from "@/app/i18n/client";
-export default function SSidenavbar({lang}) {
+export default function SSidenavbar({ lang, role }) {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const {t} = useTranslation(lang,'side-sidebar')
 
@@ -44,52 +44,99 @@ export default function SSidenavbar({lang}) {
         </Button>
       </div>
      )}  */}
+
+{role === 'admin' && (
       <Nav
-        isCollapsed={mobilewidth ? true : isCollapsed}
-        links={[
-          {
-            title:  t('warehouse'),
-            href: `/${lang}/warehouse`,
-            icon: LayoutDashboard,
-            variant: "default",
-          },
-          {
-            title:  t('products'),
+      isCollapsed={mobilewidth ? true : isCollapsed}
+      links={[
+        {
+          title:  t('warehouse'),
+          href: `/${lang}/warehouse`,
+          icon: LayoutDashboard,
+          variant: "default",
+        },
+        {
+          title:  t('products'),
 
-            href: `/${lang}/warehouse/products`,
-            icon: UsersRound,
-            variant: "ghost",
-          },
-          {
-            title:  t('suppliers'),
+          href: `/${lang}/warehouse/products`,
+          icon: UsersRound,
+          variant: "ghost",
+        },
+        {
+          title:  t('suppliers'),
 
-            href:`/${lang}/warehouse/supplier`,
-            icon: UsersRound,
-            variant: "ghost",
-          },
-          {
-            title:  t('category'),
+          href:`/${lang}/warehouse/supplier`,
+          icon: UsersRound,
+          variant: "ghost",
+        },
+        {
+          title:  t('category'),
 
-            href:`/${lang}/warehouse/category`,
-            icon: UsersRound,
-            variant: "ghost",
-          },
-          {
-            title:  t('orders'),
+          href:`/${lang}/warehouse/category`,
+          icon: UsersRound,
+          variant: "ghost",
+        },
+        {
+          title:  t('orders'),
 
-            href:`/${lang}/warehouse/orders`,
-            icon: ShoppingCart,
-            variant: "ghost",
-          },
-          {
-            title:  'Customers',
+          href:`/${lang}/warehouse/orders`,
+          icon: ShoppingCart,
+          variant: "ghost",
+        },
+        {
+          title:  'Customers',
 
-            href:`/${lang}/warehouse/customers`,
-            icon: UsersRound,
-            variant: "ghost",
-          },
-        ]}
-      />
+          href:`/${lang}/warehouse/customers`,
+          icon: UsersRound,
+          variant: "ghost",
+        },
+      ]}
+    />
+      )}
+
+
+{role === 'employee' && (
+       <Nav
+       isCollapsed={mobilewidth ? true : isCollapsed}
+       links={[
+         {
+           title:  t('warehouse'),
+           href: `/${lang}/warehouse`,
+           icon: LayoutDashboard,
+           variant: "default",
+         },
+         {
+           title:  t('products'),
+
+           href: `/${lang}/warehouse/products`,
+           icon: UsersRound,
+           variant: "ghost",
+         },
+         {
+           title:  t('category'),
+
+           href:`/${lang}/warehouse/category`,
+           icon: UsersRound,
+           variant: "ghost",
+         },
+         {
+           title:  t('orders'),
+
+           href:`/${lang}/warehouse/orders`,
+           icon: ShoppingCart,
+           variant: "ghost",
+         },
+         {
+           title:  'Customers',
+
+           href:`/${lang}/warehouse/customers`,
+           icon: UsersRound,
+           variant: "ghost",
+         },
+       ]}
+     />
+      )}
+    
     </div>
   );
 }

@@ -28,7 +28,6 @@ export default function Supplier() {
   const [saleFormData, setSaleFormData] = useState({ product: "", quantity_sold: "",sale_price:"", productName: "" , price: 0});
   const [salesData, setSalesData] = useState<SaleInfo[]>([]);
   const { products, allLoading } = useProducts();
-  const {addSale,isAddingSale,isSuccess} = useSales()
   const router = useRouter()
 
   if (allLoading) {
@@ -89,7 +88,7 @@ export default function Supplier() {
     
     localStorage.setItem('salesData', JSON.stringify(typedSalesData));
   
-    await addSale(typedSalesData);
+    // await addSale(typedSalesData);
     setSalesData([]);
     router.push('sales/0')
   };
@@ -110,9 +109,11 @@ export default function Supplier() {
                       </SelectTrigger>
                       <SelectGroup>
                         <SelectContent>
+                         
                           {products?.data.map((product: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | Iterable<React.ReactNode> | null | undefined; }) => (
+                         
                             <SelectItem key={product.id} value={product.id.toString()}>
-                              {product.name}
+                              { (product.quantity  > 0) ?  product.name : ""}
                             </SelectItem>
                           ))}
                         </SelectContent>

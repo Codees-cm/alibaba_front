@@ -6,12 +6,9 @@ import { Input } from './ui/input'
 import { Button } from './ui/button'
 import { useCategories } from '@/hooks/stock_manage/use-category'
 import { CollectionsOutlined } from '@mui/icons-material'
-export default function AddCategory() {
-const {addCategorie} = useCategories()
-    const [categoryData, setCategoryData] = useState({
-        name: "",
-       
-    });
+export default function EditCategory({ id, initialData, onClose }) {
+const { modifyCategorie} = useCategories(false, id)
+    const [categoryData, setCategoryData] = useState(initialData);
 
     // Function to handle input change
     const handleInputChange = (e) => {
@@ -24,11 +21,10 @@ const {addCategorie} = useCategories()
         e.preventDefault();
         try {
           console.log("hello",categoryData)
-            await addCategorie(categoryData);
+            await modifyCategorie(categoryData);
             // Reset form after successful submission
-            setCategoryData({
-                name: "",
-            });
+            onClose(); 
+           
         } catch (error) {
             console.error("Error adding category:", error);
         }
@@ -37,7 +33,7 @@ const {addCategorie} = useCategories()
   return (
     <Card className="w-[350px]">
     <CardHeader>
-      <CardTitle className='btn'>Add Category</CardTitle>
+      <CardTitle>Add Category</CardTitle>
     </CardHeader>
     <form onSubmit={handleSubmit} >
     <CardContent>

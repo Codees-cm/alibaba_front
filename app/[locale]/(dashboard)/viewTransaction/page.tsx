@@ -6,11 +6,12 @@ import { ColumnDef } from '@tanstack/react-table'
 import React from 'react'
 // import { useSales } from '@/hooks/use-sales'
 import { useTransactions } from '@/hooks/transactions/use-transactions'
+import Link from 'next/link'
 type Props = {}
 
 
 export default function UsersPage({locale}: Props) {
-  const { transactions, allLoading } = useTransactions(true)
+  const { transactions, allLoading } = useTransactions()
 
 
   if (allLoading) {
@@ -62,6 +63,16 @@ export const columns = [
   },
   {
     accessorKey: "sale_id",
-    header: "Sales Id"
+    header: "Sales Id",
+    cell: ({ row }) => {
+      // const product_id = row.original.product_id; // Assuming each row has a product_id
+      // const file_url = oneProduct?.data.markdown_files[0].file_url; // Assuming each row has a file_url
+      console.log(row.original.sale_id)
+      return (
+          <Link href={{pathname:`/viewTransaction/${row.original.sale_id}`}} >
+              <button className="text-orange-400 hover:text-orange-700">view</button>
+         </Link>
+      );
+  },
   },
 ];
