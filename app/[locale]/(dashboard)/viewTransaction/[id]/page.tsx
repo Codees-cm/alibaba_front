@@ -15,7 +15,7 @@ type Props = {
     }
   }
 
-function page({ locale, params }: Props) {
+function Page({ locale, params }: Props) {
    
   const { oneTransaction ,singleLoading } = useTransactions(true,params.id)
 
@@ -47,9 +47,9 @@ function page({ locale, params }: Props) {
     </div>
 )
 }
+export default Page;
 
-
-export const columns: ColumnDef<any>[] = [
+ const columns: ColumnDef<any>[] = [
     {
       accessorKey: "product.product_code",
       header: " Product Code"
@@ -69,4 +69,3 @@ export const columns: ColumnDef<any>[] = [
    
   ];
 
-export default page
