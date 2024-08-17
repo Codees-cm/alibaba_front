@@ -123,11 +123,12 @@ export default function PromoCodesDashboard() {
       {/* Edit Promo Code Dialog */}
       {selectedPromoCode && (
         <AlertDialog open={!!selectedPromoCode} onOpenChange={(open) => !open && setSelectedPromoCode(null)}>
-          <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Edit Promo Code</AlertDialogTitle><AlertDialogDescription><EditPromoCode
+          <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Edit Promo Code</AlertDialogTitle><AlertDialogDescription>
+            {/* <EditPromoCode
             promoCodeId={selectedPromoCode.id}
             initialData={selectedPromoCode}
             onClose={() => setSelectedPromoCode(null)}
-          /> {/* Replace this with your edit promo code component */}
+          /> Replace this with your edit promo code component */}
           </AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel onClick={() => setSelectedPromoCode(null)}>Close</AlertDialogCancel></AlertDialogFooter></AlertDialogContent></AlertDialog>
       )}
     </div>
