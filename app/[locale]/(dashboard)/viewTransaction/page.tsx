@@ -7,16 +7,17 @@ import React from 'react'
 // import { useSales } from '@/hooks/use-sales'
 import { useTransactions } from '@/hooks/transactions/use-transactions'
 import Link from 'next/link'
+import Loader from '@/components/Loader'
 type Props = {}
 
 
-export default function UsersPage({locale}: Props) {
+export default function Page({locale}: Props) {
   const { transactions, allLoading } = useTransactions()
 
 
   if (allLoading) {
     return (<>
-      ... is loading
+      <Loader/>
     </>)
   }
   console.log(transactions?.data)
