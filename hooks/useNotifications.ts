@@ -4,9 +4,9 @@
 import { useState, useCallback } from 'react';
 import { w3cwebsocket as W3CWebSocket } from 'websocket';
 
-const client = new W3CWebSocket('ws://fnmalic.pythonanywhere.com/ws/notifications/');
-// 'https://fnmalic.pythonanywhere.com/api/jwt/refresh/',
+const client = new W3CWebSocket('ws://localhost:8000/ws/notifications/');
 
+ 
 export const useNotifications = () => {
   const [notifications, setNotifications] = useState<string[]>([]);
 
