@@ -81,16 +81,16 @@ export default function PromoCodesDashboard() {
         /><div>
           <Button onClick={handleExportToCSV} >Export</Button></div>
         <AlertDialog style={{ width: "fit-content" }}>
-          <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Promo Code
+          <AlertDialogTrigger className="text-sm font-semibold text-white rounded-lg p-2  bg-orange-500 border-slate-950">Add Promo Code
           </AlertDialogTrigger><AlertDialogContent className="w-max">
             <AlertDialogHeader><AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel></AlertDialogFooter>
               <AlertDialogDescription style={{ minWidth: 'max-content' }}><AddPromoCode />
                 {/* Replace this with your add promo code component */}
               </AlertDialogDescription></AlertDialogHeader>
-          </AlertDialogContent></AlertDialog></div></div></CardHeader><CardContent><Table><TableHeader><TableRow><TableHead>Promo Code</TableHead><TableHead>Usage Limit</TableHead><TableHead>Expiration Date</TableHead><TableHead>Discount (%)</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader><TableBody>
+          </AlertDialogContent></AlertDialog></div></div></CardHeader><CardContent><Table><TableHeader><TableRow><TableHead>Promo Code</TableHead><TableHead>Usage Limit</TableHead><TableHead>Expiration Date</TableHead><TableHead>Discount (%)</TableHead> <TableHead>Number of usage</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader><TableBody>
             {displayedItems.map((promo: React.SetStateAction<null>) => (
-              <TableRow key={promo.id}><TableCell className="font-medium">{promo.code}</TableCell><TableCell>{promo.usage_limit}</TableCell><TableCell>{promo.expiration_date}</TableCell><TableCell>{promo.discount_percentage}</TableCell><TableCell><DropdownMenu><DropdownMenuTrigger asChild><Button
+              <TableRow key={promo.id}><TableCell className="font-medium">{promo.code}</TableCell><TableCell>{promo.max_usage}</TableCell><TableCell>{promo.expiry_date}</TableCell><TableCell>{promo.discount}</TableCell><TableCell>{promo.usage_count}</TableCell><TableCell><DropdownMenu><DropdownMenuTrigger asChild><Button
                 variant="ghost"
                 className="h-8 w-8 p-0"
               ><MoreHorizontal className="h-4 w-4" /></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuItem onClick={() => router.push(`promo-codes/${promo.id}`)}>Details</DropdownMenuItem><DropdownMenuItem onClick={() => setSelectedPromoCode(promo)}>
@@ -99,7 +99,10 @@ export default function PromoCodesDashboard() {
                   {/* <DropdownMenuItem onClick={async () => deletingPromoCode(promo.id)}>
                                 Delete
                               </DropdownMenuItem> */}
-                </DropdownMenuContent></DropdownMenu></TableCell></TableRow>
+                </DropdownMenuContent>
+                </DropdownMenu>
+                </TableCell>
+                </TableRow>
             ))}
           </TableBody></Table>
         {pageCount > 1 && (

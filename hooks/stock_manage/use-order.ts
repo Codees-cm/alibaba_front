@@ -1,10 +1,10 @@
 // useOrders.js
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchOrders, createOrder, changeOrderToPaid } from "@/utils/apis/order";
+import { fetchOrders, createOrder, changeOrderToPaid ,fetchOrder ,deleteOrder } from "@/utils/apis/order";
 import { useToast } from "@/components/ui/use-toast"
 
-export const useOrders = () => {
+export const useOrders = (enable:boolean = false , Id:number|null = null) => {
   const queryClient = useQueryClient();
   const { toast } = useToast()
 
@@ -13,8 +13,16 @@ export const useOrders = () => {
     queryKey: ['orders'],
     queryFn: fetchOrders,
     staleTime: 300000,
+    enabled: !enable,
+
   });
 
+  const {data:oneOrder , isLoading:singleLoading ,error:singleFetchError } = useQuery({
+    queryKey :['order', Id],
+    queryFn: () => fetchOrder(Id),
+    staleTime: 300000,
+  enabled: enable && Id !== null, // Disable the query by default, enable it only when needed
+})
   // Mutation to create a new order
   const { mutate: createOrderMutation, isPending: isCreatingOrder } = useMutation({
     mutationFn: createOrder,
@@ -54,6 +62,29 @@ export const useOrders = () => {
     },
   });
 
+
+  const {mutate:deleteOrderMutation, isPending:isDeletingOrder} = useMutation({
+    mutationFn: deleteOrder,
+    onSuccess: () => {
+        queryClient.invalidateQueries(["orders"])
+        toast({
+          title: "Order deleted",
+          description: "...........",
+        })
+     
+      },
+      onError: (error) => {
+    
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        })
+        // console.error("Error occurred during registration:", error);
+      },
+})
+
+
+  
   const createNewOrder = async (orderData: any) => {
     await createOrderMutation(orderData);
   };
@@ -62,6 +93,10 @@ export const useOrders = () => {
     await changeOrderToPaidMutation(orderId);
   };
 
+  const deletingOrder = async (id: any)=>{
+    await  deleteOrderMutation(id); 
+}
+
   return {
     orders,
     ordersLoading,
@@ -69,6 +104,10 @@ export const useOrders = () => {
     createNewOrder,
     isCreatingOrder,
     markOrderAsPaid,
+    oneOrder,
     isChangingOrderToPaid,
+    deletingOrder ,
+    singleLoading ,
+singleFetchError
   };
 };

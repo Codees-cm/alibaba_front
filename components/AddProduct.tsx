@@ -2,7 +2,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -11,6 +10,7 @@ import { useProducts } from "@/hooks/stock_manage/use-product";
 import { Textarea } from "@/components/ui/textarea";
 import { useEdgeStore } from "@/lib/edgestore";
 import { CirclePlus as AddCircleIcon } from 'lucide-react';
+import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Switch } from "./ui/switch"
 export default function AddProduct() {

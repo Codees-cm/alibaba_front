@@ -62,7 +62,17 @@ export const fetchPromoCodes = async () => {
 }
 
 export const createPromoCode = async (data: any) => {
-    const response = await instance.post('/promo-code/', data)
+    const new_data = {
+        discount:data.discount,
+        expiry_date:data.expiry_date,
+        max_usage: data.max_usage
+    }
+    const id = data.product.id
+    var link = `/generate-promo-code/${id}/`
+    if( id == undefined) {
+        link = `/generate-promo-code/`
+    }
+    const response = await instance.post(link, data)
     .then((res) => {
         return res;
     });

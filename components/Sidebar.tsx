@@ -71,6 +71,12 @@ export default function Sidenavbar({ lang, role }) {
             variant: "ghost",
           },
           {
+            title:  "Accounting",
+            href: `/accounting`,
+            icon: BellRing,
+            variant: "ghost",
+          },
+          {
             title: t('employee'),
             href: `/${lang}/employees`,
             icon: UsersRound,
@@ -107,12 +113,12 @@ export default function Sidenavbar({ lang, role }) {
             variant: "ghost",
           },
         
-          {
-            title:  t('settings'),
-            href: `/${lang}/settings`,
-            icon: Settings, 
-            variant: "ghost",
-          },
+          // {
+          //   title:  t('settings'),
+          //   href: `/${lang}/settings`,
+          //   icon: Settings, 
+          //   variant: "ghost",
+          // },
         ]}
       />
       )}
@@ -149,12 +155,12 @@ export default function Sidenavbar({ lang, role }) {
             variant: "ghost",
           },
          
-          {
-            title:  t('settings'),
-            href: `/${lang}/settings`,
-            icon: Settings, 
-            variant: "ghost",
-          },
+          // {
+          //   title:  t('settings'),
+          //   href: `/${lang}/settings`,
+          //   icon: Settings, 
+          //   variant: "ghost",
+          // },
         ]}
       />
       )}

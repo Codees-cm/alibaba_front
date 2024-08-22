@@ -57,6 +57,20 @@ export default function Supplier() {
     }
   };
 
+  const handleRemoveProduct = (value: any) => {
+    // const selectedProduct = products.data.find((product: { id: { toString: () => any; }; }) => product.id.toString() === value);
+    // if (selectedProduct) {
+    //   setSaleFormData(prevState => ({
+    //     ...prevState,
+    //     product: value,
+    //     product_id: selectedProduct.id,
+    //     productName: selectedProduct.name,
+    //     price: selectedProduct.price ,
+    //     sale_price: selectedProduct.price
+    //   }));
+    // }
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { product, quantity_sold } = saleFormData;
@@ -69,6 +83,15 @@ export default function Supplier() {
   const columns = [
     { header: "Name", accessorKey: "productName" },
     { header: "Quantity", accessorKey: "quantity_sold" },
+    {
+      header: "Remove",
+      cell: ({ row }) => {
+            console.log(row.original.sale_id)
+        return (
+                <button className="text-orange-400 hover:text-orange-700" onClick={handleRemoveProduct}>remove</button>
+        );
+    },
+    },
   ];
 
   const getTotalPrice = () => {
@@ -111,10 +134,18 @@ export default function Supplier() {
                         <SelectContent>
                          
                           {products?.data.map((product: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | Iterable<React.ReactNode> | null | undefined; }) => (
-                         
-                            <SelectItem key={product.id} value={product.id.toString()}>
-                              { (product.quantity  > 0) ?  product.name : ""}
-                            </SelectItem>
+                         <>
+                           {
+                                (product.quantity  > 0) && 
+                                (<>
+                                  <SelectItem key={product.id} value={product.id.toString()}>
+                                 { product.name } <small style={{ margin:"3vh" }}>remains {product.quantity} </small>
+                                  </SelectItem>
+                                </>)
+                                
+                              }
+                         </>
+                            
                           ))}
                         </SelectContent>
                       </SelectGroup>

@@ -73,7 +73,7 @@ export default function Warehouse({ lang }) {
                 </div>
                 {/* <Button aria-haspopup="true" size="icon" variant="ghost" className="flex items-center"> */}
                 <AlertDialog>
-                  <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Product</AlertDialogTrigger>
+                  <AlertDialogTrigger className="text-sm font-semibold text-white rounded-lg p-2  bg-orange-500 border-slate-950">Add Product</AlertDialogTrigger>
                   <AlertDialogContent className="w-fit">
                     <AlertDialogHeader>
                       <AlertDialogFooter>

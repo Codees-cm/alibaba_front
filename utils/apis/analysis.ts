@@ -60,3 +60,41 @@ export const getTopSellingReview = async () => {
                                     })
   return response;
 }
+
+// export const monthly_sales_data = async () => {
+//   const response = await instance.get('analysis/monthly-sales-data/')
+//                                     .then((res)=>{
+//                                       return res
+//                                     })
+//   return response;
+// }
+
+export const total_sales_per_week = async () => {
+  const response = await instance.get('analysis/weekly-total/')
+                                    .then((res)=>{
+                                      return res
+                                    })
+  return response;
+}
+
+export const profit_per_day = async () => {
+  const response = await instance.get('analysis/daily/')
+                                    .then((res)=>{
+                                      return res
+                                    })
+  return response;
+}
+export const profit_per_week = async () => {
+  const response = await instance.get('analysis/weekly/')
+                                    .then((res)=>{
+                                      return res
+                                    })
+  return response;
+}
+export const total_sales_per_day = async () => {
+  const response = await instance.get('analysis/daily-total/')
+                                    .then((res)=>{
+                                      return res
+                                    })
+  return response;
+}

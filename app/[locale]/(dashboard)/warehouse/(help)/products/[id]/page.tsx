@@ -21,6 +21,8 @@ const Page: React.FC<Props> = ({ params }) => {
        if (isLoading) {
          return <Loader />;
        }
+
+      // console.log(me?.data.role)
      
    return(
     <>

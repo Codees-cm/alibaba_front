@@ -48,7 +48,17 @@ export default function Analysis({ params: { locale } }) {
 
   const { data, isLoading , data_bar,loading_bar, data_inventStat,data_catInsight,data_topSellingReview , loading_inventStat,
     loading_catInsight,
-    loading_topSellingReview} = useAnalysis()
+    loading_topSellingReview,
+  
+    data_profit_per_day,
+data_profit_per_week,
+data_total_sales_per_day,
+data_total_sales_per_week,
+loading_profit_per_day,
+loading_profit_per_week,
+loading_total_sales_per_day,
+loading_total_sales_per_week
+  } = useAnalysis()
 
 
     if(isLoading && loading_inventStat &&
@@ -59,6 +69,7 @@ export default function Analysis({ params: { locale } }) {
     if (loading) {
       return <Skeleton className="h-[300px] w-[450px] rounded-xl" />;
     }
+
 
   // Define default values for cardData
   const defaultCardData: CardProps[] = [
@@ -113,7 +124,10 @@ export default function Analysis({ params: { locale } }) {
   ];
 
   // Use default values if data is loading or not available
-  const cardData = isLoading || loading_inventStat || loading_catInsight || loading_topSellingReview ? defaultCardData : [
+  const cardData = loading_profit_per_day ||
+  loading_profit_per_week ||
+  loading_total_sales_per_day ||
+  loading_total_sales_per_week ||  isLoading || loading_inventStat || loading_catInsight || loading_topSellingReview ? defaultCardData : [
     {
       label: t('total-sales'),
       amount: data?.data['total_sale_month'],
@@ -129,25 +143,25 @@ export default function Analysis({ params: { locale } }) {
     {
       label: t('today-transaction'),
       amount: data?.data['today_sales_count'],
-      discription: '+12.1% from last month',
+      discription: '',
       icon: ArrowRightLeft,
     },
     {
       label: t('total-products'),
       amount: data?.data['total_products'],
-      discription: '+281 sold from last month',
+      discription: '',
       icon: Activity,
     },
     {
       label: 'products out of stock',
       amount: data_inventStat?.data['out_of_stock_count'],
-      discription: '+12.1% from last month',
+      discription: '',
       icon: ArrowRightLeft,
     },
     {
       label: 'Total products in stock',
       amount: data_inventStat?.data['total_available_quantity'],
-      discription: '+12.1% from last month',
+      discription: '',
       icon: ArrowRightLeft,
     },
     {
@@ -163,6 +177,15 @@ export default function Analysis({ params: { locale } }) {
       icon: Activity,
     },
   ];
+
+
+
+  console.log(
+    data_profit_per_day,
+    data_profit_per_week,
+    data_total_sales_per_day,
+    data_total_sales_per_week,
+  )
 
   return (
     <div className="p-8 w-full bg-gradient-to-r from-amber-100  to-white">

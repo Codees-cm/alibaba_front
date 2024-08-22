@@ -4,18 +4,23 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
 import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
-// import { usePromoCode } from '@/hooks/use-promo-code';
+import { useProducts } from '@/hooks/stock_manage/use-product';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { usePromoCode } from '@/hooks/transactions/use-promo-code';
 export default function AddPromoCode() {
     const { addPromoCode } = usePromoCode();
     const [promoCodeData, setPromoCodeData] = useState({
-        code: "",
         discount: "",
         max_usage: "",
         expiry_date: "",
         product: "", // Assuming product ID or name
     });
+    const {products,allLoading} = useProducts()
 
+    if (allLoading) {
+        return <div>loading</div>; 
+      }
+    
     const handleInputChange = (e) => {
         const { id, value } = e.target;
         setPromoCodeData({ ...promoCodeData, [id]: value });
@@ -26,7 +31,6 @@ export default function AddPromoCode() {
         try {
             await addPromoCode(promoCodeData);
             setPromoCodeData({
-                code: "",
                 discount: "",
                 max_usage: "",
                 expiry_date: "",
@@ -37,6 +41,13 @@ export default function AddPromoCode() {
         }
     };
 
+    const handleFormChangeCustomer = (value: any) => {
+        const selectedCustomers = products.data.find((product) => product.id === value);
+        if (selectedCustomers) {
+            setPromoCodeData({ ...promoCodeData , product: selectedCustomers})
+        }
+        };
+
     return (
         <Card className="w-[350px]">
             <CardHeader>
@@ -45,10 +56,7 @@ export default function AddPromoCode() {
             <form onSubmit={handleSubmit}>
                 <CardContent>
                     <div className="grid w-full items-center gap-4">
-                        <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="code">Promo Code</Label>
-                            <Input id="code" value={promoCodeData.code} onChange={handleInputChange} placeholder="Enter Promo Code" />
-                        </div>
+                       
                         <div className="flex flex-col space-y-1.5">
                             <Label htmlFor="discount">Discount (%)</Label>
                             <Input id="discount" value={promoCodeData.discount} onChange={handleInputChange} placeholder="Enter Discount" />
@@ -63,7 +71,24 @@ export default function AddPromoCode() {
                         </div>
                         <div className="flex flex-col space-y-1.5">
                             <Label htmlFor="product">Product</Label>
-                            <Input id="product" value={promoCodeData.product} onChange={handleInputChange} placeholder="Enter Product" />
+                            <Select onValueChange={handleFormChangeCustomer}>
+                      <SelectTrigger id="category" aria-label="product" value={promoCodeData.product} >
+                        <SelectValue placeholder="product" />
+                      </SelectTrigger>
+
+                      <SelectContent>
+                        {products?.data.map((product: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | Iterable<React.ReactNode> | null | undefined; }) => (
+                     <>
+                    
+                            <SelectItem key={product.id} value={product.id}>
+                            {product.name}
+                          </SelectItem>
+                       
+                     </>
+                     
+                        ))}
+                      </SelectContent>
+                    </Select>
                         </div>
                     </div>
                 </CardContent>

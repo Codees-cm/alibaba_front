@@ -6,31 +6,39 @@ import { Input } from "./ui/input"
 import { Label } from "./ui/label"
 import { RadioGroup, RadioGroupItem } from "./ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
-import { Switch } from "./ui/switch"
-import { useOrders } from '@/hooks/stock_manage/use-order';
+import { Switch } from "./ui/switch";
+import { CirclePlus as AddCircleIcon } from 'lucide-react';
+import { useCustomer } from "@/hooks/use-customers";
+import { useRouter } from "next/navigation";
 
 const cameroonRegions = [
-    { value: 'adamawa', label: 'Adamawa' },
-    { value: 'centre', label: 'Centre' },
-    { value: 'east', label: 'East' },
-    { value: 'farNorth', label: 'Far North' },
-    { value: 'littoral', label: 'Littoral' },
-    { value: 'north', label: 'North' },
-    { value: 'northwest', label: 'North-West' },
-    { value: 'south', label: 'South' },
-    { value: 'southwest', label: 'South-West' },
-    { value: 'west', label: 'West' },
+    { value: 'adamawa', label: 'Adamawa',extra_fees:2000 },
+    { value: 'centre', label: 'Centre' ,extra_fees:2000},
+    { value: 'east', label: 'East',extra_fees:2000 },
+    { value: 'farNorth', label: 'Far North' ,extra_fees:2000},
+    { value: 'littoral', label: 'Littoral',extra_fees:1000 },
+    { value: 'north', label: 'North' ,extra_fees:2000},
+    { value: 'northwest', label: 'North-West' ,extra_fees:2000},
+    { value: 'south', label: 'South' ,extra_fees:2000},
+    { value: 'southwest', label: 'South-West' ,extra_fees:2000},
+    { value: 'west', label: 'West',extra_fees:2000 },
 ];
 
 export function PaymentMethod({ onSubmit }) {
+    const { customers, allFetchError, allLoading,  } = useCustomer();
     const [paymentMethod, setPaymentMethod] = useState('cash');
     const [name, setName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [location, setLocation] = useState('');
+    const [location, setLocation] = useState({});
     const [isOrder, setIsOrder] = useState(false);
     const [amountReceived, setAmountReceived] = useState('');
-    const {createNewOrder} = useOrders()
+    const router = useRouter()
 
+    if (allLoading) {
+        return <div>loading</div>; 
+      }
+    
+    console.log(customers)
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -39,13 +47,27 @@ export function PaymentMethod({ onSubmit }) {
             name,
             phoneNumber,
             location,
-            amountReceived
+            amountReceived,
+            order:isOrder
         };
         onSubmit(paymentDetails);
     };
 
    
-    
+    const handleFormChange = (value: any) => {
+      const selectedRegion = cameroonRegions.find((region) => region.value === value);
+      if(selectedRegion){
+        setLocation(selectedRegion)
+      }
+      };
+
+      const handleFormChangeCustomer = (value: any) => {
+        const selectedCustomers = customers.data.find((customer) => customer.id === value);
+        if (selectedCustomers) {
+        console.log(selectedCustomers)
+        setName(selectedCustomers.id)
+        }
+        };
 
     return (
         <Card>
@@ -60,7 +82,7 @@ export function PaymentMethod({ onSubmit }) {
                     {/* Radio buttons for payment methods */}
                     <div>
                         <RadioGroupItem
-                            value="cash"
+                            value="Cash"
                             id="cash"
                             className="peer sr-only"
                             aria-label="Cash"
@@ -76,7 +98,7 @@ export function PaymentMethod({ onSubmit }) {
 
                     <div>
                         <RadioGroupItem
-                            value="orange"
+                            value="OM"
                             id="orange"
                             className="peer sr-only"
                             aria-label="Orange Money"
@@ -92,7 +114,7 @@ export function PaymentMethod({ onSubmit }) {
 
                     <div>
                         <RadioGroupItem
-                            value="mtn"
+                            value="MOMO"
                             id="mtn"
                             className="peer sr-only"
                             aria-label="MTN Mobile Money"
@@ -107,8 +129,28 @@ export function PaymentMethod({ onSubmit }) {
                     </div>
                 </RadioGroup>
                 <div className="grid gap-2">
-                    <Label htmlFor="name">Name</Label>
-                    <Input id="name" placeholder="First Last" value={name} onChange={(e) => setName(e.target.value)} />
+                <Select onValueChange={handleFormChangeCustomer}>
+                      <SelectTrigger id="category" aria-label="customer" >
+                        <SelectValue placeholder="Customer" />
+                      </SelectTrigger>
+
+                      <SelectContent>
+                        {customers?.data.map((customer: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | Iterable<React.ReactNode> | null | undefined; }) => (
+                     <>
+                    
+                            <SelectItem key={customer.id} value={customer.id}>
+                            {customer.first_name}
+                          </SelectItem>
+                       
+                     </>
+                     
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <AddCircleIcon className="text-green-500 cursor-pointer" onClick={() => router.push('/warehouse/customers')} />
+
+                    {/* <Label htmlFor="name">Name</Label> */}
+                    {/* <Input id="name" placeholder="First Last" value={name} onChange={(e) => setName(e.target.value)} /> */}
                 </div>
                 <div className="grid gap-2">
                     <Label htmlFor="phoneNumber">Phone Number</Label>
@@ -116,35 +158,31 @@ export function PaymentMethod({ onSubmit }) {
                 </div>
                 <div className="grid gap-2">
                     <Label htmlFor="location">Location</Label>
-                    <Select>
-                        <SelectTrigger id="location" aria-label="Location" value={location} onChange={(value) => setLocation(value)}>
+                    <Select onValueChange={handleFormChange}>
+                        <SelectTrigger id="location" aria-label="Location" >
                             <SelectValue placeholder="Select Location" />
                         </SelectTrigger>
                         <SelectContent>
                             {cameroonRegions.map((option) => (
-                                <SelectItem key={option.value} value={option.value}>
-                                    {option.label}
+                                <>
+                                 <SelectItem key={option.value} value={option.value}>
+                                    {option.label}   {isOrder && (<small style={{ margin:"3vh" }}>extra{option.extra_fees} </small>)}
                                 </SelectItem>
+                               
+                                </>
+                               
                             ))}
                         </SelectContent>
                     </Select>
                 </div>
-                <div className="grid gap-2">
-                    <Label htmlFor="amountReceived">Amount Received</Label>
-                    <Input id="amountReceived" placeholder="Amount Received" type="number" value={amountReceived} onChange={(e) => setAmountReceived(e.target.value)} />
-                </div>
-
-                <Switch onChange={() => setIsOrder(!isOrder)} />
+            
+                <Switch  onClick={() => setIsOrder(!isOrder)} />
                 
-                {isOrder ? (
-                    <Button className="w-full" onClick={handleOrderSubmit}>
-                        Submit Order
-                    </Button>
-                ) : (
+             
                     <Button className="w-full" onClick={handleSubmit}>
                         Save
                     </Button>
-                )}
+            
             </CardContent>
         </Card>
     );

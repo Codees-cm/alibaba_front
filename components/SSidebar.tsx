@@ -15,6 +15,7 @@ import {
   BellRing,
   Home,
   ShoppingCart,
+  Accessibility,
   DollarSign,
   Package
 } from "lucide-react";
@@ -88,6 +89,13 @@ export default function SSidenavbar({ lang, role }) {
 
           href:`/${lang}/warehouse/customers`,
           icon: UsersRound,
+          variant: "ghost",
+        },
+        {
+          title:  'Expenses',
+
+          href:`/${lang}/warehouse/expenses`,
+          icon: Accessibility,
           variant: "ghost",
         },
       ]}

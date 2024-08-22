@@ -11,6 +11,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { MoreHorizontal } from "lucide-react";
+import AddExpenses from "@/components/AddExpenses";
 import { useProducts } from "@/hooks/stock_manage/use-product";
 import { Input } from "@/components/ui/input";
 import {
@@ -23,16 +24,17 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import AddProduct from "@/components/AddProduct";
 import EditProduct from "@/components/EditProduct"; // Import the new component
 import { useRouter } from "next/navigation";
 import useCSVExport from '@/hooks/handleExportToCSV';
 import { TabsContent, Tabs } from "@/components/ui/tabs";
-
 import { useMe } from "@/hooks/use-retiveme";
+
+import { useExpenses } from "@/hooks/use-expenses";
 export default function Dashboard() {
+
     const { me, isLoading, error } = useMe();
-  const { products, allLoading, allFetchError, deletingProduct } = useProducts();
+  const { expenses, allLoading, allFetchError, deletingExpense } = useExpenses();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -51,8 +53,8 @@ export default function Dashboard() {
     setCurrentPage(page);
   };
 
-  const filteredProducts = products?.data.filter((category: { name: string; }) =>
-    category.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = expenses?.data.filter((category: { name: string; }) =>
+    category.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleSearchChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
@@ -67,7 +69,7 @@ export default function Dashboard() {
   const displayedItems = filteredProducts.slice(startIndex, endIndex);
 
   const handleExportToCSV = () => {
-    exportToCSV(products.data, 'labcraft');
+    exportToCSV(expenses.data, 'labcraft');
   };
 
   return (
@@ -84,10 +86,10 @@ export default function Dashboard() {
                   {/* <div className="flex flex-wrap justify-between mb-2"> */}
                   <div className="space-y-1">
                     <CardTitle className="text-2xl font-extrabold tracking-tight lg:text-4xl">
-                      Products
+                      Expenses
                     </CardTitle>
                     <CardDescription>
-                      List of your all products you have added
+                      List of your all expenses you have added
                     </CardDescription>
                     <div className="ml-auto flex items-center gap-2">
                       <Input
@@ -104,14 +106,14 @@ export default function Dashboard() {
                       {me?.data.role === 'admin' && (
                 <>
                  <AlertDialog style={{ width: "fit-content" }}>
-                        <AlertDialogTrigger className=" text-sm font-semibold text-white rounded-lg p-2  bg-orange-500 border-slate-950">AddProduct</AlertDialogTrigger>
+                        <AlertDialogTrigger className=" text-sm font-semibold text-white rounded-lg p-2  bg-orange-500 border-slate-950">AddExpenses</AlertDialogTrigger>
                         <AlertDialogContent className="w-max">
                           <AlertDialogHeader>
                             <AlertDialogFooter>
                               <AlertDialogCancel>Cancel</AlertDialogCancel>
                             </AlertDialogFooter>
                             <AlertDialogDescription style={{ minWidth: 'max-content' }}>
-                              <AddProduct />
+                             <AddExpenses />
                             </AlertDialogDescription>
                           </AlertDialogHeader>
 
@@ -126,24 +128,21 @@ export default function Dashboard() {
                 </CardHeader>
                 <CardContent>
                   <Table>
-                    <TableHeader><TableRow><TableHead>Code</TableHead><TableHead>Name</TableHead><TableHead>Quantity</TableHead><TableHead>Buying Price</TableHead><TableHead>Selling Price</TableHead><TableHead>Promo Code</TableHead> {/* New Column for Promo Code */}
-                      <TableHead>Actions</TableHead></TableRow></TableHeader><TableBody>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Description</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead>Category</TableHead>
+                       
+                      <TableHead>Actions</TableHead>
+                      </TableRow>
+                      </TableHeader>
+                      <TableBody>
                       {displayedItems.map((product: React.SetStateAction<null>) => (
-                        <TableRow className={product.quantity <= 5 ? "bg-red-300" : ""} key={product.id}>
-                          <TableCell className="font-medium">{product.product_code}</TableCell>
-                          <TableCell className="font-medium">{product.name}</TableCell>
-                          <TableCell>{product.quantity}</TableCell>
-                          <TableCell>{product.price}</TableCell>
-                          <TableCell>{product.price_with_tax}</TableCell>
-                          <TableCell>
-                            {product.promo_codes.length > 0 ? (
-                              product.promo_codes.map((promo) => (
-                                <span key={promo.code}>{promo.code} ({promo.discount}%)</span>
-                              ))
-                            ) : (
-                              <span>No Promo</span>
-                            )}
-                          </TableCell> {/* Display Promo Codes or "No Promo" */}
+                        <TableRow  key={product.id}>
+                          <TableCell className="font-medium">{product.description}</TableCell>
+                          <TableCell className="font-medium">{product.amount}</TableCell>
+                          <TableCell>{product.category}</TableCell>
                           <TableCell>
                             <DropdownMenu>
                               <DropdownMenuTrigger asChild>
@@ -152,15 +151,13 @@ export default function Dashboard() {
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
-                                <DropdownMenuItem onClick={() => router.push(`products/${product.id}`)}>
-                                  Details
-                                </DropdownMenuItem>
+                              
                                 {me?.data.role === 'admin' && (
                 <>
                  <DropdownMenuItem onClick={() => setSelectedProduct(product)}>
                                   Edit
                                 </DropdownMenuItem>
-                                <DropdownMenuItem onClick={async () => deletingProduct(product.id)}>
+                                <DropdownMenuItem onClick={async () => deletingExpense(product.id)}>
                                   Delete
                                 </DropdownMenuItem>
                 </>

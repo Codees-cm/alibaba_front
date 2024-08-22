@@ -114,7 +114,7 @@ export default function Employee() {
                       className="mr-2"
                     />
                     <AlertDialog>
-                      <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Employees</AlertDialogTrigger>
+                      <AlertDialogTrigger className="text-sm font-semibold text-white rounded-lg p-2  bg-orange-500 border-slate-950">Add Employees</AlertDialogTrigger>
                       <AlertDialogContent className="w-fit">
                         <AlertDialogHeader>
                           <AlertDialogFooter>

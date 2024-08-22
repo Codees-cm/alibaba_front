@@ -57,7 +57,7 @@ import { SetStateAction, JSXElementConstructor, Key, PromiseLikeOfReactNode, Rea
 
 export default function Customer() {
 
-  const {orders,ordersLoading,error} = useOrders()
+  const {orders,ordersLoading,error ,markOrderAsPaid ,deletingOrder} = useOrders()
   const router = useRouter()
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -124,7 +124,6 @@ export default function Customer() {
                       <TableRow>
                       <TableHead>User</TableHead>
                       <TableHead>Address</TableHead>
-                      <TableHead>Postal Code</TableHead>
                         <TableHead>City</TableHead>
                         <TableHead>Paid</TableHead>
                         <TableHead>Action</TableHead>
@@ -140,7 +139,6 @@ export default function Customer() {
                       <TableRow key={order.id}>
                         <TableCell className="font-medium">{order.user}</TableCell>
                         <TableCell className="font-medium">{order.address}</TableCell>
-                        <TableCell className="font-medium">{order.postal_code}</TableCell>
                         <TableCell className="font-medium">{order.city}</TableCell>
                         <TableCell className="font-medium">{order.paid}</TableCell>
                         <TableCell>
@@ -152,9 +150,10 @@ export default function Customer() {
                               </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
-                              {/* <DropdownMenuItem onClick={() => router.push(`category/${category.id}`)}>Details</DropdownMenuItem> */}
+                              <DropdownMenuItem onClick={() => router.push(`orders/${order.id}`)}>Details</DropdownMenuItem>
                               {/* <DropdownMenuItem>Edit</DropdownMenuItem> */}
-                              {/* <DropdownMenuItem onClick={() => deletingCategorie(category.id)}>Delete</DropdownMenuItem> */}
+                              <DropdownMenuItem onClick={() => markOrderAsPaid(order.id)}>paid</DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => deletingOrder(order.id)}>delete</DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </TableCell>

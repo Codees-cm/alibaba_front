@@ -13,15 +13,18 @@ import {
 } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useSales } from '@/hooks/use-sales';
-
+import { useOrders } from '@/hooks/stock_manage/use-order';
+import { useRouter } from 'next/navigation';
 export default function Page() {
     const [salesData, setSalesData] = useState([]);
-    const [paymentDetails, setPaymentDetails] = useState({ paymentMethod: '', name: '', phoneNumber: '', location: '' ,order:false });
+    const [paymentDetails, setPaymentDetails] = useState({ paymentMethod: '', name: '', phoneNumber: '', location: '' ,order:'' });
     const [totalAmount, setTotalAmount] = useState(0);
     const [amountReceived, setAmountReceived] = useState(0);
     const [balance, setBalance] = useState(0);
   const {addSale,isAddingSale,isSuccess} = useSales()
-
+  const receiptCode = 'LABC' + Math.floor(Math.random() * 1000000).toString();
+  const {createNewOrder} = useOrders()
+const router = useRouter()
 
     useEffect(() => {
         const storedSalesData = localStorage.getItem('salesData');
@@ -30,10 +33,10 @@ export default function Page() {
         // Calculate the total amount
         const total = initialSalesData.reduce((acc: number, product: { quantity_sold: number; sale_price: number; }) => acc + product.quantity_sold * product.sale_price, 0);
         setTotalAmount(total);
+        setAmountReceived(totalAmount);
     }, []);
 
     const handlePaymentSubmit = (details: React.SetStateAction<{ paymentMethod: string; name: string; phoneNumber: string; location: string; }>) => {
-        console.log(details)
         setPaymentDetails(details);
         setAmountReceived(details.amountReceived);
         setBalance(details.amountReceived - totalAmount);
@@ -50,6 +53,7 @@ export default function Page() {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+            router.push('/sale/')
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -58,7 +62,20 @@ export default function Page() {
     
     const printReceipt =  async () => {
         const input = document.getElementById('receipt');
-        await addSale(salesData)
+        if (paymentDetails.order == true) {
+            console.log(salesData)
+            await createNewOrder(
+                {
+                    "user": paymentDetails.name,
+                    "address": paymentDetails.phoneNumber,
+                    "city":paymentDetails.location.value,
+                    "items": salesData
+                }
+            )
+        }else{
+            await addSale(salesData)
+        }
+      
         html2canvas(input).then((canvas) => {
             canvas.toBlob((blob) => {
                 const file = new File([blob], 'receipt.png', { type: 'image/png' });
@@ -133,6 +150,7 @@ export default function Page() {
                     <div className="rounded-lg">
                         <div id="receipt">
                             <Receipt
+                            receiptCode ={receiptCode}
                                 salesData={salesData}
                                 paymentMethod={paymentDetails.paymentMethod}
                                 name={paymentDetails.name}
@@ -140,7 +158,8 @@ export default function Page() {
                                 location={paymentDetails.location}
                                 totalAmount={totalAmount}
                                 amountReceived={amountReceived}
-                                balance={balance}
+                                balance={balance + paymentDetails.location.extra_fees}
+                                isOrder={paymentDetails.order}
                             />
                         </div>
                         <button onClick={printReceipt} className="mt-4 btn btn-primary">Print Receipt</button>

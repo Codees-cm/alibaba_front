@@ -30,10 +30,11 @@ type Props = {
     };  
 };
 
-const ProductDetails: React.FC<Props> = ({ params },role) => {
+const ProductDetails: React.FC<Props> = ({ params,role }) => {
     // Assuming you fetch the product data here based on params.id
     const { oneProduct, singleLoading, singleFetchError, productTrans, loadingProdTrans } = useProducts(true, params.id);
 
+    console.log(role)
     if (singleLoading || loadingProdTrans) {
         return (
             <>

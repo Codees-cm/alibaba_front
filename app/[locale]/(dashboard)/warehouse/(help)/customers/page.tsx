@@ -121,11 +121,10 @@ export default function Customer() {
                   onChange={handleSearchChange}
                   className="mr-2"
                 />
-
 {me?.data.role === 'admin' && (
                 <>
                 <AlertDialog>
-                      <AlertDialogTrigger className=" text-sm font-semibold  border-slate-950">Add Customers</AlertDialogTrigger>
+                      <AlertDialogTrigger className="text-sm font-semibold text-white rounded-lg p-2  bg-orange-500 border-slate-950">Add Customers</AlertDialogTrigger>
                       <AlertDialogContent className="w-fit">
                         <AlertDialogHeader>
                           <AlertDialogFooter>

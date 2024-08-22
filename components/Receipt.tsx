@@ -3,12 +3,12 @@ import '@/public/style.css';
 import Image from 'next/image';
 import Image1 from "./../public/img/bw-512x512.png";
 
-const Receipt = ({ salesData, paymentMethod, name, phoneNumber, location, totalAmount, amountReceived, balance }) => {
+const Receipt = ({receiptCode, salesData, paymentMethod, isOrder,name, phoneNumber, location, totalAmount, amountReceived, balance }) => {
     const currentDate = new Date().toLocaleString();
-    const receiptCode = 'LABC' + Math.floor(Math.random() * 1000000).toString();
+    // const receiptCode = 'LABC' + Math.floor(Math.random() * 1000000).toString();
 
 
-    console.log(salesData)
+    console.log(isOrder)
     return (
         <div className="text-center">
             <section className="receipt container-ticket">
@@ -20,7 +20,7 @@ const Receipt = ({ salesData, paymentMethod, name, phoneNumber, location, totalA
                         </div>
                         {/* Company Info */}
                         <p className="bold">Labcraft Sarl</p>
-                        <p className="bold">labscraft@gmail.com</p>
+                        <p className="bold">labcraft@gmail.com</p>
                         <p className="bold">P.O. BOX. 90420-80100 MSA</p>
                         <div className="dotted-line"></div>
                         <p>Date: {currentDate}</p>
@@ -36,14 +36,30 @@ const Receipt = ({ salesData, paymentMethod, name, phoneNumber, location, totalA
                         </div>
                         <div className="hr-sm"></div>
                         {/* Product List */}
+                        <div className="col4">
                         {salesData.map((product, index) => (
-                            <div key={index} className="col4 header-row">
+                            <div key={index} className="col4">
                                 <p>{product.product}</p>
                                 <p>{product.quantity_sold}</p>
                                 <p>{product.price}</p>
                                 <p>{(product.price * product.quantity_sold).toFixed(2)}</p>
                             </div>
                         ))}
+                         </div>
+
+
+                        {
+                            isOrder && 
+                            (<>
+                             {/* Payment Info */}
+                        <div className="col2">
+                            <p> Transport</p>
+                            <p className="prix"><b>{location.extra_fees}</b></p>
+                        </div>
+                            
+                            </>)
+
+                        }
 
                         {/* Total */}
                         <div className="col4 total-row">
@@ -52,20 +68,20 @@ const Receipt = ({ salesData, paymentMethod, name, phoneNumber, location, totalA
                             <p></p>
                             <p className="prix"><b>{totalAmount}</b></p>
                         </div>
-
+                        
                         {/* Payment Info */}
                         <div className="col2">
                             <p>Payment Method</p>
                             <p className="prix"><b>{paymentMethod}</b></p>
                         </div>
-                        <div className="col2">
+                        {/* <div className="col2">
                             <p>Amount Received</p>
                             <p className="prix"><b>{amountReceived}</b></p>
                         </div>
                         <div className="col2">
                             <p>Balance</p>
                             <p className="prix"><b>{balance}</b></p>
-                        </div>
+                        </div> */}
                     </div>
 
                     {/* Customer Info */}
@@ -76,7 +92,7 @@ const Receipt = ({ salesData, paymentMethod, name, phoneNumber, location, totalA
                                 <p className="title-carte">Customer Information</p>
                                 {name && <p>Name: {name}</p>}
                                 {phoneNumber && <p>Phone: {phoneNumber}</p>}
-                                {location && <p>Location: {location}</p>}
+                                {location && <p>Location: {location.label} </p>}
                             </div>
                         </div>
                     ) : null}

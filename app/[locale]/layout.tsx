@@ -32,9 +32,9 @@ export default function LocaleLayout({
         </head>
         <body style={{ overflowX: "hidden" }}>
             <TanstackProvider>
-              <EdgeStoreProvider>
+              {/* <EdgeStoreProvider> */}
               {children}
-              </EdgeStoreProvider>
+              {/* </EdgeStoreProvider> */}
         </TanstackProvider>
         <Toaster />
         </body>
