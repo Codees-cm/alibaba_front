@@ -30,7 +30,7 @@ export const createProductsMarkdown = async (data: any) => {
 };
 
 
-export const updateProduct = async (product) => {
+export const updateProduct = async (product:any) => {
   try {
     console.log("Product data being sent:", product);
 
@@ -66,6 +66,24 @@ export const deleteProducts = async (id: any) => {
 
 export const productTransactions = async (id: number | null) => {
   const response = await instance.get(`/product/${id}/transactions/`)
+  .then((res)=>{
+    return res
+  })
+  return response;
+}
+
+export const update_markdown = async (data:any) => {
+console.log(data)
+const payload = {
+  product_id: data.product_id,
+  file_url: data.file_url
+};
+  const response = await instance.patch(`/products-markdown/${data.id}/`,payload,
+  {
+    headers: {
+      'Content-Type': 'application/json',  // Ensure correct content type
+    },
+  })
   .then((res)=>{
     return res
   })

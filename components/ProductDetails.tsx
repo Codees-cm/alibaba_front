@@ -22,6 +22,7 @@ import SalesCard, { SalesProps } from "@/components/SalesCard";
 import { useProducts } from "@/hooks/stock_manage/use-product";
 
 import Link from 'next/link';
+import { useMarkdownContent } from "@/hooks/use-md";
 
 type Props = {
     role:any;
@@ -65,11 +66,23 @@ const ProductDetails: React.FC<Props> = ({ params,role }) => {
             accessorKey: "edit",
             header: "Actions",
             cell: ({ row }) => {
-                // const product_id = row.original.product_id; // Assuming each row has a product_id
-                const file_url = oneProduct?.data.markdown_files[0].file_url; // Assuming each row has a file_url
-                console.log(file_url)
+            const file_url = oneProduct?.data.markdown_files[0].file_url; 
+            const { content, error } = useMarkdownContent(file_url);
+
+            const key = oneProduct?.data.markdown_files[0].id;
+
+            if (error) {
+                return <div>Error: {error}</div>;
+            }
+
+            if (!content) {
+                return <div>Loading...</div>;
+            }
+
+            localStorage.setItem(key, content);
+              
                 return (
-                    <Link href={{pathname:`/products/${product.id}/markdown/`, query: { data: JSON.stringify({product:product.name ,file_url})}}} >
+                    <Link href={{pathname:`${product.id}/markdown/${key}`, query: { data: JSON.stringify({product:product.name})}}} >
                         <button className="text-blue-500 hover:text-blue-700">Edit</button>
                     </Link>
                 );

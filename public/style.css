@@ -116,6 +116,18 @@ section.receipt {
 .product-row, .total-row {
     margin-bottom: 5px;
 }
+
+.product-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.product-row p {
+    margin: 0;
+}
+
 .container-ticket {
     background: #e6e6e6;
     width: 100%;

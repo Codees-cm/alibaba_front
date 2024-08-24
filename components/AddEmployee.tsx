@@ -61,9 +61,6 @@ const {register} = useEmployee()
             <Label htmlFor="framework">Email</Label>
             <Input id="email" type='email' value={employeeData.email} onChange={handleInputChange} placeholder="Enter email"/>
           </div>
-          <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="framework">Password</Label>
-          </div>  
         </div>
      
     </CardContent>

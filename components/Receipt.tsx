@@ -26,6 +26,7 @@ const Receipt = ({receiptCode, salesData, paymentMethod, isOrder,name, phoneNumb
                         <p>Date: {currentDate}</p>
                         <p>Receipt code: {receiptCode}</p>
                     </div>
+                    
                     <div className="body-ticket">
                         {/* Product List Header */}
                         <div className="col4 header-row">
@@ -34,18 +35,18 @@ const Receipt = ({receiptCode, salesData, paymentMethod, isOrder,name, phoneNumb
                             <p><b>Unit Price</b></p>
                             <p><b>Total Price</b></p>
                         </div>
-                        <div className="hr-sm"></div>
                         {/* Product List */}
-                        <div className="col4">
-                        {salesData.map((product, index) => (
-                            <div key={index} className="col4">
-                                <p>{product.product}</p>
-                                <p>{product.quantity_sold}</p>
-                                <p>{product.price}</p>
-                                <p>{(product.price * product.quantity_sold).toFixed(2)}</p>
-                            </div>
-                        ))}
-                         </div>
+                        <div>
+    {salesData.map((product, index) => (
+        <div key={index} className="col4 product-row">
+            <p>{product.product}</p>
+            <p>{product.quantity_sold}</p>
+            <p>{product.price}</p>
+            <p>{(product.price * product.quantity_sold).toFixed(2)}</p>
+        </div>
+    ))}
+</div>
+
 
 
                         {

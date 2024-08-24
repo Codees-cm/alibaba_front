@@ -11,10 +11,8 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DataTable } from "@/components/DataTable";
 import { useProducts } from "@/hooks/stock_manage/use-product";
-import { useSales } from "@/hooks/use-sales";
 import { useRouter } from "next/navigation";
 export type SaleInfo = {
   price(price: any): number;
@@ -24,59 +22,81 @@ export type SaleInfo = {
   productName: string;
 };
 
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+
 export default function Supplier() {
-  const [saleFormData, setSaleFormData] = useState({ product: "", quantity_sold: "",sale_price:"", productName: "" , price: 0});
+  const [saleFormData, setSaleFormData] = useState({ product: "", quantity_sold: "", sale_price: "", productName: "", price: 0 });
   const [salesData, setSalesData] = useState<SaleInfo[]>([]);
   const { products, allLoading } = useProducts();
-  const router = useRouter()
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState("");
 
   if (allLoading) {
     return (
       <>
         ...isLoading
       </>
-    )
+    );
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
+
+     
+    // Convert value to a number
+    const numericValue = parseInt(value, 10);
+
+    // Get the available quantity of the selected product
+    const selectedProduct = products?.data.find(product => product.id.toString() === saleFormData.product);
+    const availableQuantity = selectedProduct ? selectedProduct.quantity : 0;
+
+    // If the entered quantity is greater than the available quantity, limit it
+    if (id === "quantity_sold" && numericValue > availableQuantity) {
+        alert(`The quantity entered exceeds the available quantity of ${availableQuantity}.`);
+        return;
+    }
+
     setSaleFormData({ ...saleFormData, [id]: value });
   };
 
-  const handleProductChange = (value: any) => {
-    const selectedProduct = products.data.find((product: { id: { toString: () => any; }; }) => product.id.toString() === value);
-    if (selectedProduct) {
-      setSaleFormData(prevState => ({
-        ...prevState,
-        product: value,
-        product_id: selectedProduct.id,
-        productName: selectedProduct.name,
-        price: selectedProduct.price ,
-        sale_price: selectedProduct.price
-      }));
-    }
+  const handleProductChange = (product: any) => {
+    setSaleFormData({
+      ...saleFormData,
+      product: product.id,
+      productName: product.name,
+      price: product.price,
+      sale_price: product.price,
+    });
+    setValue(product.name);
+    setOpen(false);
   };
 
-  const handleRemoveProduct = (value: any) => {
-    // const selectedProduct = products.data.find((product: { id: { toString: () => any; }; }) => product.id.toString() === value);
-    // if (selectedProduct) {
-    //   setSaleFormData(prevState => ({
-    //     ...prevState,
-    //     product: value,
-    //     product_id: selectedProduct.id,
-    //     productName: selectedProduct.name,
-    //     price: selectedProduct.price ,
-    //     sale_price: selectedProduct.price
-    //   }));
-    // }
+  const handleRemoveProduct = (index: number) => {
+    const updatedSalesData = [...salesData];
+    updatedSalesData.splice(index, 1);
+    setSalesData(updatedSalesData);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { product, quantity_sold } = saleFormData;
-    if (product.trim() && quantity_sold.trim()) {
+    if (product && quantity_sold.trim()) {
       setSalesData([...salesData, saleFormData]);
-      setSaleFormData({ product: "", quantity_sold: "", productName: "",price: 0,sale_price:"" });
+      setSaleFormData({ product: "", quantity_sold: "", productName: "", price: 0, sale_price: "" });
+      setValue(""); // Reset selected value
     }
   };
 
@@ -85,12 +105,11 @@ export default function Supplier() {
     { header: "Quantity", accessorKey: "quantity_sold" },
     {
       header: "Remove",
-      cell: ({ row }) => {
-            console.log(row.original.sale_id)
+      cell: ({ row, rowIndex }) => {
         return (
-                <button className="text-orange-400 hover:text-orange-700" onClick={handleRemoveProduct}>remove</button>
+          <button className="text-orange-400 hover:text-orange-700" onClick={() => handleRemoveProduct(rowIndex)}>remove</button>
         );
-    },
+      },
     },
   ];
 
@@ -98,62 +117,75 @@ export default function Supplier() {
     return salesData.reduce((total, sale) => total + (parseFloat(sale.price) * parseInt(sale.quantity_sold)), 0);
   };
 
-
   const handleSaleSubmit = async () => {
     const typedSalesData: SaleInfo[] = salesData.map(sale => ({
-      product: parseInt(sale.product, 10), // Convert product to number (product ID)
+      product: sale.productName, // Convert product to number (product ID)
       quantity_sold: sale.quantity_sold,
-      product_id:parseInt(sale.product, 10),
+      product_id: parseInt(sale.product, 10),
       sale_price: sale.sale_price,
-      // productName: sale.productName,
       price: parseFloat(sale.price) // Convert price to number
     }));
-    
+
     localStorage.setItem('salesData', JSON.stringify(typedSalesData));
-  
-    // await addSale(typedSalesData);
     setSalesData([]);
-    router.push('sales/0')
+    router.push('sales/0');
   };
 
   return (
     <div className="p-8 w-full bg-gradient-to-r from-amber-100 to-white">
       <div className="flex justify-between mt-10">
-        <div className="w-[100%]  flex justify-center" style={{ height:"max-content" }} >
-          <Card className="w-[350px]" >
+        <div className="w-[100%] flex justify-center" style={{ height: "max-content" }}>
+          <Card className="w-[350px]">
             <CardHeader>
               <CardTitle>Sales</CardTitle>
               <CardContent>
                 <form onSubmit={handleSubmit}>
                   <div className="grid w-full gap-4">
-                    <Select onValueChange={handleProductChange}>
-                      <SelectTrigger id="product" value={saleFormData.product} aria-label="Select product" name="product">
-                        <SelectValue placeholder="select product" />
-                      </SelectTrigger>
-                      <SelectGroup>
-                        <SelectContent>
-                         
-                          {products?.data.map((product: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | Iterable<React.ReactNode> | null | undefined; }) => (
-                         <>
-                           {
-                                (product.quantity  > 0) && 
-                                (<>
-                                  <SelectItem key={product.id} value={product.id.toString()}>
-                                 { product.name } <small style={{ margin:"3vh" }}>remains {product.quantity} </small>
-                                  </SelectItem>
-                                </>)
-                                
-                              }
-                         </>
-                            
-                          ))}
-                        </SelectContent>
-                      </SelectGroup>
-                    </Select>
+                    <Popover open={open} onOpenChange={setOpen}>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          role="combobox"
+                          aria-expanded={open}
+                          className="w-[200px] justify-between"
+                        >
+                          {value ? value : "Select product..."}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[200px] p-0">
+                        <Command>
+                          <CommandInput placeholder="Search product..." className="h-9" />
+                          <CommandList>
+                            <CommandEmpty>No product found.</CommandEmpty>
+                            <CommandGroup>
+                              {products?.data.map((product) => (
+                               <>
+                               {
+                               (product.quantity  > 0)&&(
+                                <CommandItem
+                                key={product.id}
+                                value={product.name}
+                                onSelect={() => handleProductChange(product)}
+                              >
+                                {product.name} <small style={{ margin: "1vh" }}>remains {product.quantity}</small>
+                              </CommandItem>
+                               )
+
+                               }
+                               </>
+                              
+                              ))}
+                            </CommandGroup>
+                          </CommandList>
+                        </Command>
+                      </PopoverContent>
+                    </Popover>
+
                     <div className="flex flex-col">
                       <Label htmlFor="quantity_sold">Quantity</Label>
                       <Input id="quantity_sold" type="number" placeholder="Quantity" value={saleFormData.quantity_sold} onChange={handleInputChange} />
                     </div>
+
                     <Button type="submit">Save</Button>
                   </div>
                 </form>
@@ -161,7 +193,7 @@ export default function Supplier() {
             </CardHeader>
           </Card>
         </div>
-        <div className="w-[100%]  flex justify-center">
+        <div className="w-[100%] flex justify-center">
           <Card className="w-[450px]">
             <CardHeader>
               <CardTitle>Sales Information</CardTitle>

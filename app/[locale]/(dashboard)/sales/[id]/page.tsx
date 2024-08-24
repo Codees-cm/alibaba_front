@@ -29,6 +29,7 @@ const router = useRouter()
     useEffect(() => {
         const storedSalesData = localStorage.getItem('salesData');
         const initialSalesData = storedSalesData ? JSON.parse(storedSalesData) : [];
+        console.log(storedSalesData)
         setSalesData(initialSalesData);
         // Calculate the total amount
         const total = initialSalesData.reduce((acc: number, product: { quantity_sold: number; sale_price: number; }) => acc + product.quantity_sold * product.sale_price, 0);
@@ -114,7 +115,6 @@ const router = useRouter()
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead>Product Code</TableHead>
                                             <TableHead>Name</TableHead>
                                             <TableHead>Quantity</TableHead>
                                             <TableHead>Price</TableHead>
@@ -128,7 +128,6 @@ const router = useRouter()
                                         ) : (
                                             salesData.map((product) => (
                                                 <TableRow key={product.id}>
-                                                    <TableCell className="font-medium">{product.product_id}</TableCell>
                                                     <TableCell>{product.product}</TableCell>
                                                     <TableCell>{product.quantity_sold}</TableCell>
                                                     <TableCell>XAF{product.sale_price}</TableCell>

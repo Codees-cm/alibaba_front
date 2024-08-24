@@ -36,12 +36,6 @@ export default function Home({ params: { locale } }) {
       icon: DollarSign,
     },
     {
-      label: t('total-employees'),
-      amount: data?.data["number_of_employee"],
-      discription: "",
-      icon: Users,
-    },
-    {
       label: t('today-transaction'),
       amount: data?.data["today_sales_count"],
       discription: "",
