@@ -56,6 +56,57 @@ const ProductDetails: React.FC<Props> = ({ params,role }) => {
         online: oneProduct?.data.available
     };
 
+    const MarkdownCell: React.FC<{ file_url: string; product: any; key: string }> = ({ file_url, product, key }) => {
+        const { content, error } = useMarkdownContent(file_url);
+    
+        if (error) {
+            return <div>Error: {error}</div>;
+        }
+    
+        if (!content) {
+            return <div>Loading...</div>;
+        }
+    
+        localStorage.setItem(key, content);
+    
+        return (
+            <Link href={{ pathname: `${product.id}/markdown/${key}`, query: { data: JSON.stringify({ product: product.name }) } }}>
+                <button className="text-blue-500 hover:text-blue-700">Edit</button>
+            </Link>
+        );
+    };
+    // const file_columns = [
+    //     {
+    //         accessorKey: "file_url",
+    //         header: "Markdown Url",
+    //     },
+    //     {
+    //         accessorKey: "edit",
+    //         header: "Actions",
+    //         cell: ({ row }) => {
+    //         const file_url = oneProduct?.data.markdown_files[0].file_url; 
+    //         const { content, error } = useMarkdownContent(file_url);
+
+    //         const key = oneProduct?.data.markdown_files[0].id;
+
+    //         if (error) {
+    //             return <div>Error: {error}</div>;
+    //         }
+
+    //         if (!content) {
+    //             return <div>Loading...</div>;
+    //         }
+
+    //         localStorage.setItem(key, content);
+              
+    //             return (
+    //                 <Link href={{pathname:`${product.id}/markdown/${key}`, query: { data: JSON.stringify({product:product.name})}}} >
+    //                     <button className="text-blue-500 hover:text-blue-700">Edit</button>
+    //                 </Link>
+    //             );
+    //         },
+    //     },
+    // ];
 
     const file_columns = [
         {
@@ -66,26 +117,10 @@ const ProductDetails: React.FC<Props> = ({ params,role }) => {
             accessorKey: "edit",
             header: "Actions",
             cell: ({ row }) => {
-            const file_url = oneProduct?.data.markdown_files[0].file_url; 
-            const { content, error } = useMarkdownContent(file_url);
-
-            const key = oneProduct?.data.markdown_files[0].id;
-
-            if (error) {
-                return <div>Error: {error}</div>;
-            }
-
-            if (!content) {
-                return <div>Loading...</div>;
-            }
-
-            localStorage.setItem(key, content);
-              
-                return (
-                    <Link href={{pathname:`${product.id}/markdown/${key}`, query: { data: JSON.stringify({product:product.name})}}} >
-                        <button className="text-blue-500 hover:text-blue-700">Edit</button>
-                    </Link>
-                );
+                const file_url = oneProduct?.data.markdown_files[0].file_url; 
+                const key = oneProduct?.data.markdown_files[0].id;
+    
+                return <MarkdownCell file_url={file_url} product={product} key={key} />;
             },
         },
     ];
