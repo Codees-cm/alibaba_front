@@ -63,12 +63,6 @@ export default function Supplier() {
     const selectedProduct = products?.data.find(product => product.id.toString() === saleFormData.product);
     const availableQuantity = selectedProduct ? selectedProduct.quantity : 0;
 
-    // If the entered quantity is greater than the available quantity, limit it
-    if (id === "quantity_sold" && numericValue > availableQuantity) {
-        alert(`The quantity entered exceeds the available quantity of ${availableQuantity}.`);
-        return;
-    }
-
     setSaleFormData({ ...saleFormData, [id]: value });
   };
 
@@ -119,9 +113,9 @@ export default function Supplier() {
 
   const handleSaleSubmit = async () => {
     const typedSalesData: SaleInfo[] = salesData.map(sale => ({
-      product: sale.productName, // Convert product to number (product ID)
+      product_name: sale.productName, // Convert product to number (product ID)
       quantity_sold: sale.quantity_sold,
-      product_id: parseInt(sale.product, 10),
+      product: parseInt(sale.product, 10),
       sale_price: sale.sale_price,
       price: parseFloat(sale.price) // Convert price to number
     }));

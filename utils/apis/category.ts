@@ -9,7 +9,7 @@ export const fetchCategories = async () => {
     return response;
 }
 
-export const createCategories = async (data) => {
+export const createCategories = async (data: any) => {
     const response = await instance.post('/categories/',data)
     .then((res)=>{
       return res
@@ -18,7 +18,7 @@ export const createCategories = async (data) => {
 }
 
 export const editCategories = async (data) => {
-    const response = await instance.put('/categories/',data)
+    const response = await instance.put(`/categories/${data.id}/`,data)
     .then((res)=>{
       return res
     })
@@ -26,7 +26,7 @@ export const editCategories = async (data) => {
 }
 
 
-export const viewCategories = async (id) => {
+export const viewCategories = async (id: number | null) => {
     const response = await instance.get(`/products_by_category/${id}/`)
     .then((res)=>{
       return res
@@ -34,7 +34,7 @@ export const viewCategories = async (id) => {
     return response;
 }
 
-export const deleteCategories = async (id) => {
+export const deleteCategories = async (id: any) => {
     const response = await instance.delete(`/categories/${id}/`)
     .then((res)=>{
       return res

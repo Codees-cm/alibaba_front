@@ -13,8 +13,9 @@ type EditorProps = {
 function Editor({ param, initialContent }: EditorProps) {
     const [text, setText] = useState(initialContent || "Product details ....");
     const { edgestore } = useEdgeStore();
-    const { createProductMarkdown, isCreatingProductsMarkdown ,markdown_update_product } = useProducts(false,param.id);
+console.log(param)
 
+    const { createProductMarkdown, isCreatingProductsMarkdown ,markdown_update_product } = useProducts(false,param.id);
     const router = useRouter();
 
     useEffect(() => {

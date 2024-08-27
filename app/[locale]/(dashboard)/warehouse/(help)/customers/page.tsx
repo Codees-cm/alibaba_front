@@ -152,6 +152,7 @@ export default function Customer() {
                       <TableHead> First Name</TableHead>
                       <TableHead>Last Name</TableHead>
                         <TableHead>Email</TableHead>
+                        <TableHead>Phone</TableHead>
                         <TableHead>Action</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -166,6 +167,7 @@ export default function Customer() {
                         <TableCell className="font-medium">{customers.first_name}</TableCell>
                         <TableCell className="font-medium">{customers.last_name}</TableCell>
                         <TableCell className="font-medium">{customers.email}</TableCell>
+                        <TableCell className="font-medium">{customers.phone_number}</TableCell>
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>

@@ -17,6 +17,16 @@ export const createEmployees = async (data: any) => {
     return response;
 }
 
+
+export const deleteEmployees = async (id: any) => {
+  const response = await instance.delete(`/users/${id}/delete/`,)
+  .then((res)=>{
+    return res
+  })
+  return response;
+}
+
+
 // export const editCategories = async (data) => {
 //     const response = await instance.put('/users/',data)
 //     .then((res)=>{

@@ -74,6 +74,7 @@ const router = useRouter()
                 }
             )
         }else{
+
             await addSale(salesData)
         }
       
@@ -128,7 +129,7 @@ const router = useRouter()
                                         ) : (
                                             salesData.map((product) => (
                                                 <TableRow key={product.id}>
-                                                    <TableCell>{product.product}</TableCell>
+                                                    <TableCell>{product.product_name}</TableCell>
                                                     <TableCell>{product.quantity_sold}</TableCell>
                                                     <TableCell>XAF{product.sale_price}</TableCell>
                                                 </TableRow>

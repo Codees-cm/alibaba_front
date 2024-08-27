@@ -39,7 +39,7 @@ const Receipt = ({receiptCode, salesData, paymentMethod, isOrder,name, phoneNumb
                         <div>
     {salesData.map((product, index) => (
         <div key={index} className="col4 product-row">
-            <p>{product.product}</p>
+            <p>{product.product_name}</p>
             <p>{product.quantity_sold}</p>
             <p>{product.price}</p>
             <p>{(product.price * product.quantity_sold).toFixed(2)}</p>

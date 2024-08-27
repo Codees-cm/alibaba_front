@@ -9,7 +9,7 @@ type Props = {
  };
 export default function Page({ params }:Props) {
     const [content, setContent] = useState("");
-
+console.log(params)
 
     useEffect(() => {
         const storedContent = localStorage.getItem(params.key);

@@ -10,7 +10,12 @@ import { CollectionsOutlined } from '@mui/icons-material'
 export default function AddCustomers() {
 const {register} = useCustomer()
     const [categoryData, setCustomersData] = useState({
-        name: "",
+      
+        first_name : "",
+        last_name: " ",
+        email: "",
+        password:"",
+        phone_number: "",
         role: "user"
     });
 
@@ -25,11 +30,15 @@ const {register} = useCustomer()
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-        //   console.log("hello",categoryData)
+        
             await register(categoryData);
             // Reset form after successful submission
             setCustomersData({
-                name: "",
+        first_name : "",
+        last_name: " ",
+        email: "",
+        phone_number: "",
+                phone_number: "",
             });
         } catch (error) {
             console.error("Error adding category:", error);
@@ -47,7 +56,12 @@ const {register} = useCustomer()
         <div className="grid w-full items-center gap-4">
         <div className="flex flex-col space-y-1.5">
             <Label htmlFor="framework">Customers Name</Label>
-            <Input id="name" value={categoryData.name} onChange={handleInputChange} placeholder="Enter Customers Name"/>
+            <Input id="first_name" value={categoryData.first_name} onChange={handleInputChange} placeholder="Enter Customers first name"/>
+            <Input id="last_name" value={categoryData.last_name} onChange={handleInputChange} placeholder="Enter Customers last name"/>
+            <Input id="email" value={categoryData.email} onChange={handleInputChange} placeholder="Enter Customers email"/>
+            
+            <Input id="phone_number" value={categoryData.phone_number} onChange={handleInputChange} placeholder="Enter Customers Phone number"/>
+     
           </div>
         </div>
      

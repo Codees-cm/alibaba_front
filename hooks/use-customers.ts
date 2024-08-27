@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from '@tanstack/react-query'; // Import useQueryClient
+import { useQuery, useMutation,useQueryClient } from '@tanstack/react-query'; // Import useQueryClient
 import { createCustomers, fetchCustomers } from '@/utils/apis/customers';
 import React from 'react';
 import { useToast } from "@/components/ui/use-toast"
@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast"
 export const useCustomer = (enable: boolean = false) => {
   const [isSuccess, setIsSuccess] = React.useState(false); // State to track registration success
   const { toast } = useToast()
+  const queryClient = useQueryClient();
 
   const { data: customers, isLoading: allLoading, error: allFetchError, refetch } = useQuery({
     queryKey: ['customer'],
@@ -23,6 +24,8 @@ export const useCustomer = (enable: boolean = false) => {
         title: "customer saved",
         description: "...........",
       })
+      queryClient.invalidateQueries(["customer"])
+
       setIsSuccess(true); // Set success state to true after successful registration
     },
     onError: (error) => {

@@ -1,5 +1,5 @@
 import { useQuery, useMutation,useQueryClient } from '@tanstack/react-query'; // Import useQueryClient
-import { createEmployees, fetchEmployees } from '@/utils/apis/employee';
+import { createEmployees, deleteEmployees, fetchEmployees } from '@/utils/apis/employee';
 import React from 'react';
 import { useToast } from "@/components/ui/use-toast"
 
@@ -36,9 +36,36 @@ export const useEmployee = (enable: boolean = false) => {
     },
   });
 
+  
+  const {mutate:deleteEmployeeeMutation, isPending:isDeletingEmployee} = useMutation({
+    mutationFn: deleteEmployees,
+    onSuccess: () => {
+        queryClient.invalidateQueries(["employee"])
+        toast({
+          title: "expense deleted",
+          description: "...........",
+        })
+        setIsSuccess(true);
+      },
+      onError: (error) => {
+        // setErrorMessage(error.message)
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: "There was a problem with your request.",
+        })
+        // console.error("Error occurred during registration:", error);
+      },
+})
+
+
+
   const register = async (newUser: any) => {
     await registerEmployeeMutation(newUser);
   };
+
+  const deletingEmployee = async (id: any)=>{
+    await  deleteEmployeeeMutation(id); 
+}
 
   return {
     employees,
@@ -46,6 +73,7 @@ export const useEmployee = (enable: boolean = false) => {
     allFetchError,
     isSuccess,
     register,
+    deletingEmployee,
     isRegisteringEmployee,
   };
 };

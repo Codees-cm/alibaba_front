@@ -20,6 +20,7 @@ import {
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
@@ -56,7 +57,7 @@ import Loader from "@/components/Loader";
 export default function Employee() {
 
 
-  const { employees, allFetchError, allLoading, } = useEmployee();
+  const { employees, allFetchError, allLoading, deletingEmployee } = useEmployee();
   const router = useRouter()
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -170,7 +171,7 @@ export default function Employee() {
                                 <DropdownMenuContent align="end">
                                   {/* <DropdownMenuItem onClick={() => router.push(`category/${category.id}`)}>Details</DropdownMenuItem> */}
                                   {/* <DropdownMenuItem>Edit</DropdownMenuItem> */}
-                                  {/* <DropdownMenuItem onClick={() => deletingCategorie(category.id)}>Delete</DropdownMenuItem> */}
+                                  <DropdownMenuItem onClick={() => deletingEmployee(employees.id)}>Delete</DropdownMenuItem>
                                 </DropdownMenuContent>
                               </DropdownMenu>
                             </TableCell>

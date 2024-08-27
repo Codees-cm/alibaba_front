@@ -18,7 +18,7 @@ export default function Page({ params }:Props) {
     
       <div className="flex flex-col items-center justify-center flex-1 w-full px-4">
         {params.id ? (
-          <Editor id={params.id}  />
+          <Editor param={params}    />
         ) : (
           <p>No valid ID found in the URL path</p>
         )}

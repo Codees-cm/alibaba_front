@@ -10,13 +10,22 @@ export const fetchCustomers = async () => {
 }
 
 export const createCustomers = async (data) => {
-    const response = await instance.post('/users/',data)
+    const response = await instance.post('/create-customers/',data)
     .then((res)=>{
       return res
     })
     return response;
 }
 
+
+
+export const editCustomers = async (data) => {
+  const response = await instance.post(`/users/${data.id}`,data)
+  .then((res)=>{
+    return res
+  })
+  return response;
+}
 // export const editCategories = async (data) => {
 //     const response = await instance.put('/users/',data)
 //     .then((res)=>{
