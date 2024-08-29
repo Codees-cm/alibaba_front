@@ -17,7 +17,7 @@ import { useOrders } from '@/hooks/stock_manage/use-order';
 import { useRouter } from 'next/navigation';
 export default function Page() {
     const [salesData, setSalesData] = useState([]);
-    const [paymentDetails, setPaymentDetails] = useState({ paymentMethod: '', name: '', phoneNumber: '', location: '' ,order:'' });
+    const [paymentDetails, setPaymentDetails] = useState({ paymentMethod: '',customerId:"", name: '', phoneNumber: '', location: '' ,order:'' });
     const [totalAmount, setTotalAmount] = useState(0);
     const [amountReceived, setAmountReceived] = useState(0);
     const [balance, setBalance] = useState(0);
@@ -67,7 +67,7 @@ const router = useRouter()
             console.log(salesData)
             await createNewOrder(
                 {
-                    "user": paymentDetails.name,
+                    "user": paymentDetails.customerId,
                     "address": paymentDetails.phoneNumber,
                     "city":paymentDetails.location.value,
                     "items": salesData

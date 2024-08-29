@@ -28,6 +28,7 @@ export function PaymentMethod({ onSubmit }) {
     const { customers, allFetchError, allLoading } = useCustomer();
     const [paymentMethod, setPaymentMethod] = useState('cash');
     const [name, setName] = useState('');
+    const [customerId, setCustomerId] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [location, setLocation] = useState({});
     const [isOrder, setIsOrder] = useState(false);
@@ -38,11 +39,12 @@ export function PaymentMethod({ onSubmit }) {
         return <div>loading</div>;
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         const paymentDetails = {
             paymentMethod,
             name,
+            customerId,
             phoneNumber,
             location,
             amountReceived,
@@ -51,22 +53,23 @@ export function PaymentMethod({ onSubmit }) {
         onSubmit(paymentDetails);
     };
 
-    const handleFormChange = (value) => {
+    const handleFormChange = (value: string) => {
         const selectedRegion = cameroonRegions.find((region) => region.value === value);
         if (selectedRegion) {
             setLocation(selectedRegion);
         }
     };
 
-    const handleFormChangeCustomer = (value) => {
-        const selectedCustomer = customers.data.find((customer) => customer.id === value);
+    const handleFormChangeCustomer = (value: any) => {
+        const selectedCustomer = customers.data.find((customer: { id: any; }) => customer.id === value);
         if (selectedCustomer) {
             setName(selectedCustomer.first_name);
+            setCustomerId(selectedCustomer.id);
             setPhoneNumber(selectedCustomer.phone_number);  // Automatically set phone number
         }
     };
 
-    const getButtonClasses = (method) => {
+    const getButtonClasses = (method: string) => {
         return method === paymentMethod
             ? "flex flex-col items-center justify-between rounded-md border-2 border-blue-500 bg-blue-100 p-4 text-blue-700"
             : "flex flex-col items-center justify-between rounded-md border-2 border-muted bg-transparent p-4 hover:bg-accent hover:text-accent-foreground";
@@ -138,7 +141,7 @@ export function PaymentMethod({ onSubmit }) {
                         </SelectTrigger>
 
                         <SelectContent>
-                            {customers?.data.map((customer) => (
+                            {customers?.data.map((customer: { id: React.Key | null | undefined; first_name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | Iterable<React.ReactNode> | null | undefined; }) => (
                                 <SelectItem key={customer.id} value={customer.id}>
                                     {customer.first_name}
                                 </SelectItem>
