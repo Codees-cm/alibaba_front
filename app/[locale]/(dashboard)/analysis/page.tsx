@@ -14,7 +14,7 @@ import PieChartComponent from '@/components/PieChart';
 import LineChartComponent from '@/components/LineChart';
 import { useEffect, useState } from 'react';
 import instance from '@/utils/api';
-
+import { redirect } from 'next/navigation';
 export default function Analysis({ params: { locale } }) {
   const { t } = useTranslation(locale, "dashboard")
 
@@ -151,9 +151,11 @@ loading_total_sales_per_week
       amount: data?.data['total_products'],
       discription: '',
       icon: Activity,
+      onClick: () => redirect('/warehouse/products/')
+    
     },
     {
-      label: 'products out of stock',
+      label: 'products which are set online and are out of stock',
       amount: data_inventStat?.data['out_of_stock_count'],
       discription: '',
       icon: ArrowRightLeft,

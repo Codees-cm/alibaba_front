@@ -169,7 +169,7 @@ export default function Employee() {
                                   </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end">
-                                  {/* <DropdownMenuItem onClick={() => router.push(`category/${category.id}`)}>Details</DropdownMenuItem> */}
+                                  <DropdownMenuItem onClick={() => router.push(`employees/${employees.id}`)}>Details</DropdownMenuItem>
                                   {/* <DropdownMenuItem>Edit</DropdownMenuItem> */}
                                   <DropdownMenuItem onClick={() => deletingEmployee(employees.id)}>Delete</DropdownMenuItem>
                                 </DropdownMenuContent>

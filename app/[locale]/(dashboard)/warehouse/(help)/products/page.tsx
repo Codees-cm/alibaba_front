@@ -10,7 +10,7 @@ import {
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, ChevronUp, ChevronDown } from "lucide-react"; // Import sorting icons
 import { useProducts } from "@/hooks/stock_manage/use-product";
 import { Input } from "@/components/ui/input";
 import {
@@ -22,43 +22,62 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
 import AddProduct from "@/components/AddProduct";
 import EditProduct from "@/components/EditProduct"; // Import the new component
 import { useRouter } from "next/navigation";
 import useCSVExport from '@/hooks/handleExportToCSV';
 import { TabsContent, Tabs } from "@/components/ui/tabs";
-
 import { useMe } from "@/hooks/use-retiveme";
+
 export default function Dashboard() {
-    const { me, isLoading, error } = useMe();
+  const { me } = useMe();
   const { products, allLoading, allFetchError, deletingProduct } = useProducts();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null); // Track the selected product for editing
+  const [sortConfig, setSortConfig] = useState({ key: 'name', direction: 'asc' }); // Sorting configuration
   const exportToCSV = useCSVExport();
 
   if (allLoading) {
     return <div>loading</div>;
   }
 
-
   if (allFetchError) {
     return <div>Error: {allFetchError.message}</div>;
   }
-  const handlePageChange = (page: React.SetStateAction<number>) => {
+
+  const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
-  const filteredProducts = products?.data.filter((category: { name: string; }) =>
-    category.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  const handleSearchChange = (event: { target: { value: React.SetStateAction<string>; }; }) => {
+  const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
     setCurrentPage(1);
   };
+
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key && sortConfig.direction === 'asc') {
+      direction = 'desc';
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedProducts = products?.data.sort((a, b) => {
+    if (a[sortConfig.key] < b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? -1 : 1;
+    }
+    if (a[sortConfig.key] > b[sortConfig.key]) {
+      return sortConfig.direction === 'asc' ? 1 : -1;
+    }
+    return 0;
+  });
+
+  const filteredProducts = sortedProducts?.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const itemsPerPage = 5;
   const pageCount = Math.ceil(filteredProducts.length / itemsPerPage);
@@ -72,16 +91,12 @@ export default function Dashboard() {
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-gradient-to-r from-amber-100 to-white">
-      {/* <div className="flex min-h-screen w-full flex-col"> */}
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
-        {/* <main className="grid flex-1 items-start ml-15 mt-10"> */}
-        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6  ml-15 mt-10 sm:py-0 md:gap-8">
-
+        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 ml-15 mt-10 sm:py-0 md:gap-8">
           <Tabs defaultValue="all">
             <TabsContent value="all">
               <Card className="shadow-lg">
                 <CardHeader>
-                  {/* <div className="flex flex-wrap justify-between mb-2"> */}
                   <div className="space-y-1">
                     <CardTitle className="text-2xl font-extrabold tracking-tight lg:text-4xl">
                       Products
@@ -102,33 +117,65 @@ export default function Dashboard() {
                       </div>
 
                       {me?.data.role === 'admin' && (
-                <>
-                 <AlertDialog style={{ width: "fit-content" }}>
-                        <AlertDialogTrigger className=" text-sm font-semibold text-white rounded-lg p-2  bg-orange-500 border-slate-950">AddProduct</AlertDialogTrigger>
-                        <AlertDialogContent className="w-max">
-                          <AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            </AlertDialogFooter>
-                            <AlertDialogDescription style={{ minWidth: 'max-content' }}>
-                              <AddProduct />
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-
-                        </AlertDialogContent>
-                      </AlertDialog>
-                </>
-              
-              )}
-                    
+                        <>
+                          <AlertDialog style={{ width: "fit-content" }}>
+                            <AlertDialogTrigger className=" text-sm font-semibold text-white rounded-lg p-2  bg-orange-500 border-slate-950">AddProduct</AlertDialogTrigger>
+                            <AlertDialogContent className="w-max">
+                              <AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                </AlertDialogFooter>
+                                <AlertDialogDescription style={{ minWidth: 'max-content' }}>
+                                  <AddProduct />
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </>
+                      )}
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent>
                   <Table>
-                    <TableHeader><TableRow><TableHead>Code</TableHead><TableHead>Name</TableHead><TableHead>Quantity</TableHead><TableHead>Buying Price</TableHead><TableHead>Selling Price</TableHead><TableHead>Promo Code</TableHead> {/* New Column for Promo Code */}
-                      <TableHead>Actions</TableHead></TableRow></TableHeader><TableBody>
-                      {displayedItems.map((product: React.SetStateAction<null>) => (
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead onClick={() => handleSort('product_code')}>
+                          Code
+                          {sortConfig.key === 'product_code' && (
+                            sortConfig.direction === 'asc' ? <ChevronUp className="inline ml-1" /> : <ChevronDown className="inline ml-1" />
+                          )}
+                        </TableHead>
+                        <TableHead onClick={() => handleSort('name')}>
+                          Name
+                          {sortConfig.key === 'name' && (
+                            sortConfig.direction === 'asc' ? <ChevronUp className="inline ml-1" /> : <ChevronDown className="inline ml-1" />
+                          )}
+                        </TableHead>
+                        <TableHead onClick={() => handleSort('quantity')}>
+                          Quantity
+                          {sortConfig.key === 'quantity' && (
+                            sortConfig.direction === 'asc' ? <ChevronUp className="inline ml-1" /> : <ChevronDown className="inline ml-1" />
+                          )}
+                        </TableHead>
+                        <TableHead onClick={() => handleSort('price')}>
+                          Buying Price
+                          {sortConfig.key === 'price' && (
+                            sortConfig.direction === 'asc' ? <ChevronUp className="inline ml-1" /> : <ChevronDown className="inline ml-1" />
+                          )}
+                        </TableHead>
+                        <TableHead onClick={() => handleSort('price_with_tax')}>
+                          Selling Price
+                          {sortConfig.key === 'price_with_tax' && (
+                            sortConfig.direction === 'asc' ? <ChevronUp className="inline ml-1" /> : <ChevronDown className="inline ml-1" />
+                          )}
+                        </TableHead>
+                        <TableHead>Promo Code</TableHead> {/* New Column for Promo Code */}
+                        <TableHead>Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {displayedItems.map((product) => (
                         <TableRow className={product.quantity <= 5 ? "bg-red-300" : ""} key={product.id}>
                           <TableCell className="font-medium">{product.product_code}</TableCell>
                           <TableCell className="font-medium">{product.name}</TableCell>
@@ -156,17 +203,15 @@ export default function Dashboard() {
                                   Details
                                 </DropdownMenuItem>
                                 {me?.data.role === 'admin' && (
-                <>
-                 <DropdownMenuItem onClick={() => setSelectedProduct(product)}>
-                                  Edit
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={async () => deletingProduct(product.id)}>
-                                  Delete
-                                </DropdownMenuItem>
-                </>
-              
-              )}
-                              
+                                  <>
+                                    <DropdownMenuItem onClick={() => setSelectedProduct(product)}>
+                                      Edit
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem onClick={async () => deletingProduct(product.id)}>
+                                      Delete
+                                    </DropdownMenuItem>
+                                  </>
+                                )}
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </TableCell>
@@ -190,17 +235,15 @@ export default function Dashboard() {
                     </div>
                   )}
                 </CardContent>
-
               </Card>
               <div className="mt-4 text-center text-sm text-gray-600">
                 Showing page {currentPage} of {pageCount}
               </div>
             </TabsContent>
           </Tabs>
-
         </main>
       </div>
-      {/* </div> */}
+
 
       {/* Edit Product Dialog */}
       {selectedProduct && (

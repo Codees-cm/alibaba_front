@@ -1,9 +1,9 @@
 import { useQuery, useMutation,useQueryClient } from '@tanstack/react-query'; // Import useQueryClient
-import { createEmployees, deleteEmployees, fetchEmployees } from '@/utils/apis/employee';
+import { createEmployees, deleteEmployees, fetchEmployees ,historyEmployees } from '@/utils/apis/employee';
 import React from 'react';
 import { useToast } from "@/components/ui/use-toast"
 
-export const useEmployee = (enable: boolean = false) => {
+export const useEmployee = (enable: boolean = false, Id:number|null = null) => {
   const [isSuccess, setIsSuccess] = React.useState(false); // State to track registration success
   const { toast } = useToast()
   const queryClient = useQueryClient();
@@ -14,6 +14,14 @@ export const useEmployee = (enable: boolean = false) => {
     queryFn: fetchEmployees,
     staleTime: 300000,
     enabled: !enable, // Disable the query by default, enables it only when needed
+
+  })
+
+  const { data: employeesHistory, isLoading: allLoadinghistory} = useQuery({
+    queryKey: ['employee'],
+    queryFn: () => historyEmployees(Id),
+    staleTime: 300000,
+    enabled: enable && Id !== null, // Disable the query by default, enables it only when needed
 
   })
 
@@ -75,5 +83,7 @@ export const useEmployee = (enable: boolean = false) => {
     register,
     deletingEmployee,
     isRegisteringEmployee,
+    employeesHistory,
+allLoadinghistory
   };
 };

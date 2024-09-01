@@ -9,10 +9,11 @@ export type CardProps = {
     icon:LucideIcon;
     amount:string;
     discription: string;
+    onClick?: () => void;
 };
 
 export default function Card(Props: CardProps) {
- return <CardContent >
+ return <CardContent onClick={Props.onClick}>
     <section className="flex justify-between gap-2">
         {/*label*/}
         <p className="text-sm">{Props.label}</p>

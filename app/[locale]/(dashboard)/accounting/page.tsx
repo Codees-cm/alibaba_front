@@ -11,6 +11,9 @@ import Barchart from "@/components/barchart";
 import { Skeleton } from "@/components/ui/skeleton"
 import { useEffect, useState } from 'react';
 import instance from '@/utils/api';
+import { useAnalysis } from "@/hooks/analysis/use-analysis";
+import PieChartComponent from '@/components/PieChart';
+import LineChartComponent from '@/components/LineChart';
 
 export default function Accounting({ params: { locale } }) {
   const { t } = useTranslation(locale, "dashboard")
@@ -47,6 +50,17 @@ export default function Accounting({ params: { locale } }) {
 
     fetchData();
   }, []);
+  const {
+  
+    data_profit_per_day,
+data_profit_per_week,
+data_total_sales_per_day,
+data_total_sales_per_week,
+loading_profit_per_day,
+loading_profit_per_week,
+loading_total_sales_per_day,
+loading_total_sales_per_week
+  } = useAnalysis()
 
 
  
@@ -107,7 +121,13 @@ export default function Accounting({ params: { locale } }) {
     },
   ];
 
-  console.log(data)
+  console.log(
+    data_profit_per_day,
+    data_profit_per_week,
+    data_total_sales_per_day,
+    data_total_sales_per_week,
+  )
+
 
   // Use default values if data is loading or not available
   const cardData = loading ? defaultCardData : [
@@ -177,6 +197,47 @@ export default function Accounting({ params: { locale } }) {
 
 
         </section>
+        <section className=" grid grid-cols-1 gap-4 transition-all lg:grid-cols-2">
+          {
+            (loading_profit_per_day) ? (
+              <>
+                <Skeleton className="h-[300px] w-[470px] rounded-xl" />
+              </>
+            ) : (
+              <>
+                <CardContent>
+                  <p className="p-4 font-semibold">{t('overview')}</p>
+
+                  <Barchart data={data_profit_per_day}/>
+
+                </CardContent>
+              </>
+            )
+          }
+          {
+            loading_profit_per_week ? (
+              <>
+                <Skeleton className="h-[300px] w-[450px] rounded-xl" />
+              </>
+            ) : (
+              <>
+              <CardContent>
+                  <p className="p-4 font-semibold">{t('overview')}</p>
+                  <LineChartComponent data={data_profit_per_day?.data} />
+
+                  {/* <Barchart data={data_profit_per_week}/> */}
+                  {/* <PieChartComponent data={data_profit_per_week?.data}/> */}
+                </CardContent>
+              </>
+            )
+          }
+
+
+
+
+          {/**/}
+        </section>
+
 
       </div>
 
