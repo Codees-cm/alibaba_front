@@ -17,7 +17,7 @@ export const createCategories = async (data: any) => {
     return response;
 }
 
-export const editCategories = async (data) => {
+export const editCategories = async (data: { id: any; }) => {
     const response = await instance.put(`/categories/${data.id}/`,data)
     .then((res)=>{
       return res

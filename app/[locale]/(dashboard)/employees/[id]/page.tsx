@@ -19,15 +19,12 @@ function Page({ locale, params }: Props) {
   const { employeesHistory, allLoadinghistory } = useEmployee(true, params.id);
 
   if (allLoadinghistory) {
-    return <div>..loading</div>; // Show loading message if fetching data
+    return <div>..loading</div>;
   }
 
-  // Access the data property
   const historyData = employeesHistory?.data || [];
-
-  // Calculate total quantity and total price
-  const totalQuantity = historyData.reduce((total, item) => total + item.quantity, 0);
-  const totalPrice = historyData.reduce((total, item) => total + item.quantity * item.product.price, 0);
+  const totalQuantity = historyData.reduce((total: any, item: { quantity: any; }) => total + item.quantity, 0);
+  const totalPrice = historyData.reduce((total: number, item: { quantity: number; product: { price: number; }; }) => total + item.quantity * item.product.price, 0);
 
   console.log(historyData);
 

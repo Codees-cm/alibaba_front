@@ -183,10 +183,10 @@ loading_total_sales_per_week
 
 
   console.log(
-    data_profit_per_day,
-    data_profit_per_week,
-    data_total_sales_per_day,
-    data_total_sales_per_week,
+    data_bar,
+    productSalesData,
+    salesDateData,
+    // data_total_sales_per_week,
   )
 
   return (
@@ -231,7 +231,7 @@ loading_total_sales_per_week
                 <CardContent>
                   <p className="p-4 font-semibold">{t('overview')}</p>
 
-                  <Barchart data={data_bar?.data}/>
+                  <Barchart data={data_bar?.data} dataKey={"total"} xKey={"name"}/>
 
                 </CardContent>
               </>
@@ -247,7 +247,7 @@ loading_total_sales_per_week
               <CardContent>
                   <p className="p-4 font-semibold">{t('overview')}</p>
 
-                  <Barchart data={productSalesData}/>
+                  <Barchart data={productSalesData} dataKey={"total"} xKey={"name"}/>
 
                 </CardContent>
               </>
@@ -272,7 +272,7 @@ loading_total_sales_per_week
                   <p className="p-4 font-semibold">{t('overview')}</p>
 
                   {/* <Barchart data={data_bar?.data}/> */}
-                  <LineChartComponent data={salesDateData} />
+                  <LineChartComponent data={salesDateData} dataKey={"quantitySold"} xKey={"date"}/>
 
                 </CardContent>
               </>

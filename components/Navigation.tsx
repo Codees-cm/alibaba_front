@@ -41,7 +41,7 @@ export default function Navigation({ lang }) {
 
   function hanbleContactSupport(): void {
     // Redirect to WhatsApp with the specified number
-    window.open('https://wa.me/5683262167', '_blank')
+    window.open('https://wa.me/+237697122421', '_blank')
   }
 
   return (

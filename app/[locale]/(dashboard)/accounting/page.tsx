@@ -26,30 +26,49 @@ export default function Accounting({ params: { locale } }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const [grossProfit, netProfit, operateProfit,totalRev,totalExpense] = await Promise.all([
+        const [
+          grossProfit,
+          netProfit,
+          operateProfit,
+          totalRev,
+          totalExpense,
+          productSalesData,
+          salesDateData,
+          salesData,
+          incomeStatementData
+        ] = await Promise.all([
           instance.get('analysis/gross-profit/'),
           instance.get('analysis/net-profit/'),
           instance.get('analysis/operating-profit/'),
           instance.get('analysis/total-revenue/'),
           instance.get('analysis/total-expenses/'),
+          instance.get('api/product-sales-data/'), // Product sales data
+          instance.get('api/sales-date-data/'), // Sales per date
+          instance.get('api/sales-data/'), // Sales data
+          instance.get('income-statement/'), 
         ]);
-
-       setData({
-        gross:grossProfit.data || "",
-        net: netProfit.data || "",
-        operating: operateProfit.data || "",
-        revenue : totalRev.data || "",
-        expenses : totalExpense.data || ""
-})
+  
+        setData({
+          gross: grossProfit.data || "",
+          net: netProfit.data || "",
+          operating: operateProfit.data || "",
+          revenue: totalRev.data || "",
+          expenses: totalExpense.data || "",
+          productSales: productSalesData.data || [], // Store product sales data
+          salesDate: salesDateData.data || [], // Store sales per date
+          sales: salesData.data || [], 
+          incomeStatement: incomeStatementData.data || {}, // Store sales data
+        });
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
     }
-
+  
     fetchData();
   }, []);
+  
   const {
   
     data_profit_per_day,
@@ -121,28 +140,9 @@ loading_total_sales_per_week
     },
   ];
 
-  console.log(
-    data_profit_per_day,
-    data_profit_per_week,
-    data_total_sales_per_day,
-    data_total_sales_per_week,
-  )
 
-
-  // Use default values if data is loading or not available
   const cardData = loading ? defaultCardData : [
-    {
-      label: "Gross profit",
-      amount: data.gross.gross_profit || 0,
-      discription: '',
-      icon: DollarSign,
-    },
-    {
-      label: "net Profit",
-      amount: data.net.net_profit || 0,
-      discription: '',
-      icon: Users,
-    },
+   
     {
       label: "Operation Profit",
       amount: data.operating.operating_profit || 0,
@@ -150,20 +150,49 @@ loading_total_sales_per_week
       icon: ArrowRightLeft,
     },
     {
-      label: "Total revenue",
+      label: "Total Revenue",
       amount: data.revenue.total_revenue || 0,
       discription: '',
       icon: Activity,
     },
     {
-      label: 'Total expense',
-      amount:data.expenses.total_expenses || 0,
+      label: "Beginning Inventory",
+      amount: data.incomeStatement.beginning_inventory || 0,  // New data
       discription: '',
-      icon: ArrowRightLeft,
+      icon: Activity,
     },
-   
+    {
+      label: "Ending Inventory",
+      amount: data.incomeStatement.ending_inventory || 0,  // New data
+      discription: '',
+      icon: Activity,
+    },
+    {
+      label: "Purchases of Goods",
+      amount: data.incomeStatement.purchases_of_goods || 0,  // New data
+      discription: '',
+      icon: Activity,
+    },
+    {
+      label: "Current Expenses",
+      amount: data.incomeStatement.current_expenses || 0,  // New data
+      discription: '',
+      icon: Activity,
+    },
+    {
+      label: "Gross Profit",
+      amount: data.incomeStatement.gross_profit || 0,  // New data
+      discription: '',
+      icon: DollarSign,
+    },
+    {
+      label: "Net Profit",
+      amount: data.incomeStatement.net_profit || 0,  // New data
+      discription: '',
+      icon: DollarSign,
+    },
   ];
-
+  
 
 
   return (
@@ -206,9 +235,10 @@ loading_total_sales_per_week
             ) : (
               <>
                 <CardContent>
-                  <p className="p-4 font-semibold">{t('overview')}</p>
+                  <p className="p-4 font-semibold">{t('data_profit_per_day')}</p>
+                  <LineChartComponent data={data_profit_per_day?.data} dataKey="total_profit" xKey="sale_date" />
 
-                  <Barchart data={data_profit_per_day}/>
+                  {/* <Barchart data={data_profit_per_day?.data} dataKey={"total_sale per day"} xKey={"profit"}/> */}
 
                 </CardContent>
               </>
@@ -222,17 +252,52 @@ loading_total_sales_per_week
             ) : (
               <>
               <CardContent>
-                  <p className="p-4 font-semibold">{t('overview')}</p>
-                  <LineChartComponent data={data_profit_per_day?.data} />
+                  <p className="p-4 font-semibold">{t('data_profit_per_week')}</p>
+                  {/* <LineChartComponent data={data_profit_per_day?.data} /> */}
+                  {/* <Barchart data={data_total_sales_per_day?.data} dataKey="total_sales" xKey="sale_date" /> */}
 
-                  {/* <Barchart data={data_profit_per_week}/> */}
-                  {/* <PieChartComponent data={data_profit_per_week?.data}/> */}
+                  <Barchart data={data_profit_per_week?.data} dataKey="total_profit" xKey="week"/>
+                  {/* <PieChartComponent data={data_prof dataKey="total_profit" xKey="sale_date"it_per_week?.data}/> */}
                 </CardContent>
               </>
             )
           }
+          {
+            loading_total_sales_per_day ? (
+              <>
+                <Skeleton className="h-[300px] w-[450px] rounded-xl" />
+              </>
+            ) : (
+              <>
+              <CardContent>
+                  <p className="p-4 font-semibold">{t('data_total_sales_per_day')}</p>
+                  {/* <LineChartComponent data={data_profit_per_day?.data} /> */}
+                  {/* <Barchart data={data_total_sales_per_day?.data} dataKey="total_sales" xKey="sale_date" /> */}
 
+                  <LineChartComponent data={data_total_sales_per_day?.data} dataKey="total_sales" xKey="sale_date"/>
+                  {/* <PieChartComponent data={data_prof dataKey="total_profit" xKey="sale_date"it_per_week?.data}/> */}
+                </CardContent>
+              </>
+            )
+          }
+    {
+            loading_total_sales_per_week ? (
+              <>
+                <Skeleton className="h-[300px] w-[450px] rounded-xl" />
+              </>
+            ) : (
+              <>
+              <CardContent>
+                  <p className="p-4 font-semibold">{t('data_total_sales_per_week')}</p>
+                  {/* <LineChartComponent data={data_profit_per_day?.data} /> */}
+                  {/* <Barchart data={data_total_sales_per_day?.data} dataKey="total_sales" xKey="sale_date" /> */}
 
+                  <LineChartComponent data={data_total_sales_per_week?.data} dataKey="total_sales" xKey="week"/>
+                  {/* <PieChartComponent data={data_prof dataKey="total_profit" xKey="sale_date"it_per_week?.data}/> */}
+                </CardContent>
+              </>
+            )
+          }
 
 
           {/**/}

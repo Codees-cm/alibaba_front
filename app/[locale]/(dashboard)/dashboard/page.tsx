@@ -102,7 +102,7 @@ export default function Home({ params: { locale } }) {
                 <CardContent>
                   <p className="p-4 font-semibold">{t('overview')}</p>
 
-                  <Barchart data={data_bar?.data}/>
+                  <Barchart data={data_bar?.data} dataKey={"total"} xKey={"name"}/>
 
                 </CardContent>
               </>

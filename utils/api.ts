@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 
 const instance  = axios.create({
   baseURL: "https://fnmalic.pythonanywhere.com/api",
-  // baseURL: "http://127.0.0.1:8000/api/",
+  // baseURL: "http://127.0.0.1:8080/api/",
 
 });
 
@@ -43,7 +43,7 @@ instance.interceptors.response.use(
       try {
         const refreshToken = Cookies.get('refresh'); // Assuming you store the refresh token in a cookie
         const response = await axios.post(
-          // 'http://127.0.0.1:8000/api/jwt/refresh/',
+          // 'http://127.0.0.1:8080/api/jwt/refresh/',
           'https://fnmalic.pythonanywhere.com/api/jwt/refresh/',
           { refresh: refreshToken }
         );
