@@ -64,8 +64,8 @@ export default function Dashboard() {
     }
     setSortConfig({ key, direction });
   };
-
-  const sortedProducts = products?.data.sort((a, b) => {
+// console.log(products?.data.results)
+  const sortedProducts = products?.data.results.sort((a, b) => {
     if (a[sortConfig.key] < b[sortConfig.key]) {
       return sortConfig.direction === 'asc' ? -1 : 1;
     }
