@@ -73,7 +73,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-gradient-to-r from-amber-100 to-white">
+    <div className="flex min-h-screen w-full flex-col bg-gradient-to-r from-amber-100 to-white" style={{ maxWidth:"150vh" }}>
       {/* <div className="flex min-h-screen w-full flex-col"> */}
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         {/* <main className="grid flex-1 items-start ml-15 mt-10"> */}

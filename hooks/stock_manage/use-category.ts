@@ -1,7 +1,6 @@
 "use client"
 import React from "react";
 import { useQuery , useMutation , useQueryClient } from "@tanstack/react-query";
-// import { viewCategorie } from "@/utils/api/categorie";
 import { fetchCategories,createCategories , editCategories, viewCategories ,deleteCategories } from "@/utils/apis/category";
 import { useToast } from "@/components/ui/use-toast"
 
@@ -15,7 +14,7 @@ export const useCategories = (enable:boolean = false , categoryId:number|null = 
         queryKey : ['categories'],
         queryFn: fetchCategories,
         staleTime: 300000,
-        enabled: !enable , // Disable the query by default, enable it only when needed
+        enabled: !enable ,
 
     })
 

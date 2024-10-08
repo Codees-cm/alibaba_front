@@ -134,7 +134,7 @@
 "use client"
 import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchPromoCodes, createPromoCode, applyPromoCode, deletePromoCode, generatePromoCode } from "@/utils/apis/promo-code";
+import { fetchPromoCodes, createPromoCode, applyPromoCode, deletePromoCode, generatePromoCode, editPromoCode } from "@/utils/apis/promo-code";
 import { useToast } from "@/components/ui/use-toast"
 // import { applyPromoCode } from "@/utils/apis/promo-code";
 export const usePromoCode = (enable = false, promoCodeId = null) => {
@@ -224,6 +224,27 @@ export const usePromoCode = (enable = false, promoCodeId = null) => {
         },
     });
 
+    const {mutate:editPromoCodeMutation, isPending:isEditingPromo} = useMutation({
+        mutationFn: editPromoCode,
+        onSuccess: () => {
+            queryClient.invalidateQueries(["promo-code",promoCodeId])
+
+            toast({
+              title: "Promo Edited",
+              description: "...........",
+            })
+            setIsSuccess(true);
+          },
+          onError: (error) => {
+            setErrorMessage(error.message)
+            toast({
+              title: "Uh oh! Something went wrong.",
+              description: "There was a problem with your request.",
+            })
+          },
+    })
+
+
 
 
     const addPromoCode = async (newPromoCode: any) => {
@@ -232,6 +253,10 @@ export const usePromoCode = (enable = false, promoCodeId = null) => {
 
     const applyPromoCodes = async (code: any) => {
         await applyPromoCodeMutation(code);
+    }
+
+    const modifyPromoCode = async (editCategorie)=>{
+        await  editPromoCodeMutation(editCategorie); 
     }
 
     const deletePromoCodes = async (id: any) => {
@@ -249,6 +274,8 @@ export const usePromoCode = (enable = false, promoCodeId = null) => {
         generatePromoCode,
         isGeneratingPromoCode,
 
+        modifyPromoCode,
+        isEditingPromo,
 
         applyPromoCodes,
         isApplyingPromoCode,

@@ -35,16 +35,7 @@ export default function SSidenavbar({ lang, role }) {
   }
   return (
     <div className="relative w-max border-r  bg-amber-100 px-3 pb-10 pt-24">
-     {/* {!mobilewidth && (
-      <div className="absolute right-[-20px] top-7">
-        <Button
-          onClick={toggleSidebar}
-          variant="secondary"
-          className=" rounded-full p-2"
-        >
-        </Button>
-      </div>
-     )}  */}
+
 
 {role === 'admin' && (
       <Nav

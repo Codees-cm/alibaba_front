@@ -11,22 +11,17 @@ import { Activity, ArrowRightLeft, Users, DollarSign } from "lucide-react";
 import Barchart from "@/components/barchart";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTransactions } from "@/hooks/transactions/use-transactions";
-import  {useEffect} from "react"
+
+
 
 
 export default function Home({ params: { locale } }) {
+
   const { t } = useTranslation(locale, "dashboard")
 
   const { data, isLoading , data_bar,loading_bar} = useDashboard()
   const { transactions,allLoading }= useTransactions(true)
-  useEffect(() => {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker
-        .register('/service-worker.js')
-        .then((registration) => console.log('Service Worker registered with scope: ', registration.scope))
-        .catch((error) => console.error('Service Worker registration failed: ', error));
-    }
-  }, []);
+ 
 
   const cardData: CardProps[] = [
     {

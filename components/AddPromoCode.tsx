@@ -13,7 +13,7 @@ export default function AddPromoCode() {
         discount: "",
         max_usage: "",
         expiry_date: "",
-        product: "", // Assuming product ID or name
+        product: "", 
     });
     const {products,allLoading} = useProducts()
 
@@ -42,7 +42,7 @@ export default function AddPromoCode() {
     };
 
     const handleFormChangeCustomer = (value: any) => {
-        const selectedCustomers = products.data.find((product) => product.id === value);
+        const selectedCustomers = products.data.results.find((product) => product.id === value);
         if (selectedCustomers) {
             setPromoCodeData({ ...promoCodeData , product: selectedCustomers})
         }
@@ -77,7 +77,7 @@ export default function AddPromoCode() {
                       </SelectTrigger>
 
                       <SelectContent>
-                        {products?.data.map((product: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | Iterable<React.ReactNode> | null | undefined; }) => (
+                        {products?.data.results.map((product: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | Iterable<React.ReactNode> | null | undefined; }) => (
                      <>
                     
                             <SelectItem key={product.id} value={product.id}>

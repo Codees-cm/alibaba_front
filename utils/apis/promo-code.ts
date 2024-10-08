@@ -61,6 +61,14 @@ export const fetchPromoCodes = async () => {
     return response;
 }
 
+export const editPromoCode = async (data: { id: any; }) => {
+    const response = await instance.put(`/promo-code/${data.id}/`,data)
+    .then((res)=>{
+      return res
+    })
+    return response;
+}
+
 export const createPromoCode = async (data: any) => {
     const new_data = {
         discount:data.discount,

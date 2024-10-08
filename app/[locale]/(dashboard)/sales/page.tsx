@@ -60,7 +60,7 @@ export default function Supplier() {
     const numericValue = parseInt(value, 10);
 
     // Get the available quantity of the selected product
-    const selectedProduct = products?.data.find(product => product.id.toString() === saleFormData.product);
+    const selectedProduct = products?.data.results.find(product => product.id.toString() === saleFormData.product);
     const availableQuantity = selectedProduct ? selectedProduct.quantity : 0;
 
     setSaleFormData({ ...saleFormData, [id]: value });
@@ -152,7 +152,7 @@ export default function Supplier() {
                           <CommandList>
                             <CommandEmpty>No product found.</CommandEmpty>
                             <CommandGroup>
-                              {products?.data.map((product) => (
+                              {products?.data.results.map((product) => (
                                <>
                                {
                                (product.quantity  > 0)&&(

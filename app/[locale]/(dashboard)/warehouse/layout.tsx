@@ -16,9 +16,9 @@ export default function RootLayout({
   const { me, isLoading, error } = useMe();
   // const { t } = useTranslation(locale,'warehouse')
   return (
-    <>
+    <> 
       {/* <div className="p-8 w-full"> */}
-      <SSidenavbar  lang={locale} role={me?.data.role}/>
+      <SSidenavbar  lang={locale} role={me?.data.role} />
     
             {children}
           

@@ -28,13 +28,15 @@ import {
 import AddPromoCode from "@/components/AddPromoCode"; // Replace this with the actual component for adding a promo codeimportEditPromoCodefrom"@/components/EditPromoCode"; // Replace this with the actual component for editing a promo codeimport { useRouter } from"next/navigation";
 import useCSVExport from '@/hooks/handleExportToCSV';
 import { TabsContent, Tabs } from "@/components/ui/tabs";
-
+import { useRouter } from "next/navigation";
+import EditPromoCode from "@/components/EditPromoCode";
 export default function PromoCodesDashboard() {
-  const { promoCodes,allLoading , allFetchError } = usePromoCode(); // Replace with your promo code fetching hookconst router = useRouter();
+  const { promoCodes, allLoading, allFetchError } = usePromoCode(); // Replace with your promo code fetching hookconst router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPromoCode, setSelectedPromoCode] = useState(null); // Track the selected promo code for editingconst exportToCSV = useCSVExport(); 
   const exportToCSV = useCSVExport();
+  const router = useRouter();
   if (allLoading) {
     return <div>Loading...</div>;
   }
@@ -93,16 +95,21 @@ export default function PromoCodesDashboard() {
               <TableRow key={promo.id}><TableCell className="font-medium">{promo.code}</TableCell><TableCell>{promo.max_usage}</TableCell><TableCell>{promo.expiry_date}</TableCell><TableCell>{promo.discount}</TableCell><TableCell>{promo.usage_count}</TableCell><TableCell><DropdownMenu><DropdownMenuTrigger asChild><Button
                 variant="ghost"
                 className="h-8 w-8 p-0"
-              ><MoreHorizontal className="h-4 w-4" /></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuItem onClick={() => router.push(`promo-codes/${promo.id}`)}>Details</DropdownMenuItem><DropdownMenuItem onClick={() => setSelectedPromoCode(promo)}>
+              ><MoreHorizontal className="h-4 w-4" />
+              </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                {/* <DropdownMenuItem onClick={() => router.push(`promo-codes/${promo.id}`)}>Details</DropdownMenuItem> */}
+                <DropdownMenuItem onClick={() => setSelectedPromoCode(promo)}>
                 Edit
               </DropdownMenuItem>
                   {/* <DropdownMenuItem onClick={async () => deletingPromoCode(promo.id)}>
                                 Delete
                               </DropdownMenuItem> */}
                 </DropdownMenuContent>
-                </DropdownMenu>
-                </TableCell>
-                </TableRow>
+              </DropdownMenu>
+              </TableCell>
+              </TableRow>
             ))}
           </TableBody></Table>
         {pageCount > 1 && (
@@ -127,11 +134,13 @@ export default function PromoCodesDashboard() {
       {selectedPromoCode && (
         <AlertDialog open={!!selectedPromoCode} onOpenChange={(open) => !open && setSelectedPromoCode(null)}>
           <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Edit Promo Code</AlertDialogTitle><AlertDialogDescription>
+          Maintenance 
             {/* <EditPromoCode
             promoCodeId={selectedPromoCode.id}
             initialData={selectedPromoCode}
             onClose={() => setSelectedPromoCode(null)}
-          /> Replace this with your edit promo code component */}
+          />  */}
+          {/* Replace this with your edit promo code component */}
           </AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel onClick={() => setSelectedPromoCode(null)}>Close</AlertDialogCancel></AlertDialogFooter></AlertDialogContent></AlertDialog>
       )}
     </div>

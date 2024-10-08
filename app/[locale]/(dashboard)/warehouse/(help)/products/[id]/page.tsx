@@ -11,8 +11,7 @@ type Props = {
 };
 const Page: React.FC<Props> = ({ params }) => {
        const { me, isLoading, error } = useMe();
-  const router = useRouter();
-
+      const router = useRouter();
 
        if (error) {
          router.replace('auth/login');
@@ -21,8 +20,6 @@ const Page: React.FC<Props> = ({ params }) => {
        if (isLoading) {
          return <Loader />;
        }
-
-      // console.log(me?.data.role)
      
    return(
     <>

@@ -15,6 +15,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { useSales } from '@/hooks/use-sales';
 import { useOrders } from '@/hooks/stock_manage/use-order';
 import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
 export default function Page() {
     const [salesData, setSalesData] = useState([]);
     const [paymentDetails, setPaymentDetails] = useState({ paymentMethod: '',customerId:"", name: '', phoneNumber: '', location: '' ,order:'' });
@@ -103,10 +104,10 @@ const router = useRouter()
     };
     
     return (
-        <div className="container mx-auto mt-10 px-4 bg-gradient-to-r from-amber-100 to-white">
+        <div className=" px-4 py-10 bg-gradient-to-r from-amber-100 to-white">
             <div className="flex flex-col ml-10 lg:flex-row gap-8">
                 <div className="lg:w-[30%]  md:w-1/3">
-                    <div className="bg-gray-100 p-4 rounded-lg">
+                    <div className="p-4 rounded-lg">
                         <Card>
                             <CardHeader>
                                 <CardTitle>Products</CardTitle>
@@ -162,8 +163,10 @@ const router = useRouter()
                                 isOrder={paymentDetails.order}
                             />
                         </div>
-                        <button onClick={printReceipt} className="mt-4 btn btn-primary">Print Receipt</button>
-
+                        <Button className="w-full" onClick={printReceipt}>
+                        Print Receipt
+                </Button>
+                    
                     </div>
                 </div>
             </div>

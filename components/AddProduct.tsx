@@ -12,12 +12,14 @@ import { useEdgeStore } from "@/lib/edgestore";
 import { CirclePlus as AddCircleIcon } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import { Switch } from "./ui/switch"
+import { Switch } from "./ui/switch";
+
 export default function AddProduct() {
   const router = useRouter();
   const { categories } = useCategories();
   const { addProduct, isAddingProduct, isSuccess, errorMessage } = useProducts();
   const { edgestore } = useEdgeStore();
+  
   const [productData, setProductData] = useState({
     name: "",
     description: "",
@@ -27,9 +29,9 @@ export default function AddProduct() {
     quantity: "",
     category: "",
   });
-
-  const [imageFile, setImageFile] = useState(null); // State for image file
-  const [imagePreview, setImagePreview] = useState(null); // State for image preview
+  
+  const [imageFile, setImageFile] = useState(null); 
+  const [imagePreview, setImagePreview] = useState(null); 
   const [loading, setLoading] = useState(false);
 
   const handleFormChange = (value: any) => {
@@ -61,17 +63,17 @@ export default function AddProduct() {
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    
+
     try {
       setLoading(true);
-      
+
       if (!imageFile) {
         console.error("Please select an image.");
         setLoading(false);
         return;
       }
 
-      const res = await edgestore.myPublicImages.upload({ 
+      const res = await edgestore.myPublicImages.upload({
         file: imageFile,
         onProgressChange: (progress) => {
           console.log(progress);
@@ -106,28 +108,66 @@ export default function AddProduct() {
   };
 
   return (
-    <div className="mx-auto">
-      <Card >
-        <h1 className="text-xl font-semibold">Add Product</h1>
+    <div className="max-w-4xl mx-auto p-4">
+      <Card className="shadow-lg">
+        <CardHeader>
+          <CardTitle className="text-2xl font-semibold ">Add Product</CardTitle>
+        </CardHeader>
         <form onSubmit={handleSubmit} method="post">
-          <CardContent className="p-2">
-            <div className="grid gap-4 md:grid-cols-[1fr_250px] lg:grid-cols-2 lg:gap-8">
-              <div className="grid gap-4 lg:col-span-1">
-                <Input id="name" type="text" placeholder="Name" value={productData.name} onChange={handleInputChange} />
-                <Textarea id="description" placeholder="Description" value={productData.description} onChange={handleInputChange} />
-                <Input id="price" type="number" placeholder="Buying Price" value={productData.price} onChange={handleInputChange} />
-                <Input id="price_with_tax" type="number" placeholder="Selling Price " value={productData.price_with_tax} onChange={handleInputChange} />
-                <Input id="quantity" type="number" placeholder="Quantity" value={productData.quantity} onChange={handleInputChange} />
+          <CardContent className="space-y-6">
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="space-y-4">
+                <Input 
+                  id="name" 
+                  type="text" 
+                  placeholder="Product Name" 
+                  value={productData.name} 
+                  onChange={handleInputChange} 
+                  className="w-full" 
+                />
+                <Textarea 
+                  id="description" 
+                  placeholder="Description" 
+                  value={productData.description} 
+                  onChange={handleInputChange} 
+                  className="w-full" 
+                />
+                <Input 
+                  id="price" 
+                  type="number" 
+                  placeholder="Buying Price" 
+                  value={productData.price} 
+                  onChange={handleInputChange} 
+                  className="w-full" 
+                />
+                <Input 
+                  id="price_with_tax" 
+                  type="number" 
+                  placeholder="Selling Price" 
+                  value={productData.price_with_tax} 
+                  onChange={handleInputChange} 
+                  className="w-full" 
+                />
+                <Input 
+                  id="quantity" 
+                  type="number" 
+                  placeholder="Quantity" 
+                  value={productData.quantity} 
+                  onChange={handleInputChange} 
+                  className="w-full" 
+                />
               </div>
-              <div className="grid gap-4 lg:col-span-1">
-                <div className="mb-32">
-                  <div className="flex items-center p-5">
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block mb-1 text-sm font-medium text-gray-700">Category</label>
+                  <div className="flex items-center space-x-2">
                     <Select onValueChange={handleFormChange}>
                       <SelectTrigger id="category" aria-label="category" name="category" value={productData.category}>
-                        <SelectValue placeholder="Category" />
+                        <SelectValue placeholder="Select Category" />
                       </SelectTrigger>
                       <SelectContent>
-                        {categories?.data.map((category: { id: React.Key | null | undefined; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | React.PromiseLikeOfReactNode | Iterable<React.ReactNode> | null | undefined; }) => (
+                        {categories?.data.map((category: { id: React.Key | null | undefined; name: string; }) => (
                           <SelectItem key={category.id} value={category.id.toString()}>
                             {category.name}
                           </SelectItem>
@@ -136,32 +176,35 @@ export default function AddProduct() {
                     </Select>
                     <AddCircleIcon className="text-green-500 cursor-pointer" onClick={() => router.replace('category')} />
                   </div>
-                  <div className="p-2">
-                    {/* File input for image selection */}
-                    <input type="file" accept="image/*" onChange={handleImageChange} />
-                    {/* Image preview */}
-                    <div className="mt-2 w-40 h-40">
-                      {imagePreview && (
-                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                      )}
+                </div>
+
+                <div className="space-y-2">
+                  <label className="block text-sm font-medium text-gray-700">Product Image</label>
+                  <input type="file" accept="image/*" onChange={handleImageChange} className="file-input w-full" />
+                  {imagePreview && (
+                    <div className="mt-2 w-40 h-40 rounded-md overflow-hidden">
+                      <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
                     </div>
-                    <p className="text-sm text-gray-800 mb-4">
-    Place product online as available?:
-    <Switch 
-      className="text-sm"  
-      checked={productData.available}
-      onCheckedChange={(checked) => setProductData(prevState => ({ 
-        ...prevState, 
-        available: checked 
-      }))} 
-    />
-  </p>
-                  </div>
+                  )}
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm font-medium text-gray-700">Available Online:</span>
+                  <Switch
+                    checked={productData.available}
+                    onCheckedChange={(checked) =>
+                      setProductData((prevState) => ({
+                        ...prevState,
+                        available: checked,
+                      }))
+                    }
+                  />
                 </div>
               </div>
             </div>
           </CardContent>
-          <CardFooter>
+
+          <CardFooter className="flex justify-end space-x-4">
             <Button type="submit" disabled={loading}>
               {loading ? "Adding Product..." : "Save"}
             </Button>

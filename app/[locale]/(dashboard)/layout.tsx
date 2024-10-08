@@ -19,7 +19,7 @@ export default function Layout({
   const router = useRouter();
   const { notifications, connectWebSocket } = useNotifications();
   const { me, isLoading, error } = useMe();
-  connectWebSocket();
+  // connectWebSocket();
 
   if (error) {
     router.replace('auth/login');
@@ -31,7 +31,7 @@ export default function Layout({
 
   return (
     <UserRoleProvider role={me?.data.role}>
-      <div style={{ margin: 0, lineHeight: "inherit", paddingBottom: "0", display: "-webkit-inline-box" }}>
+      <div style={{ margin: 0, lineHeight: "inherit", paddingBottom: "0", display: "-webkit-inline-box" , maxHeight:"100vh" , width: "175vh"}}>
         <Sidenavbar lang={locale} role={me?.data.role} />
         {/* main page */}
         {children}

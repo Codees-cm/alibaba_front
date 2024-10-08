@@ -36,7 +36,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className=" bg-gradient-to-r from-amber-100 to-white" >
+    <div className=" bg-gradient-to-r from-amber-100 to-white" style={{ maxWidth:"150vh" }}>
       <div className="flex min-h-screen w-full flex-col">
         <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
        

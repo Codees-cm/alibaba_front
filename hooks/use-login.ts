@@ -1,14 +1,15 @@
+"use client"
 import { useMutation } from '@tanstack/react-query';
 import { createJWT } from '@/utils/apis/auth';
 import Cookies from 'js-cookie'; // Import Cookies library
-import React from 'react';
-import { useToast } from "@/components/ui/use-toast"
+import  { useState } from 'react';
+// import { useToast } from "@/components/ui/use-toast"
 
 
 export const useLogin = () => {
-  const [isSuccess, setIsSuccess] = React.useState(false);
-  const [errorMsg,setErrorMsg] = React.useState("");
-  const { toast } = useToast()
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMsg,setErrorMsg] = useState("");
+  // const { toast } = useToast()
   
   const { mutate: loginUserMutation, isPending: isLoginingUser } = useMutation({
     mutationFn: createJWT,
@@ -16,23 +17,28 @@ export const useLogin = () => {
       Cookies.set('access', data.data.access); // Set access token in cookies
       Cookies.set('refresh', data.data.refresh); // Set refresh token in cookies
       setIsSuccess(true);
-      toast({
-        title: "logged in successfull",
-        description: "...........",
-      })
+      // toast({
+      //   title: "logged in successfull",
+      //   description: "...........",
+      // })
     },
     onError: (error) => {
       setErrorMsg(error.message);
-      toast({
-        title: "Uh oh! Something went wrong.",
-        description: "There was a problem with your request.",
-      })
-      console.error("Error occurred during login:", error);
+      // toast({
+      //   title: "Uh oh! Something went wrong.",
+      //   description: "There was a problem with your request.",
+      // })
+      // console.error("Error occurred during login:", error);
     },
   });
 
   const login = async (user_info: any) => {
-    await loginUserMutation(user_info);
+    try {
+      await loginUserMutation(user_info);
+    } catch (error) {
+      console.log({ERROR: error})
+      setErrorMsg((error as Error).message || "An error occurred during login.");
+    }
   };
 
   return {
@@ -43,7 +49,4 @@ export const useLogin = () => {
   };
 };
 
-// {
-//   "refresh": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTcxMjg3NTEzNywiaWF0IjoxNzEyNjE1OTM3LCJqdGkiOiI0Y2UxNWYwOTZiODk0YWNlODJlNDc5ZmJiZDg3NTljZCIsInVzZXJfaWQiOjJ9.S-z6UKYEhb89gXimgA2PDqj2u8qHnzSMte1JPkxzJkM",
-//   "access": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzEyNjE3NzM3LCJpYXQiOjE3MTI2MTU5MzcsImp0aSI6ImRkNjUzNTUyMmMyNjRiMGI4YTQ0Yzg3OTM0ODM2YjRlIiwidXNlcl9pZCI6Mn0.EOS3meozo_3TuI9RI-utIphrRbR2tVWoO1NSacWCcu0"
-// }
+

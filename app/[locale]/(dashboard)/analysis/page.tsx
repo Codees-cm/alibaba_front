@@ -5,7 +5,6 @@ import { useTranslation } from '@/app/i18n/client';
 import Card, { CardContent, CardProps } from "@/components/Card";
 import Navigation from "@/components/Navigation";
 import PageTitle from "@/components/PageTitle";
-import SalesCard, { SalesProps } from "@/components/SalesCard";
 import { Activity, ArrowRightLeft, Users, DollarSign } from "lucide-react";
 import Barchart from "@/components/barchart";
 import { Skeleton } from "@/components/ui/skeleton"
@@ -15,6 +14,7 @@ import LineChartComponent from '@/components/LineChart';
 import { useEffect, useState } from 'react';
 import instance from '@/utils/api';
 import { redirect } from 'next/navigation';
+
 export default function Analysis({ params: { locale } }) {
   const { t } = useTranslation(locale, "dashboard")
 
@@ -190,7 +190,7 @@ loading_total_sales_per_week
   )
 
   return (
-    <div className="p-8 w-full bg-gradient-to-r from-amber-100  to-white">
+    <div className="p-8 w-full bg-gradient-to-r from-amber-100  to-white" style={{ maxHeight:"100%", overflow: "auto" }}>
       <div className="flex flex-col gap-8 w-full">
         <section className="grid grid-cols-2 gap-8 sm:grid-cols-2 xl:grid-cols-2">
           <div className="col-span-1"><PageTitle title="Analysis" /></div>

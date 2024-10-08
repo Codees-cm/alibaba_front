@@ -14,17 +14,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { z } from "zod";
-import { useState, useEffect } from "react";
-import { useToast } from "@/components/ui/use-toast";
+// import { z } from "zod";
+import { useState } from "react";
+// import { useToast } from "@/components/ui/use-toast";
 import { useLogin } from "@/hooks/use-login";
 import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
-  const { login, isLoginingUser, isSuccess, errorMsg } = useLogin();
+  const { login, isSuccess, errorMsg } = useLogin();
   const router = useRouter();
-  const { toast } = useToast();
+  // const { toast } = useToast();
 
   const form = useForm({
     resolver: zodResolver(LoginSchema),
@@ -34,29 +34,28 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
+  const onSubmit = async (data:any) => {
     setLoading(true);
-   
     await login(data);
   
-    (errorMsg) ?  toast({ title: "Uh oh! Something went wrong.", description: errorMsg || "Please try again"}) : toast({ title: "Success",description :"please wait some seconds"})
- 
+    if (isSuccess) {
+      // toast({ title: "Login successful!", description: "Redirecting to dashboard..." });
+      // setTimeout(() => {
+        router.push("/dashboard");
+      // }, 1000); // Delay routing by 1 second to allow toast to show
+    } else {
+      
+    }
+  
     setLoading(false);
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      router.push("/en/dashboard");
-    } else if(errorMsg){
-      toast({ title: "Uh oh! Something went wrong.", description: errorMsg || "Please try again"})
-    }
-  }, [isSuccess, router,errorMsg]);
+  
 
   return (
     <CardWrapper
       label="Login to your account"
       title="Login"
-      backButtonHref="/auth/login"
+      backButtonHref="/en/auth/login"
       backButtonLabel="forgot password"
     >
       <Form {...form}>
@@ -93,7 +92,7 @@ const LoginForm = () => {
               )}
             />
           </div>
-          <Button type="submit" className="w-full" disabled={isLoginingUser}>
+          <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Loading..." : "Login"}
           </Button>
         </form>

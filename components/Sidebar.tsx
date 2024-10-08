@@ -31,7 +31,7 @@ export default function Sidenavbar({ lang, role }) {
     setIsCollapsed(!isCollapsed);
   }
   return (
-    <div className="relative w-max h-screen border-r bg-amber-100 px-3 pb-10 pt-24">
+    <div className="relative w-max h-screen border-r bg-amber-100 px-3 pb-10 pt-24" style={{ maxHeight:"100%" }}>
     
     {!mobilewidth && (<>
    
