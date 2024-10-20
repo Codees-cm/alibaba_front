@@ -17,9 +17,9 @@ import { Switch } from "./ui/switch";
 export default function AddProduct() {
   const router = useRouter();
   const { categories } = useCategories();
-  const { addProduct, isAddingProduct, isSuccess, errorMessage } = useProducts();
+  const { addProduct, isAddingProduct,Product_Id, isSuccess, errorMessage } = useProducts();
   const { edgestore } = useEdgeStore();
-  
+
   const [productData, setProductData] = useState({
     name: "",
     description: "",
@@ -33,6 +33,8 @@ export default function AddProduct() {
   const [imageFile, setImageFile] = useState(null); 
   const [imagePreview, setImagePreview] = useState(null); 
   const [loading, setLoading] = useState(false);
+  const [showAddDescription, setShowAddDescription] = useState(false); // New state for description button
+  const [product_name, setProduct_name] = useState(''); // New state for description button
 
   const handleFormChange = (value: any) => {
     const selectedCategory = categories.data.find((category: { id: { toString: () => any; }; }) => category.id.toString() === value);
@@ -44,6 +46,8 @@ export default function AddProduct() {
     }
   };
 
+
+  
   const handleInputChange = (e: { target: { id: any; value: any; }; }) => {
     const { id, value } = e.target;
     setProductData({ ...productData, [id]: value });
@@ -60,6 +64,15 @@ export default function AddProduct() {
       reader.readAsDataURL(file);
     }
   };
+
+  React.useEffect(() => {
+    if (Product_Id) {
+      console.log('********');
+      setShowAddDescription(true)
+      console.log(Product_Id); // Logs only after Product_Id is updated
+    }
+  }, [Product_Id]); // Trigger this effect when Product_Id changes
+  
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
@@ -85,8 +98,10 @@ export default function AddProduct() {
         ...productData,
         image_urls: fileName,
       };
-
-      await addProduct({ ...updatedProductData });
+      setProduct_name(productData.name)
+       await addProduct({ ...updatedProductData });
+      // setProductId(result);
+      
 
       setProductData({
         name: "",
@@ -97,6 +112,7 @@ export default function AddProduct() {
         quantity: "",
         category: "",
       });
+
       setImageFile(null);
       setImagePreview(null);
       setLoading(false);
@@ -208,11 +224,20 @@ export default function AddProduct() {
             <Button type="submit" disabled={loading}>
               {loading ? "Adding Product..." : "Save"}
             </Button>
-            {isSuccess && <p className="text-green-500">Product added successfully!</p>}
+            {showAddDescription && (
+              <>
+                <p className="text-green-500">Product added successfully!</p>
+                <Button onClick={() => router.push(`products/${Product_Id}/markdown/?data="${product_name}"`)}>
+                  Add Description
+                </Button>
+              </>
+            )}
             {errorMessage && <p className="text-red-500">{errorMessage}</p>}
           </CardFooter>
         </form>
       </Card>
+
+      
     </div>
   );
 }

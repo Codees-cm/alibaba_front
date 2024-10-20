@@ -9,13 +9,23 @@ export const fetchProducts = async () => {
     return response;
 }
 
+// export const createProducts = async (data: any) => {
+//     const response = await instance.post('/products/',data)
+//     .then((res)=>{
+//       console.log(res.data)
+//       return res.data.id;
+//     })
+
+//     console.log('***************')
+//     console.log(response.data)
+
+//     return response;
+// }
+
 export const createProducts = async (data: any) => {
-    const response = await instance.post('/products/',data)
-    .then((res)=>{
-      return res
-    })
-    return response;
-}
+  const response = await instance.post('/products/', data);
+  return response.data.id; 
+};
 
 
 export const createProductsMarkdown = async (data: any) => {
@@ -30,11 +40,11 @@ export const createProductsMarkdown = async (data: any) => {
 };
 
 
-export const updateProduct = async (product:any) => {
+export const updateProduct = async (product: any) => {
   try {
-    console.log("Product data being sent:", product.data);
+    console.log("Product data being sent:", product);  // Log the correct object
 
-    const response = await instance.patch(`/update-product/${product.id}/`, product.data, {
+    const response = await instance.patch(`/update-product/${product.id}/`, product, {
       headers: {
         'Content-Type': 'application/json',  // Ensure correct content type
       },
@@ -46,6 +56,7 @@ export const updateProduct = async (product:any) => {
     throw error; // Propagate the error
   }
 };
+
 
 export const viewProducts = async (id: number | null) => {
     const response = await instance.get(`/products/${id}/`)

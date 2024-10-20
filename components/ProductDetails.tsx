@@ -35,7 +35,7 @@ const ProductDetails: React.FC<Props> = ({ params, role }) => {
   }
 
   const product = {
-    id: oneProduct?.data.id,
+    id: oneProduct?.data.id, 
     name: oneProduct?.data.name,
     code: oneProduct?.data.product_code,
     available: oneProduct?.data.quantity,
