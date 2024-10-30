@@ -14,17 +14,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-// import { z } from "zod";
 import { useState } from "react";
-// import { useToast } from "@/components/ui/use-toast";
 import { useLogin } from "@/hooks/use-login";
 import { useRouter } from "next/navigation";
+import instance from "@/utils/api";
+import { auth, googleProvider, signInWithPopup } from "@/utils/firebase";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const { login, isSuccess, errorMsg } = useLogin();
   const router = useRouter();
-  // const { toast } = useToast();
+
 
   const form = useForm({
     resolver: zodResolver(LoginSchema),
@@ -33,6 +33,29 @@ const LoginForm = () => {
       password: "",
     },
   });
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      const idToken = await result.user.getIdToken();
+     
+      const res = await instance.post("/google-auth/",{ id_token: idToken ,login: true })
+
+      console.log(res.status)
+
+      if (res.status == 201) {
+        // toast.success("Google sign-in successful");
+        router.push('/home');
+      }else if(res.status == 404) {
+        // toast.success("your account does not exit , please register");
+      }else {
+        const errorData = await res.json();
+        // toast.error(errorData.error);
+      }
+    } catch (error) {
+      // toast.error("Google sign-in failed. Please try again.");
+    }
+  };
 
   const onSubmit = async (data:any) => {
     setLoading(true);

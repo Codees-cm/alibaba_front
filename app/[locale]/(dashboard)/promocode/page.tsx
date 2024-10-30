@@ -12,8 +12,6 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { MoreHorizontal } from "lucide-react";
 import { Input } from "@/components/ui/input";
-
-// import { usePromoCodes } from"@/hooks/stock_manage/use-promo-code"; // Replace this with the actual hookimport { Input } from"@/components/ui/input";
 import { usePromoCode } from "@/hooks/transactions/use-promo-code";
 import {
   AlertDialog,
@@ -31,7 +29,7 @@ import { TabsContent, Tabs } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
 import EditPromoCode from "@/components/EditPromoCode";
 export default function PromoCodesDashboard() {
-  const { promoCodes, allLoading, allFetchError } = usePromoCode(); // Replace with your promo code fetching hookconst router = useRouter();
+  const { promoCodes, allLoading, allFetchError , deletePromoCodes } = usePromoCode(); // Replace with your promo code fetching hookconst router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedPromoCode, setSelectedPromoCode] = useState(null); // Track the selected promo code for editingconst exportToCSV = useCSVExport(); 
@@ -98,14 +96,14 @@ export default function PromoCodesDashboard() {
               ><MoreHorizontal className="h-4 w-4" />
               </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {/* <DropdownMenuItem onClick={() => router.push(`promo-codes/${promo.id}`)}>Details</DropdownMenuItem> */}
-                <DropdownMenuItem onClick={() => setSelectedPromoCode(promo)}>
-                Edit
-              </DropdownMenuItem>
-                  {/* <DropdownMenuItem onClick={async () => deletingPromoCode(promo.id)}>
+                <DropdownMenuContent align="end">
+                  {/* <DropdownMenuItem onClick={() => router.push(`promo-codes/${promo.id}`)}>Details</DropdownMenuItem> */}
+                  <DropdownMenuItem onClick={() => setSelectedPromoCode(promo)}>
+                    Edit
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={async () => deletePromoCodes(promo.id)}>
                                 Delete
-                              </DropdownMenuItem> */}
+                              </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
               </TableCell>
@@ -134,14 +132,21 @@ export default function PromoCodesDashboard() {
       {selectedPromoCode && (
         <AlertDialog open={!!selectedPromoCode} onOpenChange={(open) => !open && setSelectedPromoCode(null)}>
           <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Edit Promo Code</AlertDialogTitle><AlertDialogDescription>
-          Maintenance 
-            {/* <EditPromoCode
-            promoCodeId={selectedPromoCode.id}
+            <EditPromoCode
+            id={selectedPromoCode.id}
             initialData={selectedPromoCode}
             onClose={() => setSelectedPromoCode(null)}
-          />  */}
-          {/* Replace this with your edit promo code component */}
-          </AlertDialogDescription></AlertDialogHeader><AlertDialogFooter><AlertDialogCancel onClick={() => setSelectedPromoCode(null)}>Close</AlertDialogCancel></AlertDialogFooter></AlertDialogContent></AlertDialog>
+          /> 
+            {/* Replace this with your edit promo code component */}
+          </AlertDialogDescription>
+          </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setSelectedPromoCode(null)}>
+                Close
+              </AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       )}
     </div>
   );
