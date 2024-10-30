@@ -19,11 +19,14 @@ import { useLogin } from "@/hooks/use-login";
 import { useRouter } from "next/navigation";
 import instance from "@/utils/api";
 import { auth, googleProvider, signInWithPopup } from "@/utils/firebase";
+import { useToast } from "@/components/ui/use-toast";
 
 const LoginForm = () => {
   const [loading, setLoading] = useState(false);
   const { login, isSuccess, errorMsg } = useLogin();
   const router = useRouter();
+  const { toast } = useToast()
+
 
 
   const form = useForm({
@@ -44,13 +47,22 @@ const LoginForm = () => {
       console.log(res.status)
 
       if (res.status == 201) {
-        // toast.success("Google sign-in successful");
-        router.push('/home');
+        toast({
+          title: "Great, login successful",
+          description: "You don't have the right to access this page",
+      });
+        router.push('/sales');
       }else if(res.status == 404) {
-        // toast.success("your account does not exit , please register");
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: "You don't have the right to access this page",
+      });
       }else {
         const errorData = await res.json();
-        // toast.error(errorData.error);
+        toast({
+          title: "Uh oh! Something went wrong.",
+          description: "You don't have the right to access this page",
+      });
       }
     } catch (error) {
       // toast.error("Google sign-in failed. Please try again.");
@@ -117,6 +129,9 @@ const LoginForm = () => {
           </div>
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Loading..." : "Login"}
+          </Button>
+          <Button  className="w-full" onClick={handleGoogleSignIn} disabled={loading}>
+             Login via Google
           </Button>
         </form>
       </Form>
