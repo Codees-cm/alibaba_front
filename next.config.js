@@ -12,6 +12,9 @@ const withPWA = require("next-pwa")({
 // const withNextIntl = createNextIntlPlugin();
 
 const nextConfig = {
+  experimental: {
+    esmExternals: true, 
+  },
   reactStrictMode: true,
   swcMinify: true,
   typescript: {
