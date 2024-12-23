@@ -18,7 +18,7 @@ import { useState } from "react";
 import { useLogin } from "@/hooks/use-login";
 import { useRouter } from "next/navigation";
 import instance from "@/utils/api";
-import { auth, googleProvider, signInWithPopup } from "@/utils/firebase";
+// import { auth, googleProvider, signInWithPopup } from "@/utils/firebase";
 import { useToast } from "@/components/ui/use-toast";
 
 const LoginForm = () => {
@@ -37,37 +37,37 @@ const LoginForm = () => {
     },
   });
 
-  const handleGoogleSignIn = async () => {
-    try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const idToken = await result.user.getIdToken();
+  // const handleGoogleSignIn = async () => {
+  //   try {
+  //     const result = await signInWithPopup(auth, googleProvider);
+  //     const idToken = await result.user.getIdToken();
      
-      const res = await instance.post("/google-auth/",{ id_token: idToken ,login: true })
+  //     const res = await instance.post("/google-auth/",{ id_token: idToken ,login: true })
 
-      console.log(res.status)
+  //     console.log(res.status)
 
-      if (res.status == 201) {
-        toast({
-          title: "Great, login successful",
-          description: "You don't have the right to access this page",
-      });
-        router.push('/sales');
-      }else if(res.status == 404) {
-        toast({
-          title: "Uh oh! Something went wrong.",
-          description: "You don't have the right to access this page",
-      });
-      }else {
-        const errorData = await res.json();
-        toast({
-          title: "Uh oh! Something went wrong.",
-          description: "You don't have the right to access this page",
-      });
-      }
-    } catch (error) {
-      // toast.error("Google sign-in failed. Please try again.");
-    }
-  };
+  //     if (res.status == 201) {
+  //       toast({
+  //         title: "Great, login successful",
+  //         description: "You don't have the right to access this page",
+  //     });
+  //       router.push('/sales');
+  //     }else if(res.status == 404) {
+  //       toast({
+  //         title: "Uh oh! Something went wrong.",
+  //         description: "You don't have the right to access this page",
+  //     });
+  //     }else {
+  //       const errorData = await res.json();
+  //       toast({
+  //         title: "Uh oh! Something went wrong.",
+  //         description: "You don't have the right to access this page",
+  //     });
+  //     }
+  //   } catch (error) {
+  //     // toast.error("Google sign-in failed. Please try again.");
+  //   }
+  // };
 
   const onSubmit = async (data:any) => {
     setLoading(true);
@@ -106,7 +106,7 @@ const LoginForm = () => {
                     <Input
                       {...field}
                       type="email"
-                      placeholder="johndoe@gmail.com"
+                      placeholder="address mail"
                     />
                   </FormControl>
                   <FormMessage />
@@ -130,9 +130,9 @@ const LoginForm = () => {
           <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Loading..." : "Login"}
           </Button>
-          <Button  className="w-full" onClick={handleGoogleSignIn} disabled={loading}>
+          {/* <Button  className="w-full" onClick={handleGoogleSignIn} disabled={loading}>
              Login via Google
-          </Button>
+          </Button> */}
         </form>
       </Form>
     </CardWrapper>
