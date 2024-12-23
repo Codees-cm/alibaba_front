@@ -10,7 +10,12 @@ export const fetchCategories = async () => {
 }
 
 export const createCategories = async (data: any) => {
-    const response = await instance.post('/categories/',data)
+    const response = await instance.post('/categories/',
+      {
+        name: data.name,
+        model_classes: data.model_classes
+      }
+    )
     .then((res)=>{
       return res
     })

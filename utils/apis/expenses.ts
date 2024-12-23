@@ -18,7 +18,7 @@ export const createExpenses = async (data: any) => {
 }
 
 export const editExpenses = async (data: any) => {
-    const response = await instance.put('/expenses/',data)
+    const response = await instance.put(`/expenses/${data.id}/`,data)
     .then((res)=>{
       return res
     })

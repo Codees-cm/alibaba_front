@@ -148,6 +148,7 @@ export default function Category() {
                     <TableHeader>
                       <TableRow>
                         <TableHead>Name</TableHead>
+                        <TableHead>AI Model classes</TableHead>
                         <TableHead>Action</TableHead>
                       </TableRow>
                     </TableHeader>
@@ -160,6 +161,7 @@ export default function Category() {
                     displayedItems.map((category) => (
                       <TableRow key={category.id}>
                         <TableCell className="font-medium">{category.name}</TableCell>
+                        <TableCell className="font-medium">{category.model_classes } </TableCell>
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
@@ -175,9 +177,8 @@ export default function Category() {
       {me?.data.role === 'admin' && (
         <>
           <DropdownMenuItem
-         onClick={() => setSelectedItem(category)}
-        
-        >Edit</DropdownMenuItem>
+         onClick={() => setSelectedItem(category)}>
+          Edit</DropdownMenuItem>
         <DropdownMenuItem onClick={() => deletingCategorie(category.id)}>Delete</DropdownMenuItem>
       
         </>

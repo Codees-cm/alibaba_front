@@ -140,7 +140,7 @@ export default function Customer() {
                         <TableCell className="font-medium">{order.user}</TableCell>
                         <TableCell className="font-medium">{order.address}</TableCell>
                         <TableCell className="font-medium">{order.city}</TableCell>
-                        <TableCell className="font-medium">{order.paid}</TableCell>
+                        <TableCell className="font-medium">{order.paid ? '✅' : '⏳'}</TableCell>
                         <TableCell>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>

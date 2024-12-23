@@ -18,7 +18,7 @@ export const useEmployee = (enable: boolean = false, Id:number|null = null) => {
   })
 
   const { data: employeesHistory, isLoading: allLoadinghistory} = useQuery({
-    queryKey: ['employee'],
+    queryKey: ['employee_history'],
     queryFn: () => historyEmployees(Id),
     staleTime: 300000,
     enabled: enable && Id !== null, // Disable the query by default, enables it only when needed

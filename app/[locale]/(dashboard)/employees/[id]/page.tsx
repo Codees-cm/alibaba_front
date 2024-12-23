@@ -23,10 +23,11 @@ function Page({ locale, params }: Props) {
   }
 
   const historyData = employeesHistory?.data || [];
+  console.log(historyData);
+ 
   const totalQuantity = historyData.reduce((total: any, item: { quantity: any; }) => total + item.quantity, 0);
   const totalPrice = historyData.reduce((total: number, item: { quantity: number; product: { price: number; }; }) => total + item.quantity * item.product.price, 0);
 
-  console.log(historyData);
 
   return (
     <div className="p-8 bg-gradient-to-r from-amber-100 to-white">

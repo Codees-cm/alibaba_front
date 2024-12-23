@@ -90,7 +90,8 @@ export default function PromoCodesDashboard() {
               </AlertDialogDescription></AlertDialogHeader>
           </AlertDialogContent></AlertDialog></div></div></CardHeader><CardContent><Table><TableHeader><TableRow><TableHead>Promo Code</TableHead><TableHead>Usage Limit</TableHead><TableHead>Expiration Date</TableHead><TableHead>Discount (%)</TableHead> <TableHead>Number of usage</TableHead><TableHead>Actions</TableHead></TableRow></TableHeader><TableBody>
             {displayedItems.map((promo: React.SetStateAction<null>) => (
-              <TableRow key={promo.id}><TableCell className="font-medium">{promo.code}</TableCell><TableCell>{promo.max_usage}</TableCell><TableCell>{promo.expiry_date}</TableCell><TableCell>{promo.discount}</TableCell><TableCell>{promo.usage_count}</TableCell><TableCell><DropdownMenu><DropdownMenuTrigger asChild><Button
+              <TableRow key={promo.id}><TableCell className="font-medium">{promo.code}</TableCell><TableCell>{promo.max_usage}</TableCell><TableCell> {new Date(promo.expiry_date).toLocaleDateString("en-US", { year: "numeric",month: "long", day: "2-digit"})}</TableCell>
+              <TableCell>{promo.discount}</TableCell><TableCell>{promo.usage_count}</TableCell><TableCell><DropdownMenu><DropdownMenuTrigger asChild><Button
                 variant="ghost"
                 className="h-8 w-8 p-0"
               ><MoreHorizontal className="h-4 w-4" />
@@ -98,9 +99,9 @@ export default function PromoCodesDashboard() {
               </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   {/* <DropdownMenuItem onClick={() => router.push(`promo-codes/${promo.id}`)}>Details</DropdownMenuItem> */}
-                  <DropdownMenuItem onClick={() => setSelectedPromoCode(promo)}>
+                  {/* <DropdownMenuItem onClick={() => setSelectedPromoCode(promo)}>
                     Edit
-                  </DropdownMenuItem>
+                  </DropdownMenuItem> */}
                   <DropdownMenuItem onClick={async () => deletePromoCodes(promo.id)}>
                                 Delete
                               </DropdownMenuItem>

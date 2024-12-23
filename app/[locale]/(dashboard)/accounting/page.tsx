@@ -232,7 +232,7 @@ loading_total_sales_per_week
             ) : (
               <>
                 <CardContent>
-                  <p className="p-4 font-semibold">{t('data_profit_per_day')}</p>
+                  <p className="p-4 font-semibold">data profit per day</p>
                   <LineChartComponent data={data_profit_per_day?.data} dataKey="total_profit" xKey="sale_date" />
 
                   {/* <Barchart data={data_profit_per_day?.data} dataKey={"total_sale per day"} xKey={"profit"}/> */}
@@ -249,7 +249,7 @@ loading_total_sales_per_week
             ) : (
               <>
               <CardContent>
-                  <p className="p-4 font-semibold">{t('data_profit_per_week')}</p>
+                  <p className="p-4 font-semibold">data profit per week</p>
                   {/* <LineChartComponent data={data_profit_per_day?.data} /> */}
                   {/* <Barchart data={data_total_sales_per_day?.data} dataKey="total_sales" xKey="sale_date" /> */}
 
@@ -267,7 +267,7 @@ loading_total_sales_per_week
             ) : (
               <>
               <CardContent>
-                  <p className="p-4 font-semibold">{t('data_total_sales_per_day')}</p>
+                  <p className="p-4 font-semibold">data total sales per day</p>
                   {/* <LineChartComponent data={data_profit_per_day?.data} /> */}
                   {/* <Barchart data={data_total_sales_per_day?.data} dataKey="total_sales" xKey="sale_date" /> */}
 
@@ -285,7 +285,7 @@ loading_total_sales_per_week
             ) : (
               <>
               <CardContent>
-                  <p className="p-4 font-semibold">{t('data_total_sales_per_week')}</p>
+                  <p className="p-4 font-semibold">data total sales per week</p>
                   {/* <LineChartComponent data={data_profit_per_day?.data} /> */}
                   {/* <Barchart data={data_total_sales_per_day?.data} dataKey="total_sales" xKey="sale_date" /> */}
 

@@ -24,21 +24,22 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import EditProduct from "@/components/EditProduct"; // Import the new component
+// import EditProduct from "@/components/EditProduct"; // Import the new component
 import { useRouter } from "next/navigation";
 import useCSVExport from '@/hooks/handleExportToCSV';
 import { TabsContent, Tabs } from "@/components/ui/tabs";
 import { useMe } from "@/hooks/use-retiveme";
 
 import { useExpenses } from "@/hooks/use-expenses";
-export default function Dashboard() {
+import EditExpenses from "@/components/EditExpenses";
+export default function Expenses() {
 
-    const { me, isLoading, error } = useMe();
+  const { me, isLoading, error } = useMe();
   const { expenses, allLoading, allFetchError, deletingExpense } = useExpenses();
   const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedProduct, setSelectedProduct] = useState(null); // Track the selected product for editing
+  const [selectedItem, setSelectedItem] = useState(null); // Track the selected product for editing
   const exportToCSV = useCSVExport();
 
   if (allLoading) {
@@ -53,7 +54,8 @@ export default function Dashboard() {
     setCurrentPage(page);
   };
 
-  const filteredProducts = expenses?.data.filter((category: { name: string; }) =>
+  console.log(expenses)
+  const filteredItems = expenses?.data.filter((category: { name: string; }) =>
     category.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -63,17 +65,17 @@ export default function Dashboard() {
   };
 
   const itemsPerPage = 5;
-  const pageCount = Math.ceil(filteredProducts.length / itemsPerPage);
+  const pageCount = Math.ceil(filteredItems.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const displayedItems = filteredProducts.slice(startIndex, endIndex);
+  const displayedItems = filteredItems.slice(startIndex, endIndex);
 
   const handleExportToCSV = () => {
     exportToCSV(expenses.data, 'labcraft');
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-gradient-to-r from-amber-100 to-white" style={{ maxWidth:"150vh" }}>
+    <div className="flex min-h-screen w-full flex-col bg-gradient-to-r from-amber-100 to-white" style={{ maxWidth: "150vh" }}>
       {/* <div className="flex min-h-screen w-full flex-col"> */}
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
         {/* <main className="grid flex-1 items-start ml-15 mt-10"> */}
@@ -104,25 +106,25 @@ export default function Dashboard() {
                       </div>
 
                       {me?.data.role === 'admin' && (
-                <>
-                 <AlertDialog style={{ width: "fit-content" }}>
-                        <AlertDialogTrigger className=" text-sm font-semibold text-white rounded-lg p-2  bg-orange-500 border-slate-950">AddExpenses</AlertDialogTrigger>
-                        <AlertDialogContent className="w-max">
-                          <AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            </AlertDialogFooter>
-                            <AlertDialogDescription style={{ minWidth: 'max-content' }}>
-                             <AddExpenses />
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
+                        <>
+                          <AlertDialog style={{ width: "fit-content" }}>
+                            <AlertDialogTrigger className=" text-sm font-semibold text-white rounded-lg p-2  bg-orange-500 border-slate-950">AddExpenses</AlertDialogTrigger>
+                            <AlertDialogContent className="w-max">
+                              <AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                </AlertDialogFooter>
+                                <AlertDialogDescription style={{ minWidth: 'max-content' }}>
+                                  <AddExpenses />
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
 
-                        </AlertDialogContent>
-                      </AlertDialog>
-                </>
-              
-              )}
-                    
+                            </AlertDialogContent>
+                          </AlertDialog>
+                        </>
+
+                      )}
+
                     </div>
                   </div>
                 </CardHeader>
@@ -133,13 +135,13 @@ export default function Dashboard() {
                         <TableHead>Description</TableHead>
                         <TableHead>Amount</TableHead>
                         <TableHead>Category</TableHead>
-                       
-                      <TableHead>Actions</TableHead>
+
+                        <TableHead>Actions</TableHead>
                       </TableRow>
-                      </TableHeader>
-                      <TableBody>
+                    </TableHeader>
+                    <TableBody>
                       {displayedItems.map((product: React.SetStateAction<null>) => (
-                        <TableRow  key={product.id}>
+                        <TableRow key={product.id}>
                           <TableCell className="font-medium">{product.description}</TableCell>
                           <TableCell className="font-medium">{product.amount}</TableCell>
                           <TableCell>{product.category}</TableCell>
@@ -151,19 +153,23 @@ export default function Dashboard() {
                                 </Button>
                               </DropdownMenuTrigger>
                               <DropdownMenuContent align="end">
-                              
+
                                 {me?.data.role === 'admin' && (
-                <>
-                 <DropdownMenuItem onClick={() => setSelectedProduct(product)}>
-                                  Edit
-                                </DropdownMenuItem>
-                                <DropdownMenuItem onClick={async () => deletingExpense(product.id)}>
-                                  Delete
-                                </DropdownMenuItem>
-                </>
-              
-              )}
-                              
+                                  <>
+                                    <DropdownMenuItem onClick={() => setSelectedItem(product)}>
+                                      Edit
+                                    </DropdownMenuItem>
+                                    {/* <DropdownMenuItem
+         onClick={() => setSelectedItem()}>
+          Edit</DropdownMenuItem> */}
+      
+                                    <DropdownMenuItem onClick={async () => deletingExpense(product.id)}>
+                                      Delete
+                                    </DropdownMenuItem>
+                                  </>
+
+                                )}
+
                               </DropdownMenuContent>
                             </DropdownMenu>
                           </TableCell>
@@ -200,21 +206,21 @@ export default function Dashboard() {
       {/* </div> */}
 
       {/* Edit Product Dialog */}
-      {selectedProduct && (
-        <AlertDialog open={!!selectedProduct} onOpenChange={(open) => !open && setSelectedProduct(null)}>
+      {selectedItem && (
+        <AlertDialog open={!!selectedItem} onOpenChange={(open) => !open && setSelectedItem(null)}>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Edit Product</AlertDialogTitle>
               <AlertDialogDescription>
-                <EditProduct
-                  productId={selectedProduct.id}
-                  initialData={selectedProduct}
-                  onClose={() => setSelectedProduct(null)}
+                <EditExpenses
+                  productId={selectedItem.id}
+                  initialData={selectedItem}
+                  onClose={() => setSelectedItem(null)}
                 />
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel onClick={() => setSelectedProduct(null)}>Close</AlertDialogCancel>
+              <AlertDialogCancel onClick={() => setSelectedItem(null)}>Close</AlertDialogCancel>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>

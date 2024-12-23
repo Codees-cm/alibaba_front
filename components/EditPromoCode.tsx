@@ -4,7 +4,6 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from './ui/card'
 import { Label } from './ui/label'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
-import { useCategories } from '@/hooks/stock_manage/use-category'
 import { usePromoCode } from '@/hooks/transactions/use-promo-code'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from './ui/select'
 export default function EditPromoCode({ id, initialData, onClose }) {

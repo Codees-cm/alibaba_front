@@ -57,12 +57,14 @@ import { useState } from "react";
 
 
 import { useMe } from "@/hooks/use-retiveme";
+import EditExpenses from "@/components/EditExpenses";
 
 
 
 export default function Customer() {
 
   const { me, isLoading, error } = useMe();
+  const [selectedItem, setSelectedItem] = useState(null); // Track the selected 
 
   const { customers, allFetchError, allLoading,  } = useCustomer();
   const router = useRouter()
@@ -213,6 +215,26 @@ export default function Customer() {
           </Tabs>
         </main>
       </div>
+
+      {selectedItem && (
+        <AlertDialog open={!!selectedItem} onOpenChange={(open) => !open && setSelectedItem(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Edit Product</AlertDialogTitle>
+              <AlertDialogDescription>
+                <EditExpenses
+                  id={selectedItem.id}
+                  initialData={selectedItem}
+                  onClose={() => setSelectedItem(null)}
+                />
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel onClick={() => setSelectedItem(null)}>Close</AlertDialogCancel>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </div>
   );
 }
