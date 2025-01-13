@@ -9,6 +9,14 @@ export const fetchTransactions = async () => {
     return response;
 }
 
+export const fetchAllTransactions = async () => {
+  const response = await instance.get('/transaction-history/')
+                                    .then((res)=>{
+                                      return res
+                                    })
+  return response;
+}
+
 export const createTransactions = async (data: any) => {
     const response = await instance.post('/transactions/',data)
     .then((res)=>{

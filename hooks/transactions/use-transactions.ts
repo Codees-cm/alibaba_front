@@ -2,7 +2,7 @@
 import React from "react";
 import { useQuery , useMutation , useQueryClient } from "@tanstack/react-query";
 
-import { fetchTransactions, createTransactions , viewTransactions  } from "@/utils/apis/transactions";
+import { fetchTransactions, createTransactions , viewTransactions, fetchAllTransactions  } from "@/utils/apis/transactions";
 import { useToast } from "@/components/ui/use-toast"
 
 export const useTransactions = (enable:boolean = false , id:number|null = null) => {
@@ -18,6 +18,13 @@ export const useTransactions = (enable:boolean = false , id:number|null = null) 
         staleTime: 300000,
         enabled: !enable
     })
+
+    const {data:allTransactions , isLoading : allTLoading ,error:allTFetchError } = useQuery({
+      queryKey : ['transactions_history'],
+      queryFn: fetchAllTransactions,
+      staleTime: 300000,
+      enabled: !enable
+  })
 
 
     const {data:oneTransaction , isLoading:singleLoading ,error:singleFetchError } = useQuery({
@@ -72,6 +79,10 @@ export const useTransactions = (enable:boolean = false , id:number|null = null) 
 
         isSuccess,
         errorMessage,
+
+        allTransactions,
+        allTLoading ,
+        allTFetchError
     }
 
 
