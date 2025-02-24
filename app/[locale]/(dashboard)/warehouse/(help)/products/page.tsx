@@ -79,7 +79,7 @@ export default function Dashboard() {
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const itemsPerPage = 5;
+  const itemsPerPage = 25;
   const pageCount = Math.ceil(filteredProducts.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
