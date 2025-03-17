@@ -18,6 +18,7 @@ export const useProducts = (enable = false, productId = null) => {
     const [errorMessage, setErrorMessage] = React.useState("");
     const queryClient = useQueryClient();
     const { toast } = useToast();
+    const [tableRefetching, setTableRefetching] = React.useState(false);
 
     // New state for pagination parameters
     const [paginationParams, setPaginationParams] = React.useState({
@@ -31,7 +32,8 @@ export const useProducts = (enable = false, productId = null) => {
         data: products,
         isLoading: allLoading,
         error: allFetchError,
-        refetch
+        refetch,
+        isFetching
     } = useQuery({
         queryKey: ['products', paginationParams],
         queryFn: () => fetchProducts(paginationParams),
@@ -39,9 +41,16 @@ export const useProducts = (enable = false, productId = null) => {
         enabled: !enable,
     });
 
+    // Update tableRefetching state when isFetching changes
+    React.useEffect(() => {
+        setTableRefetching(isFetching && !allLoading);
+    }, [isFetching, allLoading]);
+
     // Function to fetch products with pagination, search, and sort
-    const fetchProductsWithParams = (page = 1, search = '', sort = { key: 'name', direction: 'asc' }) => {
+    const fetchProductsWithParams = async (page = 1, search = '', sort = { key: 'name', direction: 'asc' }) => {
         setPaginationParams({ page, search, sort });
+        // Return the promise from refetch for better control
+        return refetch();
     };
 
     // Query for a single product
@@ -196,6 +205,7 @@ export const useProducts = (enable = false, productId = null) => {
         allLoading,
         allFetchError,
         fetchProductsWithParams,
+        tableRefetching,
 
         oneProduct,
         singleLoading,

@@ -1,6 +1,5 @@
 import instance from '../api';
 
-
 // Update this in your /utils/apis/product.js file
 
 export const fetchProducts = async (params = {}) => {
@@ -9,24 +8,26 @@ export const fetchProducts = async (params = {}) => {
     // Build query parameters
     let queryParams = `page=${page}`;
 
-    // Add search parameter if provided
     if (search) {
         queryParams += `&search=${encodeURIComponent(search)}`;
     }
 
-    // Add sorting parameters if provided
     if (sort && sort.key) {
-        // If direction is desc, add minus sign prefix to the sort key
         const sortPrefix = sort.direction === 'desc' ? '-' : '';
         queryParams += `&ordering=${sortPrefix}${sort.key}`;
     }
 
-    const response = await instance.get(`/products/?${queryParams}`)
-        .then((res) => {
-            return res;
-        });
-
-    return response;
+    try {
+        const response = await instance.get(`/products/?${queryParams}`);
+        if (response.status >= 200 && response.status < 300) {
+            return response;
+        } else {
+            throw new Error(`Server responded with status: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error fetching products:", error);
+        throw error;
+    }
 };
 // export const createProducts = async (data: any) => {
 //     const response = await instance.post('/products/',data)
