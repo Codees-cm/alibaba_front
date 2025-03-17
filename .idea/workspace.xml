@@ -5,19 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b4e57230-cffc-469c-99b3-b916009e5482" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/lib/supabase.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/uploadImage.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/[locale]/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/[locale]/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/api/edgestore/[...edgestore]/route.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/AddProduct.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/AddProduct.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/EditProduct.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/EditProduct.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Editor.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Editor.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/Form.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Form.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/actions.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/edgestore.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/uploadImage.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/uploadImage.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +84,7 @@
       <workItem from="1741336585547" duration="86000" />
       <workItem from="1741948424357" duration="410000" />
       <workItem from="1742120811678" duration="4000" />
-      <workItem from="1742197376347" duration="2083000" />
+      <workItem from="1742197376347" duration="3112000" />
     </task>
     <servers />
   </component>
