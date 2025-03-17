@@ -8,7 +8,7 @@ export async function uploadImage(file: File): Promise<string> {
         const filePath = `${fileName}`;
 
         const { data, error } = await supabase.storage
-            .from('images')  
+            .from('product-images')
             .upload(filePath, file, {
                 cacheControl: '3600',
                 upsert: false
