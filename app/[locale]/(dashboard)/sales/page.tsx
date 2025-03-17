@@ -1,6 +1,6 @@
 "use client"
 import * as React from "react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -39,10 +39,12 @@ import {
 export default function Supplier() {
   const [saleFormData, setSaleFormData] = useState({ product: "", quantity_sold: "", sale_price: "", productName: "", price: 0 });
   const [salesData, setSalesData] = useState<SaleInfo[]>([]);
-  const { products, allLoading } = useProducts();
+  const { products, allLoading, fetchAllProductsForDropdown } = useProducts(); // Use modified hook
+  const [allProducts, setAllProducts] = useState([]); // New state for all products
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
+  const [isLoadingAllProducts, setIsLoadingAllProducts] = useState(true);
 
   if (allLoading) {
     return (
@@ -52,6 +54,22 @@ export default function Supplier() {
     );
   }
 
+
+  useEffect(() => {
+    const loadAllProducts = async () => {
+      try {
+        setIsLoadingAllProducts(true);
+        const result = await fetchAllProductsForDropdown();
+        setAllProducts(result?.data?.results || []);
+      } catch (error) {
+        console.error("Failed to load all products", error);
+      } finally {
+        setIsLoadingAllProducts(false);
+      }
+    };
+
+    loadAllProducts();
+  }, []);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
@@ -152,25 +170,27 @@ export default function Supplier() {
                           <CommandList>
                             <CommandEmpty>No product found.</CommandEmpty>
                             <CommandGroup>
-                              {products?.data.results.map((product) => (
-                               <>
-                               {
-                               (product.quantity  > 0)&&(
-                                <CommandItem
-                                key={product.id}
-                                value={product.name}
-                                onSelect={() => handleProductChange(product)}
-                              >
-                                {product.name} <small style={{ margin: "1vh" }}>remains {product.quantity}</small>
-                              </CommandItem>
-                               )
-
-                               }
-                               </>
-                              
-                              ))}
+                              {isLoadingAllProducts ? (
+                                  <CommandItem>Loading products...</CommandItem>
+                              ) : (
+                                  allProducts.map((product) => (
+                                      <>
+                                        {
+                                            (product.quantity > 0) && (
+                                                <CommandItem
+                                                    key={product.id}
+                                                    value={product.name}
+                                                    onSelect={() => handleProductChange(product)}
+                                                >
+                                                  {product.name} <small style={{ margin: "1vh" }}>remains {product.quantity}</small>
+                                                </CommandItem>
+                                            )
+                                        }
+                                      </>
+                                  ))
+                              )}
                             </CommandGroup>
-                          </CommandList>
+                              </CommandList>
                         </Command>
                       </PopoverContent>
                     </Popover>

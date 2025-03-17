@@ -8,7 +8,7 @@ import {
     update_markdown,
     deleteProducts,
     productTransactions,
-    updateProduct
+    updateProduct, fetchAllProducts
 } from "@/utils/apis/product";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -64,6 +64,17 @@ export const useProducts = (enable = false, productId = null) => {
         staleTime: 300000,
         enabled: enable && productId !== null,
     });
+
+
+    const fetchAllProductsForDropdown = async () => {
+        try {
+            const response = await fetchAllProducts();
+            return response;
+        } catch (error) {
+            console.error("Error fetching all products:", error);
+            throw error;
+        }
+    };
 
     // Query for product transactions
     const {
@@ -230,6 +241,8 @@ export const useProducts = (enable = false, productId = null) => {
 
         markdown_update_product,
         isEditingMarkdown,
+
+        fetchAllProductsForDropdown,
 
         isSuccess,
         errorMessage,

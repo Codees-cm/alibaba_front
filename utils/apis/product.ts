@@ -1,6 +1,17 @@
 import instance from '../api';
 
-// Update this in your /utils/apis/product.js file
+
+
+export const fetchAllProducts = async () => {
+    try {
+        // Get all available products with a large page size
+        const response = await instance.get('/products/?page_size=1000&available=true');
+        return response;
+    } catch (error) {
+        console.error("Error fetching all products:", error);
+        throw error;
+    }
+};
 
 export const fetchProducts = async (params = {}) => {
     const { page = 1, search = '', sort = { key: 'name', direction: 'asc' } } = params;
