@@ -46,14 +46,6 @@ export default function Supplier() {
   const [value, setValue] = useState("");
   const [isLoadingAllProducts, setIsLoadingAllProducts] = useState(true);
 
-  if (allLoading) {
-    return (
-      <>
-        ...isLoading
-      </>
-    );
-  }
-
 
   useEffect(() => {
     const loadAllProducts = async () => {
@@ -70,6 +62,16 @@ export default function Supplier() {
 
     loadAllProducts();
   }, []);
+  if (allLoading) {
+    return (
+      <>
+        ...isLoading
+      </>
+    );
+  }
+
+
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
