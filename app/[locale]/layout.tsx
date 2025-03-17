@@ -5,7 +5,6 @@ import TanstackProvider from '../providers/TanstackProvider'
 import { dir } from 'i18next'
 import { languages } from '../i18n/settings'
 import { Toaster } from "@/components/ui/toaster"
-import { EdgeStoreProvider } from '@/lib/edgestore'
 
 export async function generateStaticParams() {
   return languages.map((locale) => ({ locale }))
@@ -32,9 +31,7 @@ export default function LocaleLayout({
         </head>
         <body style={{ overflowX: "hidden" }}>
             <TanstackProvider>
-              <EdgeStoreProvider>
               {children}
-              </EdgeStoreProvider>
         </TanstackProvider>
         <Toaster />
         </body>

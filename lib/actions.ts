@@ -1,28 +1,29 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-import { useEdgeStore } from "./edgestore";
+import {uploadImage} from "@/lib/uploadImage";
 
+type State = {
+    status?: string;
+    message?: string | null;
+    fileName?: string;
+};
 
-const {edgestore} = useEdgeStore()
+export async function uploadFile(prevState: State, formData: FormData): Promise<State> {
+    try {
+        const file = formData.get("file") as File;
 
+        if (!file || file.size === 0) {
+            return { status: "error", message: "Please select a file." };
+        }
 
-export async function uploadFile(formData: { get: (arg0: string) => any; }) {
-  try {
-    const file = formData.get("file");
+        // Use the Supabase uploadImage function
+        const publicUrl = await uploadImage(file);
 
-    if (file.size === 0) {
-      return { status: "error", message: "Please select a file." };
+        return {
+            status: "success",
+            message: "File has been uploaded.",
+            fileName: publicUrl
+        };
+    } catch (error) {
+        console.error(error);
+        return { status: "error", message: "Failed to upload file." };
     }
-    const res = await edgestore.myPublicImages.upload({ 
-            file,
-            onProgressChange: (progress) => {
-            // setProgress(progress)
-            console.log(progress)
-            }
-
-        })
-       return { status: "success", message: "File has been uploaded.", fileName:res.url };
-  } catch (error) {
-    console.log(error);
-    return { status: "error", message: "Failed to upload file." };
-  }
 }

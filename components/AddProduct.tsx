@@ -8,7 +8,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useCategories } from "@/hooks/stock_manage/use-category";
 import { useProducts } from "@/hooks/stock_manage/use-product";
 import { Textarea } from "@/components/ui/textarea";
-import { useEdgeStore } from "@/lib/edgestore";
+// import { useEdgeStore } from "@/lib/edgestore";
+import { uploadImage } from "@/lib/uploadImage";
+
 import { CirclePlus as AddCircleIcon } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -18,7 +20,7 @@ export default function AddProduct() {
   const router = useRouter();
   const { categories } = useCategories();
   const { addProduct, isAddingProduct,Product_Id, isSuccess, errorMessage } = useProducts();
-  const { edgestore } = useEdgeStore();
+  // const { edgestore } = useEdgeStore();
 
   const [productData, setProductData] = useState({
     name: "",
@@ -37,7 +39,7 @@ export default function AddProduct() {
   const [product_name, setProduct_name] = useState(''); // New state for description button
 
   const handleFormChange = (value: any) => {
-    const selectedCategory = categories.data.find((category: { id: { toString: () => any; }; }) => category.id.toString() === value);
+    const selectedCategory = categories?.data.find((category: { id: { toString: () => any; }; }) => category.id.toString() === value);
     if (selectedCategory) {
       setProductData(prevState => ({
         ...prevState,
@@ -86,14 +88,14 @@ export default function AddProduct() {
         return;
       }
 
-      const res = await edgestore.myPublicImages.upload({
-        file: imageFile,
-        onProgressChange: (progress) => {
-          console.log(progress);
-        }
-      });
-
-      const fileName = res.url;
+      // const res = await edgestore.myPublicImages.upload({
+      //   file: imageFile,
+      //   onProgressChange: (progress) => {
+      //     console.log(progress);
+      //   }
+      // });
+      const fileName = await uploadImage(imageFile);
+      // const fileName = res.url;
       const updatedProductData = {
         ...productData,
         image_urls: fileName,
@@ -184,7 +186,7 @@ export default function AddProduct() {
                       </SelectTrigger>
                       <SelectContent>
                         {categories?.data.map((category: { id: React.Key | null | undefined; name: string; }) => (
-                          <SelectItem key={category.id} value={category.id.toString()}>
+                          <SelectItem key={category.id} value={category?.id.toString()}>
                             {category.name}
                           </SelectItem>
                         ))}

@@ -8,14 +8,16 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useCategories } from "@/hooks/stock_manage/use-category";
 import { useProducts } from "@/hooks/stock_manage/use-product";
 import { Textarea } from "@/components/ui/textarea";
-import { useEdgeStore } from "@/lib/edgestore";
+// import { useEdgeStore } from "@/lib/edgestore";
+import { uploadImage } from "@/lib/uploadImage";
+
 import { useRouter } from "next/navigation";
 
 export default function EditProduct({ productId, initialData, onClose }) {
   const router = useRouter();
   const { categories } = useCategories();
   const { modifyProduct, isEditingProduct, isSuccess, errorMessage } = useProducts(false, productId);
-  const { edgestore } = useEdgeStore();
+  // const { edgestore } = useEdgeStore();
   
   const [productData, setProductData] = useState(initialData);
   const [imageFile, setImageFile] = useState(null);
@@ -29,7 +31,7 @@ export default function EditProduct({ productId, initialData, onClose }) {
   }, [initialData]);
 
   const handleCategoryChange = (value) => {
-    const selectedCategory = categories.data.find((category) => category.id.toString() === value);
+    const selectedCategory = categories?.data.find((category) => category.id.toString() === value);
     if (selectedCategory) {
       setProductData((prevState) => ({
         ...prevState,
@@ -63,13 +65,14 @@ export default function EditProduct({ productId, initialData, onClose }) {
       let fileName = imagePreview;
 
       if (imageFile) {
-        const res = await edgestore.myPublicImages.upload({ 
-          file: imageFile,
-          onProgressChange: (progress) => {
-            console.log(progress);
-          }
-        });
-        fileName = res.url;
+        // const res = await edgestore.myPublicImages.upload({
+        //   file: imageFile,
+        //   onProgressChange: (progress) => {
+        //     console.log(progress);
+        //   }
+        // });
+        const fileName = await uploadImage(imageFile);
+
       }
 
       const updatedProductData = {

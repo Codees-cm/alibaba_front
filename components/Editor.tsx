@@ -4,7 +4,8 @@ import { MdEditor } from "md-editor-rt";
 import "md-editor-rt/lib/style.css";
 import { useProducts } from '@/hooks/stock_manage/use-product';
 import { useRouter } from 'next/navigation';
-import { useEdgeStore } from "@/lib/edgestore";
+import { uploadImage } from "@/lib/uploadImage";
+
 type EditorProps = {
     param: any;
     initialContent?: string | null;
@@ -12,10 +13,9 @@ type EditorProps = {
 
 function Editor({ param, initialContent }: EditorProps) {
     const [text, setText] = useState(initialContent || "Product details ....");
-    const { edgestore } = useEdgeStore();
-console.log(param)
+    console.log(param)
 
-    const { createProductMarkdown, isCreatingProductsMarkdown ,markdown_update_product } = useProducts(false,param.id);
+    const { createProductMarkdown, isCreatingProductsMarkdown, markdown_update_product } = useProducts(false, param.id);
     const router = useRouter();
 
     useEffect(() => {
@@ -23,29 +23,23 @@ console.log(param)
             setText(initialContent);
         }
     }, [initialContent]);
-    
+
     const generateRandomFilename = () => {
         const timestamp = new Date().getTime();
         return `editor_content_${timestamp}.md`;
     };
 
     const handleSave = async () => {
-
         const fileName = generateRandomFilename();
 
         try {
             const file = new File([text], fileName, { type: 'text/markdown' });
 
-            const res = await edgestore.myPublicImages.upload({
-                file,
-                onProgressChange: (progress) => {
-                    console.log(progress);
-                }
-            });
+            const fileUrl = await uploadImage(file);
 
             const payload = {
                 product_id: param.id,
-                file_url: res.url
+                file_url: fileUrl
             };
 
             await createProductMarkdown(payload);
@@ -56,23 +50,18 @@ console.log(param)
     };
 
     const handleUpdate = async () => {
-
         const fileName = generateRandomFilename();
 
         try {
             const file = new File([text], fileName, { type: 'text/markdown' });
 
-            const res = await edgestore.myPublicImages.upload({
-                file,
-                onProgressChange: (progress) => {
-                    console.log(progress);
-                }
-            });
+            // Use Supabase uploadImage function instead of EdgeStore
+            const fileUrl = await uploadImage(file);
 
             const payload = {
-                id:param.key,
+                id: param.key,
                 product_id: param.id,
-                file_url: res.url
+                file_url: fileUrl
             };
 
             await markdown_update_product(payload);
@@ -93,13 +82,13 @@ console.log(param)
                     setText(modelValue);
                 }}
             />
-             {
+            {
                 initialContent ? (<>
-            <button onClick={handleUpdate} className='text-sm font-semibold text-white mt-3 rounded-lg p-2  bg-orange-500 border-slate-950'>update</button>
+                    <button onClick={handleUpdate} className='text-sm font-semibold text-white mt-3 rounded-lg p-2 bg-orange-500 border-slate-950'>update</button>
                 </>) : (<>
-                    <button onClick={handleSave} className='text-sm font-semibold text-white mt-3 rounded-lg p-2  bg-orange-500 border-slate-950'>Save</button>
+                    <button onClick={handleSave} className='text-sm font-semibold text-white mt-3 rounded-lg p-2 bg-orange-500 border-slate-950'>Save</button>
                 </>)
-             }
+            }
         </div>
     );
 }

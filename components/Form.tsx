@@ -3,22 +3,28 @@ import React from 'react'
 import { useFormState } from 'react-dom';
 import { uploadFile } from '@/lib/actions';
 
-const initialState = {message:null};
+// Define the proper initial state
+const initialState = { message: null };
 
 export default function Form() {
-  const [state, formAction] = useFormState(uploadFile,initialState);
+  const [state, formAction] = useFormState(uploadFile, initialState);
 
   return (
-    <div> <form action={formAction} method="post">
-    <input type="file" name="file" id="file" accept='images/*' />
-    <input type="submit" value="Upload" />
-  </form>
-  {
-  state.status && (
-    <>
-    {state?.message}
-    </>
-  )
-  }</div>
+      <div>
+        <form action={formAction}>
+          <input type="file" name="file" id="file" accept="image/*" />
+          <input type="submit" value="Upload" />
+        </form>
+        {state.status && (
+            <>
+              {state.message}
+              {state.fileName && (
+                  <div>
+                    <p>Uploaded file: {state.fileName}</p>
+                  </div>
+              )}
+            </>
+        )}
+      </div>
   )
 }
