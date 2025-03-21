@@ -3,7 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { PaymentMethod } from '@/components/PaymentMethod';
 import Receipt from '@/components/Receipt';
 import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+
+import { AlertCircle, Server } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+
+
 import {
     Card,
     CardContent,
@@ -22,10 +26,12 @@ export default function Page() {
     const [totalAmount, setTotalAmount] = useState(0);
     const [amountReceived, setAmountReceived] = useState(0);
     const [balance, setBalance] = useState(0);
-  const {addSale,isAddingSale,isSuccess} = useSales()
-  const receiptCode = 'LABC' + Math.floor(Math.random() * 1000000).toString();
-  const {createNewOrder} = useOrders()
-const router = useRouter()
+    const [serverStatus, setServerStatus] = useState({ isRunning: false, message: 'Server not started' });
+    const [serverDirectory, setServerDirectory] = useState('/path/to/your/server');
+    const {addSale,isAddingSale,isSuccess} = useSales()
+    const receiptCode = 'LABC' + Math.floor(Math.random() * 1000000).toString();
+    const {createNewOrder} = useOrders()
+    const router = useRouter()
 
     useEffect(() => {
         const storedSalesData = localStorage.getItem('salesData');
@@ -38,6 +44,33 @@ const router = useRouter()
         setAmountReceived(totalAmount);
     }, []);
 
+    const toggleServer = async () => {
+        try {
+            const response = await fetch('------', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: serverStatus.isRunning ? 'stop' : 'start',
+                    directory: serverDirectory
+                }),
+            });
+
+            const result = await response.json();
+
+            setServerStatus({
+                isRunning: result.isRunning,
+                message: result.message
+            });
+        } catch (error) {
+            console.error('Server management error:', error);
+            setServerStatus({
+                ...serverStatus,
+                message: 'Error managing server: ' + error.message
+            });
+        }
+    };
     const handlePaymentSubmit = (details: React.SetStateAction<{ paymentMethod: string; name: string; phoneNumber: string; location: string; }>) => {
         setPaymentDetails(details);
         setAmountReceived(details.amountReceived);
@@ -170,6 +203,27 @@ const router = useRouter()
                     </div>
                 </div>
             </div>
+            <Card className="mt-4">
+                <CardHeader>
+                    <CardTitle>Server Management</CardTitle>
+                    <CardDescription>Launch or stop the server</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+
+                    <Alert variant={serverStatus.isRunning ? "success" : "destructive"}>
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertDescription>{serverStatus.message}</AlertDescription>
+                    </Alert>
+
+                    <Button
+                        onClick={toggleServer}
+                        className={`w-full ${serverStatus.isRunning ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'}`}
+                    >
+                        <Server className="mr-2 h-4 w-4" />
+                        {serverStatus.isRunning ? 'Stop Server' : 'Start Server'}
+                    </Button>
+                </CardContent>
+            </Card>
         </div>
     );
 }

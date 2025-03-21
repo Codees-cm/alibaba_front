@@ -221,8 +221,8 @@ export default function Dashboard() {
                               displayedItems.map((product) => (
                                   <TableRow className={product.quantity <= 3 ? "bg-red-300" : ""} key={product.id}>
                                     <TableCell className="font-medium">{product.product_code}</TableCell>
-                                    <TableCell className="font-medium">{product.name} {product.quantity  <= 3 ? "almost empty" : " "}</TableCell>
-                                    <TableCell>{product.quantity}</TableCell>
+                                    <TableCell className="font-medium">{product.name}</TableCell>
+                                    <TableCell>{product.quantity}  {product.quantity  <= 3 ? "almost empty" : " "} </TableCell>
                                     <TableCell>{product.price}</TableCell>
                                     <TableCell>{product.price_with_tax}</TableCell>
                                     <TableCell>
