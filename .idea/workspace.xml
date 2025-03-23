@@ -5,12 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b4e57230-cffc-469c-99b3-b916009e5482" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/hooks/use-local-storage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/[locale]/(dashboard)/sales/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/[locale]/(dashboard)/sales/[id]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/[locale]/(authentication)/auth/activate/[uid]/[token]/page.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/[locale]/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/[locale]/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/SSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/SSidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/badge.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/badge.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/[locale]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/[locale]/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -105,7 +103,7 @@
       <workItem from="1742266491074" duration="8000" />
       <workItem from="1742335747780" duration="997000" />
       <workItem from="1742500760248" duration="4626000" />
-      <workItem from="1742741574769" duration="1192000" />
+      <workItem from="1742741574769" duration="2035000" />
     </task>
     <servers />
   </component>

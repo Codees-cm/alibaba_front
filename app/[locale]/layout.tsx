@@ -6,9 +6,6 @@ import { dir } from 'i18next'
 import { languages } from '../i18n/settings'
 import { Toaster } from "@/components/ui/toaster"
 
-export async function generateStaticParams() {
-    return languages.map((locale) => ({ locale }))
-}
 
 // We're keeping this as a client component so we can use hooks
 export default function LocaleLayout({
