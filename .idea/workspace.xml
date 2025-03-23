@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b4e57230-cffc-469c-99b3-b916009e5482" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/hooks/use-local-storage.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/[locale]/(dashboard)/sales/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/[locale]/(dashboard)/sales/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/[locale]/(dashboard)/warehouse/(help)/products/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/[locale]/(dashboard)/warehouse/(help)/products/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/[locale]/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/[locale]/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/SSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/SSidebar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/badge.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/badge.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,12 +33,12 @@
     &quot;assignee&quot;: &quot;FNMALIC&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "git@github.com:Codees-cm/alibaba_front.git",
-    "accountId": "5bd255e9-77ce-4d5e-889a-29d3077a2f3d"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:Codees-cm/alibaba_front.git&quot;,
+    &quot;accountId&quot;: &quot;5bd255e9-77ce-4d5e-889a-29d3077a2f3d&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -44,24 +47,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main__2",
-    "javascript.nodejs.core.library.configured.version": "18.20.6",
-    "javascript.nodejs.core.library.typings.version": "18.19.81",
-    "last_opened_file_path": "/home/nixon/WebstormProjects/alibaba_front/lib",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "ts.external.directory.path": "/home/nixon/WebstormProjects/alibaba_front/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main__2&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;18.20.6&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;18.19.81&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/nixon/WebstormProjects/alibaba_front/lib&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/nixon/WebstormProjects/alibaba_front/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/lib" />
@@ -101,7 +104,8 @@
       <workItem from="1742233124596" duration="8683000" />
       <workItem from="1742266491074" duration="8000" />
       <workItem from="1742335747780" duration="997000" />
-      <workItem from="1742500760248" duration="3671000" />
+      <workItem from="1742500760248" duration="4626000" />
+      <workItem from="1742741574769" duration="1192000" />
     </task>
     <servers />
   </component>

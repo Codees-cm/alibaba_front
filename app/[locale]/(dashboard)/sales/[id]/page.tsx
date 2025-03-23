@@ -203,25 +203,63 @@ export default function Page() {
                     </div>
                 </div>
             </div>
-            <Card className="mt-4">
-                <CardHeader>
-                    <CardTitle>Server Management</CardTitle>
-                    <CardDescription>Launch or stop the server</CardDescription>
+            <Card className="mt-8 shadow-lg border-0">
+                <CardHeader className="bg-gradient-to-r from-slate-700 to-slate-900 text-white rounded-t-lg">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <Server className="h-5 w-5" />
+                            <CardTitle>Server Management</CardTitle>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <div className={`h-3 w-3 rounded-full ${serverStatus.isRunning ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></div>
+                            <span className="text-sm font-medium">{serverStatus.isRunning ? 'Running' : 'Stopped'}</span>
+                        </div>
+                    </div>
+                    <CardDescription className="text-slate-300">Manage your server status</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
 
-                    <Alert variant={serverStatus.isRunning ? "success" : "destructive"}>
-                        <AlertCircle className="h-4 w-4" />
-                        <AlertDescription>{serverStatus.message}</AlertDescription>
-                    </Alert>
+                <CardContent className="p-6 space-y-6">
+                    <div className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
+                        <div className="flex items-start gap-3">
+                            <AlertCircle className={`h-5 w-5 mt-0.5 ${serverStatus.isRunning ? 'text-green-500' : 'text-red-500'}`} />
+                            <div>
+                                <h4 className="font-medium text-slate-900">Status</h4>
+                                <p className="text-sm text-slate-600">{serverStatus.message}</p>
+                            </div>
+                        </div>
 
-                    <Button
-                        onClick={toggleServer}
-                        className={`w-full ${serverStatus.isRunning ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'}`}
-                    >
-                        <Server className="mr-2 h-4 w-4" />
-                        {serverStatus.isRunning ? 'Stop Server' : 'Start Server'}
-                    </Button>
+                        <Button
+                            onClick={toggleServer}
+                            variant={serverStatus.isRunning ? "destructive" : "default"}
+                            className={`px-4 py-2 transition-all duration-200 ${
+                                serverStatus.isRunning
+                                    ? 'bg-red-500 hover:bg-red-600 text-white'
+                                    : 'bg-emerald-500 hover:bg-emerald-600 text-white'
+                            }`}
+                        >
+                            <div className="flex items-center gap-2">
+                                {serverStatus.isRunning ? (
+                                    <>
+                                        <div className="h-2 w-2 rounded-full bg-white"></div>
+                                        Stop Server
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="h-2 w-2 rounded-full bg-white"></div>
+                                        Start Server
+                                    </>
+                                )}
+                            </div>
+                        </Button>
+                    </div>
+
+                    {!serverStatus.isRunning && (
+                        <div className="text-center p-3 border border-dashed border-slate-300 rounded-md bg-slate-50">
+                            <p className="text-sm text-slate-600">
+                                The server is currently offline. Start the server to enable printing and other services.
+                            </p>
+                        </div>
+                    )}
                 </CardContent>
             </Card>
         </div>
