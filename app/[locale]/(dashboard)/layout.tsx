@@ -1,10 +1,12 @@
 "use client"
 import "./../globals.css"
-import { cn } from "@/lib/utils";
-import Sidenavbar from "@/components/Sidebar";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useMe } from "@/hooks/use-retiveme";
-// import { useEffect } from "react";
+import { NotificationProvider } from "@/contexts/NotificationContext";
+import Header from "@/components/ecommerce/Header";
+import Sidebar from "@/components/ecommerce/Sidebar";
+
 export default function RootLayout({
   children,
   params: {locale}
@@ -12,43 +14,74 @@ export default function RootLayout({
   children: React.ReactNode;
   params: {locale: string};
 }) {
-const router = useRouter()
-  const { me , isLoading, error } =  useMe(); 
+  const router = useRouter();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { me, isLoading, error } = useMe(); 
+  const [authChecked, setAuthChecked] = useState(false);
 
+  useEffect(() => {
+    // Check authentication after loading is complete
+    if (!isLoading) {
+      setAuthChecked(true);
+      
+      // If no user data and there's an error, redirect to login
+      if (!me && error) {
+        console.log("No authenticated user found, redirecting to login");
+        router.push(`/${locale}/auth/login`);
+        return;
+      }
+    }
+  }, [me, isLoading, error, router, locale]);
 
-if (isLoading){ 
-
-  return(
-  <>
-  ...Loading
-  </>
-  )
-}
-
-setTimeout(() => {
-  console.log(me); // Now 'me' should have a value
-  if (!me) {
-    router.push('/en/auth/login');
+  // Show loading while checking authentication
+  if (isLoading || !authChecked) { 
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading Tondo...</p>
+        </div>
+      </div>
+    );
   }
-}, 3000);
 
-console.log(" this is the user credential:",error)
+  // Show loading if user is not authenticated
+  if (!me) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Redirecting to login...</p>
+        </div>
+      </div>
+    );
+  }
 
-
+  console.log("Authenticated user:", me);
 
   return (
-
-    <div style={{ margin:0 , lineHeight:"inherit",paddingBottom:"0",display:"-webkit-inline-box"}}>
-          <Sidenavbar  lang={locale}/>
-            {/*main page */}
-            {/* <div className="p-8 w-full"> */}
-              {children}
-              {/* </div> */}
+    <NotificationProvider>
+      <div className="min-h-screen bg-gray-50">
+        {/* Header */}
+        <Header 
+          onMenuToggle={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          isMobileMenuOpen={isMobileMenuOpen}
+        />
+        
+        <div className="flex">
+          {/* Sidebar */}
+          <Sidebar 
+            isOpen={isMobileMenuOpen}
+            onClose={() => setIsMobileMenuOpen(false)}
+            locale={locale}
+          />
+          
+          {/* Main Content */}
+          <main className="flex-1 min-h-screen bg-gray-50 md:ml-0">
+            {children}
+          </main>
+        </div>
       </div>
-
-  
-     
-       
-   
+    </NotificationProvider>
   );
 }
