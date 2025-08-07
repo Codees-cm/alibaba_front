@@ -68,11 +68,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, locale }) => {
       href: `/${locale}/analysis`,
     },
     {
-      title: 'Warehouse',
-      icon: Package,
-      href: `/${locale}/warehouse`,
-    },
-    {
       title: 'Settings',
       icon: Settings,
       href: `/${locale}/settings`,

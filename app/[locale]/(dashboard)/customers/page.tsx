@@ -24,6 +24,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useNotifications } from '@/contexts/NotificationContext';
+import CustomerViewModal from '@/components/ecommerce/CustomerViewModal';
+import CustomerEditModal from '@/components/ecommerce/CustomerEditModal';
+import CustomerAddModal from '@/components/ecommerce/CustomerAddModal';
+import DeleteConfirmModal from '@/components/ecommerce/DeleteConfirmModal';
 
 interface Customer {
   id: string;
@@ -79,9 +84,18 @@ const mockCustomers: Customer[] = [
 
 export default function CustomersPage({ params: { locale } }: { params: { locale: string } }) {
   const { t } = useTranslation(locale, 'common');
+  const { addNotification } = useNotifications();
   const [customers, setCustomers] = useState<Customer[]>(mockCustomers);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
+  
+  // Modal states
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [addModalOpen, setAddModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const filteredCustomers = customers.filter(customer => {
     const matchesSearch = customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -99,6 +113,94 @@ export default function CustomersPage({ params: { locale } }: { params: { locale
     }
   };
 
+  // CRUD handlers
+  const handleViewCustomer = (customer: Customer) => {
+    setSelectedCustomer(customer);
+    setViewModalOpen(true);
+  };
+
+  const handleEditCustomer = (customer: Customer) => {
+    setSelectedCustomer(customer);
+    setEditModalOpen(true);
+  };
+
+  const handleDeleteCustomer = (customer: Customer) => {
+    setSelectedCustomer(customer);
+    setDeleteModalOpen(true);
+  };
+
+  const handleAddCustomer = (newCustomerData: Omit<Customer, 'id' | 'totalOrders' | 'totalSpent' | 'joinDate' | 'lastOrder'>) => {
+    setIsLoading(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      const newCustomer: Customer = {
+        ...newCustomerData,
+        id: (customers.length + 1).toString(),
+        totalOrders: 0,
+        totalSpent: 0,
+        joinDate: new Date().toISOString().split('T')[0],
+        lastOrder: ''
+      };
+      
+      setCustomers(prev => [...prev, newCustomer]);
+      setAddModalOpen(false);
+      setIsLoading(false);
+      
+      addNotification({
+        title: 'Customer Added',
+        message: `${newCustomer.name} has been successfully added`,
+        type: 'success'
+      });
+    }, 1000);
+  };
+
+  const handleSaveCustomer = (updatedCustomer: Customer) => {
+    setIsLoading(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setCustomers(prev => prev.map(c => c.id === updatedCustomer.id ? updatedCustomer : c));
+      setEditModalOpen(false);
+      setSelectedCustomer(null);
+      setIsLoading(false);
+      
+      addNotification({
+        title: 'Customer Updated',
+        message: `${updatedCustomer.name} has been successfully updated`,
+        type: 'success'
+      });
+    }, 1000);
+  };
+
+  const handleConfirmDelete = () => {
+    if (!selectedCustomer) return;
+    
+    setIsLoading(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+      setCustomers(prev => prev.filter(c => c.id !== selectedCustomer.id));
+      setDeleteModalOpen(false);
+      setSelectedCustomer(null);
+      setIsLoading(false);
+      
+      addNotification({
+        title: 'Customer Deleted',
+        message: `${selectedCustomer.name} has been removed`,
+        type: 'info'
+      });
+    }, 1000);
+  };
+
+  const closeModals = () => {
+    setViewModalOpen(false);
+    setEditModalOpen(false);
+    setAddModalOpen(false);
+    setDeleteModalOpen(false);
+    setSelectedCustomer(null);
+  };
+
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
@@ -107,7 +209,10 @@ export default function CustomersPage({ params: { locale } }: { params: { locale
           <h1 className="text-3xl font-bold text-gray-900">Customers</h1>
           <p className="text-gray-600 mt-1">Manage your customer base</p>
         </div>
-        <Button className="bg-blue-600 hover:bg-blue-700">
+        <Button 
+          className="bg-blue-600 hover:bg-blue-700"
+          onClick={() => setAddModalOpen(true)}
+        >
           <Plus className="w-4 h-4 mr-2" />
           Add Customer
         </Button>
@@ -271,15 +376,18 @@ export default function CustomersPage({ params: { locale } }: { params: { locale
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleViewCustomer(customer)}>
                             <Eye className="w-4 h-4 mr-2" />
                             View Details
                           </DropdownMenuItem>
-                          <DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleEditCustomer(customer)}>
                             <Edit className="w-4 h-4 mr-2" />
                             Edit Customer
                           </DropdownMenuItem>
-                          <DropdownMenuItem className="text-red-600">
+                          <DropdownMenuItem 
+                            className="text-red-600"
+                            onClick={() => handleDeleteCustomer(customer)}
+                          >
                             <Trash2 className="w-4 h-4 mr-2" />
                             Delete Customer
                           </DropdownMenuItem>
@@ -293,6 +401,42 @@ export default function CustomersPage({ params: { locale } }: { params: { locale
           </div>
         </CardContent>
       </Card>
+
+      {/* Modals */}
+      <CustomerAddModal
+        isOpen={addModalOpen}
+        onClose={closeModals}
+        onAdd={handleAddCustomer}
+        isLoading={isLoading}
+      />
+
+      {selectedCustomer && (
+        <>
+          <CustomerViewModal
+            customer={selectedCustomer}
+            isOpen={viewModalOpen}
+            onClose={closeModals}
+          />
+          
+          <CustomerEditModal
+            customer={selectedCustomer}
+            isOpen={editModalOpen}
+            onClose={closeModals}
+            onSave={handleSaveCustomer}
+            isLoading={isLoading}
+          />
+          
+          <DeleteConfirmModal
+            isOpen={deleteModalOpen}
+            onClose={closeModals}
+            onConfirm={handleConfirmDelete}
+            title="Delete Customer"
+            message="Are you sure you want to delete this customer?"
+            itemName={selectedCustomer.name}
+            isLoading={isLoading}
+          />
+        </>
+      )}
     </div>
   );
 }
