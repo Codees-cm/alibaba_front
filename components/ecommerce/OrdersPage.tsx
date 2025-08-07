@@ -13,10 +13,18 @@ import {
   Download
 } from 'lucide-react';
 import { useNotifications } from '@/contexts/NotificationContext';
+import OrderViewModal from './OrderViewModal';
+import OrderStatusModal from './OrderStatusModal';
 
 const OrdersPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('all');
+  
+  // Modal states
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [statusModalOpen, setStatusModalOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+  
   const { addNotification } = useNotifications();
 
   const orders = [
@@ -126,12 +134,32 @@ const OrdersPage: React.FC = () => {
     }
   };
 
-  const handleStatusUpdate = (orderId: string, newStatus: string) => {
+  const handleViewOrder = (order: any) => {
+    setSelectedOrder(order);
+    setViewModalOpen(true);
+  };
+
+  const handleUpdateStatus = (order: any) => {
+    setSelectedOrder(order);
+    setStatusModalOpen(true);
+  };
+
+  const handleStatusUpdate = (orderId: string, newStatus: string, note?: string) => {
+    // Here you would typically make an API call to update the order status
     addNotification({
       title: 'Order Status Updated',
       message: `Order ${orderId} status has been changed to ${newStatus}`,
       type: 'success'
     });
+    
+    setStatusModalOpen(false);
+    setSelectedOrder(null);
+  };
+
+  const closeModals = () => {
+    setViewModalOpen(false);
+    setStatusModalOpen(false);
+    setSelectedOrder(null);
   };
 
   const orderStats = [
@@ -280,22 +308,20 @@ const OrdersPage: React.FC = () => {
                   </td>
                   <td className="py-4 px-6">
                     <div className="flex items-center space-x-2">
-                      <button className="p-1 text-gray-600 hover:text-blue-600">
+                      <button 
+                        onClick={() => handleViewOrder(order)}
+                        className="p-1 text-gray-600 hover:text-blue-600 transition-colors"
+                        title="View Order Details"
+                      >
                         <Eye size={16} />
                       </button>
-                      <select
-                        onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
-                        className="text-xs border border-gray-300 rounded px-2 py-1"
-                        defaultValue=""
+                      <button
+                        onClick={() => handleUpdateStatus(order)}
+                        className="text-xs border border-gray-300 rounded px-2 py-1 hover:bg-gray-50 transition-colors"
                       >
-                        <option value="" disabled>Update Status</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Processing">Processing</option>
-                        <option value="Shipped">Shipped</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Cancelled">Cancelled</option>
-                      </select>
-                      <button className="p-1 text-gray-600 hover:text-gray-800">
+                        Update Status
+                      </button>
+                      <button className="p-1 text-gray-600 hover:text-gray-800 transition-colors">
                         <MoreHorizontal size={16} />
                       </button>
                     </div>
@@ -329,6 +355,24 @@ const OrdersPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      {selectedOrder && (
+        <>
+          <OrderViewModal
+            order={selectedOrder}
+            isOpen={viewModalOpen}
+            onClose={closeModals}
+          />
+          
+          <OrderStatusModal
+            order={selectedOrder}
+            isOpen={statusModalOpen}
+            onClose={closeModals}
+            onUpdateStatus={handleStatusUpdate}
+          />
+        </>
+      )}
     </div>
   );
 };

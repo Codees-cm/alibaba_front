@@ -16,11 +16,21 @@ import {
   AlertCircle
 } from 'lucide-react';
 import { useNotifications } from '@/contexts/NotificationContext';
+import ProductViewModal from './ProductViewModal';
+import ProductEditModal from './ProductEditModal';
+import DeleteConfirmModal from './DeleteConfirmModal';
 
 const ProductsPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedStatus, setSelectedStatus] = useState('all');
+  
+  // Modal states
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  
   const { addNotification } = useNotifications();
   
   // Use the existing products hook
@@ -170,12 +180,76 @@ const ProductsPage: React.FC = () => {
     });
   };
 
-  const handleDeleteProduct = (productName: string) => {
-    addNotification({
-      title: 'Product Deleted',
-      message: `${productName} has been removed from your inventory`,
-      type: 'info'
-    });
+  const handleViewProduct = (product: any) => {
+    setSelectedProduct(product);
+    setViewModalOpen(true);
+  };
+
+  const handleEditProduct = (product: any) => {
+    setSelectedProduct(product);
+    setEditModalOpen(true);
+  };
+
+  const handleDeleteProduct = (product: any) => {
+    setSelectedProduct(product);
+    setDeleteModalOpen(true);
+  };
+
+  const handleSaveProduct = async (updatedProduct: any) => {
+    try {
+      // Use the editProduct hook function if available
+      if (editProduct) {
+        await editProduct(updatedProduct);
+      }
+      
+      addNotification({
+        title: 'Product Updated',
+        message: `${updatedProduct.name} has been successfully updated`,
+        type: 'success'
+      });
+      
+      setEditModalOpen(false);
+      setSelectedProduct(null);
+    } catch (error) {
+      addNotification({
+        title: 'Update Failed',
+        message: 'Failed to update product. Please try again.',
+        type: 'error'
+      });
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedProduct) return;
+    
+    try {
+      // Use the deleteProduct hook function if available
+      if (deleteProduct) {
+        await deleteProduct(selectedProduct.id);
+      }
+      
+      addNotification({
+        title: 'Product Deleted',
+        message: `${selectedProduct.name} has been removed from your inventory`,
+        type: 'info'
+      });
+      
+      setDeleteModalOpen(false);
+      setSelectedProduct(null);
+    } catch (error) {
+      addNotification({
+        title: 'Delete Failed',
+        message: 'Failed to delete product. Please try again.',
+        type: 'error'
+      });
+    }
+  };
+
+  const closeModals = () => {
+    setViewModalOpen(false);
+    setEditModalOpen(false);
+    setDeleteModalOpen(false);
+    setSelectedProduct(null);
   };
 
   return (
@@ -359,19 +433,28 @@ const ProductsPage: React.FC = () => {
                   </td>
                   <td className="py-4 px-6">
                     <div className="flex items-center space-x-2">
-                      <button className="p-1 text-gray-600 hover:text-blue-600">
+                      <button 
+                        onClick={() => handleViewProduct(product)}
+                        className="p-1 text-gray-600 hover:text-blue-600 transition-colors"
+                        title="View Details"
+                      >
                         <Eye size={16} />
                       </button>
-                      <button className="p-1 text-gray-600 hover:text-green-600">
+                      <button 
+                        onClick={() => handleEditProduct(product)}
+                        className="p-1 text-gray-600 hover:text-green-600 transition-colors"
+                        title="Edit Product"
+                      >
                         <Edit size={16} />
                       </button>
                       <button 
-                        onClick={() => handleDeleteProduct(product.name)}
-                        className="p-1 text-gray-600 hover:text-red-600"
+                        onClick={() => handleDeleteProduct(product)}
+                        className="p-1 text-gray-600 hover:text-red-600 transition-colors"
+                        title="Delete Product"
                       >
                         <Trash2 size={16} />
                       </button>
-                      <button className="p-1 text-gray-600 hover:text-gray-800">
+                      <button className="p-1 text-gray-600 hover:text-gray-800 transition-colors">
                         <MoreHorizontal size={16} />
                       </button>
                     </div>
@@ -405,6 +488,35 @@ const ProductsPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      {selectedProduct && (
+        <>
+          <ProductViewModal
+            product={selectedProduct}
+            isOpen={viewModalOpen}
+            onClose={closeModals}
+          />
+          
+          <ProductEditModal
+            product={selectedProduct}
+            isOpen={editModalOpen}
+            onClose={closeModals}
+            onSave={handleSaveProduct}
+            isLoading={isEditingProduct}
+          />
+          
+          <DeleteConfirmModal
+            isOpen={deleteModalOpen}
+            onClose={closeModals}
+            onConfirm={handleConfirmDelete}
+            title="Delete Product"
+            message="Are you sure you want to delete this product?"
+            itemName={selectedProduct.name}
+            isLoading={isDeletingProduct}
+          />
+        </>
+      )}
     </div>
   );
 };
