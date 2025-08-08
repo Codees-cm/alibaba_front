@@ -15,10 +15,17 @@ export default function AddProduct() {
   const [productData, setProductData] = useState({
     name: "",
     description: "",
-    price_with_tax: "",
     price: "",
+    original_price: "",
+    image_url: "",
+    images: [] as string[],
     quantity: "",
     category: "",
+    tags: [] as string[],
+    brand: "",
+    specifications: "",
+    product_code: "",
+    available: true as boolean,
   });
   const handleFormChange = (value) => {
     const selectedCategory = categories.data.find(category => category.id.toString() === value);
@@ -36,7 +43,6 @@ export default function AddProduct() {
   const handleInputChange = (e) => {
     const { id, value } = e.target;
     // console.log({ id, value })
-
     setProductData({ ...productData, [id]: value });
   };
 
@@ -50,10 +56,17 @@ export default function AddProduct() {
       setProductData({
         name: "",
         description: "",
-        price_with_tax: "",
         price: "",
+        original_price: "",
+        image_url: "",
+        images: [],
         quantity: "",
         category: "",
+        tags: [],
+        brand: "",
+        specifications: "",
+        product_code: "",
+        available: true,
       });
     } catch (error) {
       console.error("Error adding product:", error);
@@ -71,9 +84,13 @@ export default function AddProduct() {
             <div className="grid gap-4 lg:col-span-2">
               <Input id="name" type="text" placeholder="Name" value={productData.name} onChange={handleInputChange} />
               <Textarea id="description" placeholder="Description" value={productData.description} onChange={handleInputChange} />
-              <Input id="price_with_tax" type="number" placeholder="Price with Tax" value={productData.price_with_tax} onChange={handleInputChange} />
-              <Input id="price" type="number" placeholder="Price without Tax" value={productData.price} onChange={handleInputChange} />
+              <Input id="price" type="number" placeholder="Price" value={productData.price} onChange={handleInputChange} />
+              <Input id="original_price" type="number" placeholder="Original Price" value={productData.original_price} onChange={handleInputChange} />
+              <Input id="image_url" type="text" placeholder="Main Image URL" value={productData.image_url} onChange={handleInputChange} />
               <Input id="quantity" type="number" placeholder="Quantity" value={productData.quantity} onChange={handleInputChange} />
+              <Input id="brand" type="text" placeholder="Brand" value={productData.brand} onChange={handleInputChange} />
+              <Input id="product_code" type="text" placeholder="Product Code" value={productData.product_code} onChange={handleInputChange} />
+              <Textarea id="specifications" placeholder='Specifications (JSON or key:value pairs)' value={productData.specifications} onChange={handleInputChange} />
             </div>
             <div className="grid gap-4">
               <Select  onValueChange={handleFormChange} >
@@ -88,6 +105,12 @@ export default function AddProduct() {
                   ))}
                 </SelectContent>
               </Select>
+              <Input id="tags" type="text" placeholder="Tags (comma separated)" value={Array.isArray(productData.tags) ? productData.tags.join(', ') : productData.tags as any} onChange={(e)=> setProductData(prev=>({...prev, tags: e.target.value}))} />
+              <Input id="images" type="text" placeholder="Additional Image URLs (comma separated or JSON array)" value={Array.isArray(productData.images) ? productData.images.join(', ') : productData.images as any} onChange={(e)=> setProductData(prev=>({...prev, images: e.target.value}))} />
+              <div className="flex items-center space-x-2">
+                <label htmlFor="available" className="text-sm text-gray-700">Available</label>
+                <input id="available" type="checkbox" checked={productData.available} onChange={(e)=> setProductData(prev=>({...prev, available: e.target.checked}))} />
+              </div>
             </div>
           </div>
         </CardContent>
