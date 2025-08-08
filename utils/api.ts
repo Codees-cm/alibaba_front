@@ -1,15 +1,11 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-// import { NextResponse } from 'next/server';
-// Create an instance of axios
 import { useRouter } from 'next/navigation';
 
+const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000/api';
 
-
-const instance  = axios.create({
-  baseURL: "https://fnmalic.pythonanywhere.com/api",
-  // baseURL: "http://127.0.0.1:8000/api/",
-
+const instance = axios.create({
+  baseURL,
 });
 
 // Add a request interceptor
@@ -41,16 +37,15 @@ instance.interceptors.response.use(
     const originalRequest = error.config;
 
     // Check if the error is related to token expiration or invalid token
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
         const refreshToken = Cookies.get('refresh'); // Assuming you store the refresh token in a cookie
-        const response = await axios.post(
-          // 'http://127.0.0.1:8000/api/jwt/refresh/',
-          'https://fnmalic.pythonanywhere.com/api/jwt/refresh/',
-          { refresh: refreshToken }
-        );
+        if (!refreshToken) {
+          return Promise.reject(error);
+        }
+        const response = await axios.post(`${baseURL}/jwt/refresh/`, { refresh: refreshToken });
         const newToken = response.data.access;
 
         Cookies.set('access', newToken);

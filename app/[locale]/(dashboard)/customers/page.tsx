@@ -1,5 +1,6 @@
 "use client"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import instance from '@/utils/api';
 import { useTranslation } from '@/app/i18n/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -43,49 +44,37 @@ interface Customer {
   lastOrder: string;
 }
 
-const mockCustomers: Customer[] = [
-  {
-    id: '1',
-    name: 'John Doe',
-    email: 'john.doe@email.com',
-    phone: '+1 234 567 8900',
-    address: '123 Main St, New York, NY',
-    totalOrders: 15,
-    totalSpent: 2450.00,
-    status: 'active',
-    joinDate: '2024-01-15',
-    lastOrder: '2024-08-01'
-  },
-  {
-    id: '2',
-    name: 'Jane Smith',
-    email: 'jane.smith@email.com',
-    phone: '+1 234 567 8901',
-    address: '456 Oak Ave, Los Angeles, CA',
-    totalOrders: 8,
-    totalSpent: 1200.00,
-    status: 'active',
-    joinDate: '2024-02-20',
-    lastOrder: '2024-07-28'
-  },
-  {
-    id: '3',
-    name: 'Mike Johnson',
-    email: 'mike.johnson@email.com',
-    phone: '+1 234 567 8902',
-    address: '789 Pine St, Chicago, IL',
-    totalOrders: 3,
-    totalSpent: 450.00,
-    status: 'inactive',
-    joinDate: '2024-03-10',
-    lastOrder: '2024-06-15'
-  }
-];
+// Loaded from API
+const mockCustomers: Customer[] = [];
 
 export default function CustomersPage({ params: { locale } }: { params: { locale: string } }) {
   const { t } = useTranslation(locale, 'common');
   const { addNotification } = useNotifications();
   const [customers, setCustomers] = useState<Customer[]>(mockCustomers);
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await instance.get('/users_with_role_user/');
+        const apiUsers = Array.isArray(res.data) ? res.data : res.data?.results ?? [];
+        const mapped: Customer[] = apiUsers.map((u: any) => ({
+          id: String(u.id),
+          name: `${u.first_name ?? ''} ${u.last_name ?? ''}`.trim() || u.email,
+          email: u.email,
+          phone: u.phone_number ?? '',
+          address: '',
+          totalOrders: u.total_orders ?? 0,
+          totalSpent: u.total_spent ?? 0,
+          status: u.is_active ? 'active' : 'inactive',
+          joinDate: (u.date_joined ?? '').slice(0, 10),
+          lastOrder: (u.last_login ?? '').slice(0, 10),
+        }));
+        setCustomers(mapped);
+      } catch (e) {
+        // keep empty state, optionally show toast via notifications elsewhere
+      }
+    };
+    fetchUsers();
+  }, []);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   
@@ -129,68 +118,74 @@ export default function CustomersPage({ params: { locale } }: { params: { locale
     setDeleteModalOpen(true);
   };
 
-  const handleAddCustomer = (newCustomerData: Omit<Customer, 'id' | 'totalOrders' | 'totalSpent' | 'joinDate' | 'lastOrder'>) => {
+  const handleAddCustomer = async (newCustomerData: Omit<Customer, 'id' | 'totalOrders' | 'totalSpent' | 'joinDate' | 'lastOrder'>) => {
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const payload = {
+        first_name: newCustomerData.name.split(' ')[0] ?? newCustomerData.name,
+        last_name: newCustomerData.name.split(' ').slice(1).join(' '),
+        email: newCustomerData.email,
+        phone_number: newCustomerData.phone,
+        password: 'TempPass123!'
+      };
+      const res = await instance.post('/create-employee/', payload);
+      const u = res.data;
       const newCustomer: Customer = {
-        ...newCustomerData,
-        id: (customers.length + 1).toString(),
+        id: String(u.id),
+        name: `${u.first_name ?? ''} ${u.last_name ?? ''}`.trim() || u.email,
+        email: u.email,
+        phone: u.phone_number ?? '',
+        address: '',
         totalOrders: 0,
         totalSpent: 0,
         joinDate: new Date().toISOString().split('T')[0],
         lastOrder: ''
       };
-      
       setCustomers(prev => [...prev, newCustomer]);
       setAddModalOpen(false);
+      addNotification({ title: 'Customer Added', message: `${newCustomer.name} has been successfully added`, type: 'success' });
+    } catch (e: any) {
+      addNotification({ title: 'Create Failed', message: e?.message ?? 'Failed to add customer', type: 'error' });
+    } finally {
       setIsLoading(false);
-      
-      addNotification({
-        title: 'Customer Added',
-        message: `${newCustomer.name} has been successfully added`,
-        type: 'success'
-      });
-    }, 1000);
+    }
   };
 
-  const handleSaveCustomer = (updatedCustomer: Customer) => {
+  const handleSaveCustomer = async (updatedCustomer: Customer) => {
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const payload = {
+        first_name: updatedCustomer.name.split(' ')[0] ?? updatedCustomer.name,
+        last_name: updatedCustomer.name.split(' ').slice(1).join(' '),
+        phone_number: updatedCustomer.phone,
+        is_active: updatedCustomer.status !== 'blocked',
+      };
+      await instance.put(`/users/${updatedCustomer.id}/update/`, payload);
       setCustomers(prev => prev.map(c => c.id === updatedCustomer.id ? updatedCustomer : c));
       setEditModalOpen(false);
       setSelectedCustomer(null);
+      addNotification({ title: 'Customer Updated', message: `${updatedCustomer.name} has been successfully updated`, type: 'success' });
+    } catch (e: any) {
+      addNotification({ title: 'Update Failed', message: e?.message ?? 'Failed to update customer', type: 'error' });
+    } finally {
       setIsLoading(false);
-      
-      addNotification({
-        title: 'Customer Updated',
-        message: `${updatedCustomer.name} has been successfully updated`,
-        type: 'success'
-      });
-    }, 1000);
+    }
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (!selectedCustomer) return;
-    
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await instance.delete(`/users/${selectedCustomer.id}/delete/`);
       setCustomers(prev => prev.filter(c => c.id !== selectedCustomer.id));
       setDeleteModalOpen(false);
       setSelectedCustomer(null);
+      addNotification({ title: 'Customer Deleted', message: `${selectedCustomer.name} has been removed`, type: 'info' });
+    } catch (e: any) {
+      addNotification({ title: 'Delete Failed', message: e?.message ?? 'Failed to delete customer', type: 'error' });
+    } finally {
       setIsLoading(false);
-      
-      addNotification({
-        title: 'Customer Deleted',
-        message: `${selectedCustomer.name} has been removed`,
-        type: 'info'
-      });
-    }, 1000);
+    }
   };
 
   const closeModals = () => {

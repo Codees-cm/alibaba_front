@@ -8,8 +8,8 @@ export const useLogin = () => {
   const { mutate: loginUserMutation, isPending: isLoginingUser } = useMutation({
     mutationFn: createJWT,
     onSuccess: (data) => {
-      Cookies.set('access', data.data.access); // Set access token in cookies
-      Cookies.set('refresh', data.data.refresh); // Set refresh token in cookies
+      Cookies.set('access', data.access); // Set access token in cookies
+      Cookies.set('refresh', data.refresh); // Set refresh token in cookies
       setIsSuccess(true);
     },
     onError: (error) => {

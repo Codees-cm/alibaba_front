@@ -2,7 +2,7 @@
 import React from "react";
 import { useQuery , useMutation , useQueryClient } from "@tanstack/react-query";
 // import { viewProduct } from "@/utils/api/product";
-import { fetchProducts,createProducts , editProducts, viewProducts ,deleteProducts } from "@/utils/apis/product";
+import { fetchProducts, createProducts , editProducts, viewProducts , deleteProducts } from "@/utils/apis/product";
 
 export const useProducts = () => {
     const [isSuccess, setIsSuccess] = React.useState(false);
@@ -66,19 +66,19 @@ export const useProducts = () => {
 
 
     const addProduct = async (newProduct)=>{
-            await  addProductMutation(newProduct); 
+        await addProductMutation(newProduct); 
     }
 
     const modifyProduct = async (editProduct)=>{
-        await  editProductMutation(editProduct); 
+        await editProductMutation(editProduct); 
     }
 
     const deletingProduct = async (id)=>{
-        await  deleteProductMutation(id); 
+        await deleteProductMutation(id); 
     }
 
     return {
-        products,
+        products: products ?? [],
         allLoading,
         allFetchError,
 
@@ -89,7 +89,6 @@ export const useProducts = () => {
         addProduct,
         isAddingProduct,
 
-        
         modifyProduct,
         isEditingProduct,
 
@@ -98,6 +97,10 @@ export const useProducts = () => {
 
         isSuccess,
         errorMessage,
+        refetch,
+        // Aliases expected by some components
+        editProduct: modifyProduct,
+        deleteProduct: deletingProduct,
     }
 
 

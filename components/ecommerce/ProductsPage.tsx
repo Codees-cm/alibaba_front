@@ -150,7 +150,7 @@ const ProductsPage: React.FC = () => {
   const categories = ['all', 'Electronics', 'Accessories', 'Office', 'Home', 'Sports'];
   const statuses = ['all', 'Active', 'Low Stock', 'Out of Stock', 'Inactive'];
 
-  const filteredProducts = products.filter(product => {
+  const filteredProducts = productList.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     const matchesStatus = selectedStatus === 'all' || product.status === selectedStatus;
@@ -285,7 +285,7 @@ const ProductsPage: React.FC = () => {
             <div>
               <p className="text-sm font-medium text-gray-600">Active Products</p>
               <p className="text-2xl font-bold text-gray-900 mt-2">
-                {products.filter(p => p.status === 'Active').length}
+                {productList.filter(p => p.status === 'Active').length}
               </p>
             </div>
             <div className="h-8 w-8 bg-green-100 rounded-lg flex items-center justify-center">
@@ -298,7 +298,7 @@ const ProductsPage: React.FC = () => {
             <div>
               <p className="text-sm font-medium text-gray-600">Low Stock</p>
               <p className="text-2xl font-bold text-gray-900 mt-2">
-                {products.filter(p => p.status === 'Low Stock').length}
+                {productList.filter(p => p.status === 'Low Stock').length}
               </p>
             </div>
             <div className="h-8 w-8 bg-yellow-100 rounded-lg flex items-center justify-center">
@@ -311,7 +311,7 @@ const ProductsPage: React.FC = () => {
             <div>
               <p className="text-sm font-medium text-gray-600">Out of Stock</p>
               <p className="text-2xl font-bold text-gray-900 mt-2">
-                {products.filter(p => p.status === 'Out of Stock').length}
+                {productList.filter(p => p.status === 'Out of Stock').length}
               </p>
             </div>
             <div className="h-8 w-8 bg-red-100 rounded-lg flex items-center justify-center">
@@ -469,7 +469,7 @@ const ProductsPage: React.FC = () => {
         <div className="bg-gray-50 px-6 py-3 border-t border-gray-200">
           <div className="flex items-center justify-between">
             <p className="text-sm text-gray-600">
-              Showing {filteredProducts.length} of {products.length} products
+              Showing {filteredProducts.length} of {productList.length} products
             </p>
             <div className="flex items-center space-x-2">
               <button className="px-3 py-1 border border-gray-300 rounded text-sm hover:bg-gray-100">

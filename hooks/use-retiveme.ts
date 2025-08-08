@@ -10,7 +10,7 @@ export const useMe = () => {
 
 
     return {
-        me,
+        me: me ?? null,
         isLoading,
         error,
         refetch

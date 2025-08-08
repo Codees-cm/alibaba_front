@@ -1,5 +1,6 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import instance from '@/utils/api';
 import { 
   Search, 
   Filter, 
@@ -27,68 +28,39 @@ const OrdersPage: React.FC = () => {
   
   const { addNotification } = useNotifications();
 
-  const orders = [
-    {
-      id: '#12345',
-      customer: 'John Doe',
-      email: 'john.doe@email.com',
-      products: 3,
-      total: 299.99,
-      status: 'Completed',
-      date: '2024-08-06',
-      time: '10:30 AM',
-      paymentMethod: 'Credit Card',
-      shippingAddress: '123 Main St, New York, NY 10001'
-    },
-    {
-      id: '#12344',
-      customer: 'Jane Smith',
-      email: 'jane.smith@email.com',
-      products: 1,
-      total: 29.99,
-      status: 'Processing',
-      date: '2024-08-06',
-      time: '09:15 AM',
-      paymentMethod: 'PayPal',
-      shippingAddress: '456 Oak Ave, Los Angeles, CA 90210'
-    },
-    {
-      id: '#12343',
-      customer: 'Mike Johnson',
-      email: 'mike.johnson@email.com',
-      products: 2,
-      total: 189.98,
-      status: 'Shipped',
-      date: '2024-08-05',
-      time: '03:45 PM',
-      paymentMethod: 'Credit Card',
-      shippingAddress: '789 Pine St, Chicago, IL 60601'
-    },
-    {
-      id: '#12342',
-      customer: 'Sarah Wilson',
-      email: 'sarah.wilson@email.com',
-      products: 1,
-      total: 149.99,
-      status: 'Pending',
-      date: '2024-08-05',
-      time: '11:20 AM',
-      paymentMethod: 'Bank Transfer',
-      shippingAddress: '321 Elm St, Houston, TX 77001'
-    },
-    {
-      id: '#12341',
-      customer: 'David Brown',
-      email: 'david.brown@email.com',
-      products: 4,
-      total: 459.96,
-      status: 'Cancelled',
-      date: '2024-08-04',
-      time: '02:10 PM',
-      paymentMethod: 'Credit Card',
-      shippingAddress: '654 Maple Dr, Phoenix, AZ 85001'
-    }
-  ];
+  const [orders, setOrders] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await instance.get('/orders/');
+        const raw = Array.isArray(res.data) ? res.data : res.data?.results ?? [];
+        const mapped = raw.map((o: any) => ({
+          id: String(o.id),
+          customer: `${o.user?.first_name ?? ''} ${o.user?.last_name ?? ''}`.trim() || o.user?.email ?? 'Customer',
+          email: o.user?.email ?? '',
+          products: Array.isArray(o.items) ? o.items.length : 0,
+          total: Number(o.total_amount ?? 0),
+          status: o.status ?? (o.paid ? 'Completed' : 'Pending'),
+          date: (o.created ?? '').slice(0, 10),
+          time: (o.created ?? '').slice(11, 16),
+          paymentMethod: o.payment_history?.[0]?.payment_method ?? '',
+          shippingAddress: o.address ?? '',
+          __raw: o,
+        }));
+        setOrders(mapped);
+      } catch (e: any) {
+        setError(e?.message ?? 'Failed to load orders');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchOrders();
+  }, []);
 
   const statuses = ['all', 'Pending', 'Processing', 'Shipped', 'Completed', 'Cancelled'];
 
@@ -144,16 +116,17 @@ const OrdersPage: React.FC = () => {
     setStatusModalOpen(true);
   };
 
-  const handleStatusUpdate = (orderId: string, newStatus: string, note?: string) => {
-    // Here you would typically make an API call to update the order status
-    addNotification({
-      title: 'Order Status Updated',
-      message: `Order ${orderId} status has been changed to ${newStatus}`,
-      type: 'success'
-    });
-    
-    setStatusModalOpen(false);
-    setSelectedOrder(null);
+  const handleStatusUpdate = async (orderId: string, newStatus: string, note?: string) => {
+    try {
+      await instance.patch(`/orders/${orderId}/`, { status: newStatus, note });
+      setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o));
+      addNotification({ title: 'Order Status Updated', message: `Order ${orderId} status has been changed to ${newStatus}`, type: 'success' });
+    } catch (e: any) {
+      addNotification({ title: 'Update Failed', message: e?.message ?? 'Failed to update status', type: 'error' });
+    } finally {
+      setStatusModalOpen(false);
+      setSelectedOrder(null);
+    }
   };
 
   const closeModals = () => {
@@ -281,7 +254,7 @@ const OrdersPage: React.FC = () => {
               {filteredOrders.map((order) => (
                 <tr key={order.id} className="hover:bg-gray-50">
                   <td className="py-4 px-6">
-                    <div className="font-medium text-blue-600">{order.id}</div>
+                    <div className="font-medium text-blue-600">#{order.id}</div>
                     <div className="text-sm text-gray-500">{order.time}</div>
                   </td>
                   <td className="py-4 px-6">
