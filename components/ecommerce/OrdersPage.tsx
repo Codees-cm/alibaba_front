@@ -41,7 +41,7 @@ const OrdersPage: React.FC = () => {
         const raw = Array.isArray(res.data) ? res.data : res.data?.results ?? [];
         const mapped = raw.map((o: any) => ({
           id: String(o.id),
-          customer: `${o.user?.first_name ?? ''} ${o.user?.last_name ?? ''}`.trim() || o.user?.email ?? 'Customer',
+          customer: (`${o.user?.first_name ?? ''} ${o.user?.last_name ?? ''}`.trim()) || o.user?.email || 'Customer',
           email: o.user?.email ?? '',
           products: Array.isArray(o.items) ? o.items.length : 0,
           total: Number(o.total_amount ?? 0),

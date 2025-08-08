@@ -23,6 +23,11 @@ export default function LocaleLayout({
     <>
       <html lang={locale}  dir={dir(locale)}>
       <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+          <meta name="theme-color" content="#3a3a3c" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+          <meta name="apple-mobile-web-app-title" content="onerp-cm" />
           <link rel='manifest' href='/manifest.json' />
           <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
           <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
